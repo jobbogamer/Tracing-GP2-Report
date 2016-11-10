@@ -38,7 +38,7 @@ A section discussing the ethics of the project.
 
 
 
-\cleardoublepage
+\clearpage
 
 \chapter{Literature Review}
 \label{cha:LiteratureReview}
@@ -61,32 +61,112 @@ interface nodes, etc.
 \subsection{The GP2 Language}
 \label{sec:TheGP2Language}
 
-%------------------------------------------------------------------------------
+GP2 is a programming language developed at the University of York \citep{bak2015},
+an updated implementation of the original language, GP \citep{plump2009}. It is
+designed for writing programs at a high level, to perform graph transformations 
+without having to implement data structures to represent the graphs in more
+traditional lower level languages such as C.
 
-\subsubsection{Programs in GP2}
-\label{sec:ProgramsInGP2}
+Programming in GP2 consists of an input graph, known as the \emph{host graph}, a
+set of \emph{rules}, and a \emph{program} which defines the order in which to
+apply the rules. Running a GP2 program on a host graph produces a new graph as
+a result, called the \emph{output graph}.
 
-A section discussing programs in GP2, including definitions and an overview of
-the grammar (possibly?).
+\subsubsection{Rules}
+\label{sec:Rules}
 
-%------------------------------------------------------------------------------
+Rules are the basic building blocks of a GP2 program and are defined by a
+left-hand-side (LHS), a right-hand-side (RHS), and optionally a conditional
+clause. A rule can be thought of as the definition of a transformation; a subgraph
+matching the LHS of the rule is transformed to resemble the RHS. An example of a
+GP2 rule is shown in \autoref{fig:RuleInGP2}.
 
-\subsubsection{The GP2 Compiler}
-\label{sec:TheGP2Compiler}
+\begin{figure}
+    \begin{center}
+        \emph{An example rule will go here...}
+    \end{center}
+    \caption{A rule in GP2}
+    \label{fig:RuleInGP2}
+\end{figure}
 
-A section about how a compiled GP2 program works.
-Section may be unnecessary?
+The conditional clause is used to specify additional constraints on the subgraph
+matching the LHS. Any match has to both match the LHS and conform to the constraints
+defined by the conditional clause.
 
-%------------------------------------------------------------------------------
+In a compiled program, a rule is split into two phases. The \emph{match} phase
+searches the current graph for a subgraph which matches the LHS of the rule. If
+a match is found, the program moves on to the second phase, the \emph{application}.
+To ensure consistent output between successive program executions, rule matches are
+chosen deterministically by the compiled program. If no match is found for the LHS,
+the rule is considered \emph{failed}.
 
-\subsubsection{The GP2 IDE}
-\label{sec:TheGP2IDE}
+During the application phase, any nodes and edges present in the LHS but not the RHS
+will be deleted, and any nodes and edges present in the RHS but not the LHS will be
+created. At the end of the application phase, the subgraph will match the RHS of the
+rule definition. The new graph created by the application of this rule, an \emph{intermediate
+graph}, is then used as the input to the next part of the program.
 
-A section describing the IDE and how it relates to the compiled program. 
+In the example in \autoref{fig:RuleInGP2}, the program will search for a subgraph
+containing two nodes without an edge connecting them. If a match is found, it will
+be transformed to resemble the RHS by adding an edge between the nodes.
 
-Would it be appropriate to discuss what we want to do to the editor here?
+\subsubsection{Programs}
 
-Section may be unnecessary?
+A GP2 program defines the order in which to apply rules using 8 simple control
+structures:
+
+\begin{description}
+    \item[\textsc{Sequence}]
+    Two subprograms separated by a semicolon ``\texttt{P; Q}'' are applied
+    one after the other.
+
+    \item[\textsc{Rule Set}]
+    Subprograms in curly braces ``\texttt{\{P, Q, R\}}'' define a set, where
+    exactly one subprogram from the set is executed, unless no subprograms in
+    the set can be matched. The subprogram to execute is chosen deterministically.
+
+    \item[\textsc{If-Then-Else}]
+    In the statement ``\texttt{if C then P else Q}'', the sub-program \texttt{C}
+    is executed on a copy of the current graph. If this succeeds, \texttt{P} is
+    executed on the original graph. If it fails, then \texttt{Q} is executed on
+    the original graph. Note that by taking a copy first, any changes made by
+    \texttt{C} are reverted before executing either \texttt{P} or \texttt{Q}.
+
+    \item[\textsc{Try-Then-Else}]
+    Similar to \textsc{If-Then-Else}, but \texttt{C} is exectued on the original
+    graph, without taking a copy first. Thus any changes made by \texttt{C} are
+    \emph{not} reverted before executing \texttt{P} or \texttt{Q}.
+
+    \item[\textsc{As-Long-As-Possible}]
+    A subprogram followed by an exclamation point ``\texttt{P!}'' is matched and
+    applied repeatedly until it cannot be matched any more. The final attempt to
+    match the LHS will \emph{not} consider the rule \emph{failed}.
+
+    \item[\textsc{Procedure}]
+    Similar to a C preprocessor macro, a procedure is simply a named subprogram
+    where any reference to the procedure name can be replaced with the definition
+    of the procedure.
+
+    \item[\textsc{Skip}]
+    A no-op which always succeeds, and does not affect the graph. Invoked using the
+    keyword ``\texttt{skip}''.
+
+    \item[\textsc{Fail}]
+    A no-op which always fails and does not affect the graph. This is the same as
+    attempting to execute a rule for which there are no matches. Invoked using
+    the keyword ``\texttt{fail}''.
+\end{description}
+
+For GP2, a subprogram is either a single rule, referenced by its name, or one of
+the above control structures. Therefore it is possible to nest control structures
+to create more complex programs.
+
+In general, execution of a program continues until either all statements are
+executed, or until a statement results in an attempt to apply a rule which has
+no matches in the graph. The exceptions to this are \textsc{As-Long-As-Possible}
+statements, and the conditional statements in \textsc{If-Then-Else} and
+\textsc{Try-Then-Else} structures. In these cases, a failure to match a rule
+does not halt execution of the program.
 
 %//////////////////////////////////////////////////////////////////////////////
 
@@ -110,11 +190,23 @@ A section discussing what tracing functional languages like Haskell is like. A
 main focus on the Hat tool for Haskell, describing how it relates to the
 problem of tracing GP2.
 
+%==============================================================================
+
+\subsection{Previous Work on Tracing GP2}
+\label{sec:PreviousWorkOnTracingGP2}
+
+A section discussing the previous project \citep{taylor2016} on this topic.
 
 
 
-\cleardoublepage
+\clearpage
 
 \chapter{Another chapter...}
+
+
+
+\clearpage
+
+\bibliography{references}
 
 \end{document}
