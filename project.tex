@@ -217,18 +217,134 @@ statements, and the conditional statements in \textsc{If-Then-Else} and
 \textsc{Try-Then-Else} structures. In these cases, a failure to match a rule
 does not halt execution of the program.
 
+\autoref{fig:ExampleProgramDefinition} shows an example GP2 program, the same
+program used as a case study in Bak's original thesis on GP2
+\citep[pp.126]{bak2015}. It is a simple program which determines whether a graph
+is \emph{2-colourable}, that is, its nodes can be coloured using two different
+colours without two nodes of the same colour being connected by an edge.
+
+This program consists of four rules and uses many of the constructs outlined
+previously, including \textsc{Try-Then-Else}, \textsc{If-Then-Else},
+\textsc{Rule Set}s, \textsc{As-Long-As-Possible} and \textsc{Procedure}s.
+
+\begin{figure}
+    \begin{center}
+        \emph{An example of a program will go here...}
+    \end{center}
+    \caption{Definition of 2-colouring in GP2}
+    \label{fig:ExampleProgramDefinition}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \emph{An execution of 2-colouring will go here...}
+    \end{center}
+    \caption{Example execution of 2-colouring}
+    \label{fig:ExampleProgramExecution}
+\end{figure}
+
+An example execution of the 2-colouring program is shown in \autoref{fig:ExampleProgramExecution}.
+Starting with an uncoloured graph, the algorithm picks a node and colours it red
+using the \texttt{init} rule. It then traverses the graph colouring nodes in
+alternating colours using the \texttt{colour\_blue} and \texttt{colour\_red} rules,
+by defining them as a \textsc{Rule Set} in a \textsc{Procedure} and executing
+it \textsc{As-Long-As-Possible}. When no more uncoloured nodes are present in the
+graph, the \texttt{Colour} procedure will be unable to match any further rules,
+so it will end.
+
+To check whether the produced colouring is valid, the entire \texttt{Main}
+procedure is wrapped in a \textsc{Try-Then-Else} statement. After executing
+\texttt{Colour}, the \texttt{Invalid} procedure runs. This procedure uses the
+two remaining rules, \texttt{joined\_reds} and \texttt{joined\_blues}, to see if
+any adjacent nodes are the same colour. If they are, one of these rules will
+match, triggering the conditional statement \texttt{fail} from the
+\textsc{If-Then-Else} statement. This in turn causes the outer \texttt{try} to
+fail, reverting all changes made to the graph and returning the uncoloured input
+graph.
+
+However, if \texttt{Invalid} fails to match either of the rules, it must mean
+that no two same-coloured nodes are connected via an edge. This means that it is
+a valid colouring. The \texttt{fail} statement is not executed, meaning the
+\texttt{try} succeeds. The changes to the graph are kept, and the modified graph
+is returned as the result of the program.
+
+
 %//////////////////////////////////////////////////////////////////////////////
 
-\section{Program Tracing}
-\label{sec:ProgramTracing}
+\section{Tracing and Debugging}
+\label{sec:TracingAndDebugging}
 
 %==============================================================================
 
-\subsection{Tracing in Imperative Languages}
-\label{sec:TracingInImperativeLanguages}
+\subsection{Debugging in Imperative Languages}
+\label{sec:DebuggingInImperativeLanguages}
 
-A section discussing what tracing and debugging imperative languages like C and
-Java is like.
+When programming in a ''classic'' imperative language, such as C or Java, it is
+a given that the programmer will have access to a \emph{debugger}. For C, this
+may be \texttt{gdb} \citep{gdbsite}, while for Java, it might be \texttt{jdb}
+\citep{jdbsite}.
+
+A debugger is intended to allow the programmer to pause their program during
+execution, so that they can inspect the contents of variables and other memory
+locations. It also allows them to run their program step-by-step to see its
+execution flow; they may wish to check that a function is called at the expected
+point during execution, for instance.
+
+Some debuggers also include more advanced features to make debugging easier and to
+give the programmer more insight into their program. Breakpoints are a common feature
+which allow the programmer to specify a line of source code and have the program
+execute normally until the breakpoint is reached, at which point execution will
+pause, or \emph{break}.
+
+\subsubsection{IDEs}
+\label{sec:IDEs}
+
+Oftentimes, a debugger is available from within the Integrated Development
+Environment (IDE) for a language. For example, the Visual Studio IDE for C, C++,
+and C\# includes the Visual Studio Debugger \citep{msdnsite}. One of the most
+prevalent Java IDEs, Eclipse, integrates with \texttt{jdb} \citep{eclipsesite}.
+
+When an IDE integrates with a debugger, it can provide additional functionality
+by allowing the programmer to interact with the source code and the debugger
+visually in the same environment. Visual Studio and Eclipse both allow breakpoints
+to be set directly on a line of source code in the editor, for instance.
+
+\subsubsection{Edit-and-Continue}
+\label{sec:EditAndContinue}
+
+Edit-and-continue is an even more advanced feature which requires specific
+compiler support, and is usually only available in IDEs, since they have access
+to both the compiler and the debugger. It allows the programmer to pause execution
+of the program, edit the source code, recompile the program, and continue execution
+from the previous paused state, without having to restart the program from the
+beginning. Edit-and-continue is useful for reducing the time taken to find and
+fix bugs, since fixes can be implemented and tested without having to stop and
+restart the program's execution.
+
+\subsubsection{Reverse Debugging}
+
+\texttt{gdb} supports what is called ''reverse debugging'' \citep{gdbreversesite}.
+This allows program execution to actually be reversed, running the program
+backwards to reach an earlier state. This can come in useful to look for
+non-deterministic bugs which do not always occur; the program can be run until
+the bug occurs, then executed in reverse to look for the cause.
+
+This ability comes with a trade-off, however; running with reverse debugging
+enabled reduces the performance of the running program. It can only be used in
+specific cases and cannot be enabled all the time, since the program would run
+much slower and possibly exhibit time-related bugs. Reverse debugging is also
+only available for \texttt{gdb} running on Linux.
+
+\texttt{gdb}'s implementation of reverse debugging involves recording the machine
+state after each instruction exectuion, including the values stored in memory and
+registers. To reverse an instruction, the state from the previous instruction is
+simply restored, making it appear as if the reversed instruction was never
+executed. This implementation allows powerful interaction with the program; it
+can reverse a single instruction at a time, or it can be run backwards until a
+breakpoint is reached. In theory, although \texttt{gdb} does not support this,
+this system could allow a form of ''checkpointing'' where execution can be skipped
+directly back to an arbitrary point by simply restoring the state from that point.
+
 
 %==============================================================================
 
@@ -241,8 +357,8 @@ problem of tracing GP2.
 
 %==============================================================================
 
-\subsection{Previous Work on Tracing GP2}
-\label{sec:PreviousWorkOnTracingGP2}
+\subsection{Previous Work on Debugging in GP2}
+\label{sec:PreviousWorkOnDebuggingInGP2}
 
 A section discussing the previous project \citep{taylor2016} on this topic.
 
