@@ -376,21 +376,19 @@ Tracing can be done in primitive ways, by manually adding \texttt{print}
 statements to the code, but there are also more sophisticated tools available.
 For Haskell, for instance, a handful of different tracing tools are
 available \citep{runciman2000}. Two of them, Freja and Hat, are modified Haskell
-compilers which add automatic tracing functionality to the compiled program. The
-other, Hood, is a Haskell library which is used by importing it and adding
-\texttt{observe} annotations to the code, which preserve lazy evaluation and
-output information about the program as it runs.
+compilers which add automatic tracing functionality to the compiled program. When
+the program runs, trace information is stored in the program heap, which can then
+be accessed at the end of execution. The other tool, Hood, is a Haskell library
+which is used by importing it and adding \texttt{observe} annotations to the code,
+which preserve lazy evaluation and output information about the program as it runs.
+The programmer would then inspect the output from the annotations to trace through
+the program.
 
 The benefit of compiler based tools like Freja and Hat is the programmer does not
 need to think about where to put tracing code, since all code is traced automatically
 in the compiled program. However, storing a full trace of an entire program takes
 up space either in memory or on disk; the advantage of a manual tool like Hood is
 the programmer can reduce the number of trace points to reduce the trace size.
-
-Each of these tools implements tracing in a different way. Freja compiles Haskell
-code into a program which stores trace data on the heap as it runs. Hat transforms
-the original program into a modified program which outputs the trace as it runs.
-Hood prints trace information as a side effect of the \texttt{observe} annotations.
 
 
 %==============================================================================
