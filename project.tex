@@ -390,14 +390,30 @@ in the compiled program. However, storing a full trace of an entire program take
 up space either in memory or on disk; the advantage of a manual tool like Hood is
 the programmer can reduce the number of trace points to reduce the trace size.
 
-
 %==============================================================================
 
 \subsection{Previous Work on Debugging in GP2}
 \label{sec:PreviousWorkOnDebuggingInGP2}
 
-A section discussing the previous project \citep{taylor2016} on this topic.
+There has been some previous work to add debugging facilities to GP2 \citep{taylor2016}.
+This work was focused on modifying the compiler to support stepping through a
+program.
 
+With the new compiler, command line arguments were added to allow the user to
+specify how big a ''step'' should be, and how many steps to execute before stopping.
+This allows GP2 to approximate breakpoints by picking an appropriate step size
+and count in order to finish execution at the point the programmer is interested in.
+
+However, there are some problems with this method. For one, once the specified
+number of steps have been executed, the program terminates completely and outputs
+the current graph. This means that if the programmer wishes to step through the
+program one rule at a time, for example, they must run the compiler multiple times
+and increase the number of steps by one each time, wasting time by re-executing
+earlier steps at each iteration.
+
+Another problem is that, although the compiler was modified, the graphical editor
+remains unchanged, and so does not support the new partial execution feature.
+For the feature to be most useful, it would have to be integrated into the editor.
 
 
 \clearpage
