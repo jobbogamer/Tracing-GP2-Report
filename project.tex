@@ -351,9 +351,47 @@ directly back to an arbitrary point by simply restoring the state from that poin
 \subsection{Tracing in Functional Languages}
 \label{sec:TracingInFunctionalLanguages}
 
-A section discussing what tracing functional languages like Haskell is like. A
-main focus on the Hat tool for Haskell, describing how it relates to the
-problem of tracing GP2.
+The syntax and execution of a GP2 program is very similar to that of a functional
+programming language. For example, a function in Haskell is similar to a rule or
+set of rules in GP2; the function defines left-hand-sides and right-hand-sides,
+and executing it with an argument looks for a LHS which matches the argument,
+and returns the RHS. This similarity to the matching and application of rules in
+GP2 suggests that it would be appropriate to consider it like a functional
+language when implementing debugging or tracing.
+
+Because of the nature of functional languages, it is rare to see traditional
+debuggers like those used with imperative languages \citep{wadler1998}. Lazy
+evaluation, where the value of a statement is only calculated when it is required,
+means that pausing execution on a line of code may not reveal the value of a
+statement on that line, because it will not be evaluated until later in the program.
+
+To avoid this problem, functional programmers will often use tracing instead.
+This is where additional code is added to the program which simply outputs
+information about what the program is doing, either to the console or to a file on
+disk. The progammer then reads this information back once the program has finished,
+to see what steps the program took and identify where it differed from the
+expected execution.
+
+Tracing can be done in primitive ways, by manually adding \texttt{print}
+statements to the code, but there are also more sophisticated tools available.
+For Haskell, for instance, a handful of different tracing tools are
+available \citep{runciman2000}. Two of them, Freja and Hat, are modified Haskell
+compilers which add automatic tracing functionality to the compiled program. The
+other, Hood, is a Haskell library which is used by importing it and adding
+\texttt{observe} annotations to the code, which preserve lazy evaluation and
+output information about the program as it runs.
+
+The benefit of compiler based tools like Freja and Hat is the programmer does not
+need to think about where to put tracing code, since all code is traced automatically
+in the compiled program. However, storing a full trace of an entire program takes
+up space either in memory or on disk; the advantage of a manual tool like Hood is
+the programmer can reduce the number of trace points to reduce the trace size.
+
+Each of these tools implements tracing in a different way. Freja compiles Haskell
+code into a program which stores trace data on the heap as it runs. Hat transforms
+the original program into a modified program which outputs the trace as it runs.
+Hood prints trace information as a side effect of the \texttt{observe} annotations.
+
 
 %==============================================================================
 
