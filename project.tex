@@ -3,6 +3,12 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
 
+\tikzset{
+    vertex/.style={circle,draw,minimum size=10mm},
+    pre/.style={->,semithick},
+    post/.style={<-,semithick}
+}
+
 \usepackage{amsmath}
 
 \author{Joshua Asch}
@@ -113,8 +119,6 @@ GP2 rule is shown in \autoref{fig:RuleInGP2}.
             \\\\
 
             \begin{tikzpicture}
-                [vertex/.style={circle,draw,minimum size=10mm},
-                 post/.style={<-,semithick}]
 
                 \node         (transition) {$\Rightarrow$}                                {};
 
