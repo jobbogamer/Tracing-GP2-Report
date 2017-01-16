@@ -242,6 +242,12 @@ This program consists of four rules and uses many of the constructs outlined
 previously, including \textsc{Try-Then-Else}, \textsc{If-Then-Else},
 \textsc{Rule Set}s, \textsc{As-Long-As-Possible} and \textsc{Procedure}s.
 
+It also takes advantage of another feature of GP2, the ability to \emph{colour}
+a node. The colour of a node is a property which can be set by a rule, or the
+host graph can contain coloured nodes. The colour is taken into account when
+searching for a rule match; for example, in this program, \texttt{joined\_reds}
+will only match when both the nodes' colours are red.
+
 \begin{figure}
     \begin{center}
         \begin{verbatim}
