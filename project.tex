@@ -9,6 +9,7 @@
     post/.style={<-,semithick}
 }
 
+\usepackage{mathtools}
 \usepackage{amsmath}
 
 \author{Joshua Asch}
@@ -360,7 +361,84 @@ Invalid = {joined_reds, joined_blues}
 
 \begin{figure}
     \begin{center}
-        \emph{An execution of 2-colouring will go here...}
+        \begin{tabular}{l}    
+
+            \begin{tikzpicture}
+                [vertex/.style={circle,draw,minimum size=10mm}]
+
+                \node (transition1) {$\Rightarrow$} {};
+
+                \node[vertex]  (12) [above left=7.5mm of transition1] {};
+                \node[vertex]  (13) [below=of 12]               {}
+                    edge[post] (12);
+                \node[vertex]  (11) [left=of 12]                {}
+                    edge[pre]  (12);
+                \node[vertex]  (14) [below=of 11]               {}
+                    edge[post] (11)
+                    edge[pre]  (12)
+                    edge[post] (13);
+
+                \node[vertex]  (21) [above right=7.5mm of transition1,fill=red] {};
+                \node[vertex]  (22) [right=of 21]                         {}
+                    edge[post] (21);
+                \node[vertex]  (23) [below=of 22]                         {}
+                    edge[post] (22);
+                \node[vertex]  (24) [below=of 21]                         {}
+                    edge[post] (21)
+                    edge[pre]  (22)
+                    edge[post] (23);
+
+                \node (transition2) [below right=7.5mm of 22] {$\Rightarrow$} {};
+
+                \node[vertex]  (31) [above right=7.5mm of transition2,fill=red] {};
+                \node[vertex]  (32) [right=of 31,fill=blue]               {}
+                    edge[post] (31);
+                \node[vertex]  (33) [below=of 32]                         {}
+                    edge[post] (32);
+                \node[vertex]  (34) [below=of 31]                         {}
+                    edge[post] (31)
+                    edge[pre]  (32)
+                    edge[post] (33);
+
+                \node (transition3) [below right=7.5mm of 34] {$\Downarrow$} {};
+
+                \node[vertex]  (41) [below left=7.5mm of transition3,fill=red] {};
+                \node[vertex]  (42) [right=of 41,fill=blue]                  {}
+                    edge[post] (41);
+                \node[vertex]  (43) [below=of 42,fill=red]                   {}
+                    edge[post] (42);
+                \node[vertex]  (44) [below=of 41]                            {}
+                    edge[post] (41)
+                    edge[pre]  (42)
+                    edge[post] (43);
+
+                \node (transition4) [below left=7.5mm of 41] {$\Leftarrow$} {};
+
+                \node[vertex]  (52) [above left=7.5mm of transition4,fill=blue] {};
+                \node[vertex]  (51) [left=of 52,fill=red]                   {}
+                    edge[pre]  (52);
+                \node[vertex]  (53) [below=of 52,fill=red]                  {}
+                    edge[post] (52);
+                \node[vertex]  (54) [below=of 51,fill=blue]                  {}
+                    edge[post] (51)
+                    edge[pre]  (52)
+                    edge[post] (53);
+
+                \node (transition5) [below left=7.5mm of 51, yshift=2.5mm] {$\xLeftarrow{*}$} {};
+
+                \node[vertex]  (62) [above left=7.5mm of transition5, yshift=-2.5mm] {};
+                \node[vertex]  (61) [left=of 62]                    {}
+                    edge[pre]  (62);
+                \node[vertex]  (63) [below=of 62]                   {}
+                    edge[post] (62);
+                \node[vertex]  (64) [below=of 61]                   {}
+                    edge[post] (61)
+                    edge[pre]  (62)
+                    edge[post] (63);
+
+            \end{tikzpicture}
+
+        \end{tabular}
     \end{center}
     \caption{Example execution of 2-colouring}
     \label{fig:ExampleProgramExecution}
@@ -390,6 +468,15 @@ that no two same-coloured nodes are connected via an edge. This means that it is
 a valid colouring. The \texttt{fail} statement is not executed, meaning the
 \texttt{try} succeeds. The changes to the graph are kept, and the modified graph
 is returned as the result of the program.
+
+In the example execution in \autoref{fig:ExampleProgramExecution}, the host graph
+is not 2-colourable. When the rules in \texttt{Colour} can no longer be matched,
+\texttt{joined\_blues} inside \texttt{Invalid} will match with the nodes in the
+bottom-left and top-right of the graph. Because this rule was successfully applied
+(even though it has no effect on the graph), the \textsc{If-Then-Else} causes the
+program to enter the fail state. This in turn means that the \textsc{Try-Then-Else}
+surrounding the program fails, and all the changes made to the input graph are
+reversed. The output graph is therefore identical to the input graph.
 
 
 %//////////////////////////////////////////////////////////////////////////////
