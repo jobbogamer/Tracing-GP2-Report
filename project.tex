@@ -120,7 +120,7 @@ GP2 rule is shown in \autoref{fig:RuleInGP2}.
 
             \begin{tikzpicture}
 
-                \node         (transition) {$\Rightarrow$}                                {};
+                \node         (transition) {$\Rightarrow$}            {};
 
                 \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=of transition]  {};
                 \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]       {};
@@ -232,8 +232,8 @@ statements, and the conditional statements in \textsc{If-Then-Else} and
 \textsc{Try-Then-Else} structures. In these cases, a failure to match a rule
 does not halt execution of the program.
 
-\autoref{fig:ExampleProgramDefinition} shows an example GP2 program, the same
-program used as a case study in Bak's thesis on GP2 \citep[pp.126]{bak2015}.
+\autoref{fig:ExampleProgramDefinition} shows an example GP2 program, an adapted
+version of the program used as a case study in Bak's thesis on GP2 \citep[p.126]{bak2015}.
 It is a simple program which determines whether a graph is \emph{2-colourable},
 that is, its nodes can be coloured using two different colours without two nodes
 of the same colour being connected by an edge.
@@ -244,7 +244,109 @@ previously, including \textsc{Try-Then-Else}, \textsc{If-Then-Else},
 
 \begin{figure}
     \begin{center}
-        \emph{An example of a program will go here...}
+        \begin{verbatim}
+Main = try (init; Colour!; if Invalid then fail)
+Colour = {colour_blue, colour_red}
+Invalid = {joined_reds, joined_blues}
+        \end{verbatim}
+
+        \begin{tabular}{l}            
+
+            \texttt{init}
+
+            \\ 
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                       {};
+
+                \node[vertex] (lhs) [label=below:\tiny{\texttt{1}},left=2mm of transition]           {};
+
+                \node[vertex] (rhs) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=red] {};
+
+            \end{tikzpicture}
+
+            \\\\
+
+            \texttt{joined\_reds}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                         {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition,fill=red]  {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=red]       {}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=red] {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=red]      {}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\\\
+
+            \texttt{joined\_blues}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                          {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition,fill=blue]  {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=blue]       {}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=blue] {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=blue]      {}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\\\
+
+            \texttt{colour\_red}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                          {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition]            {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=red]        {}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=red]  {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=blue]      {}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\\\
+
+            \texttt{colour\_blue}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                          {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition]            {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=blue]       {}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=blue] {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=red]       {}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+        \end{tabular}
     \end{center}
     \caption{Definition of 2-colouring in GP2}
     \label{fig:ExampleProgramDefinition}
