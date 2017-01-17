@@ -171,6 +171,7 @@ containing two nodes without an edge connecting them. If a match is found, it wi
 be transformed to resemble the RHS by adding an edge between the nodes.
 
 \subsubsection{The Dangling Condition}
+\label{sec:TheDanglingCondition}
 
 \begin{figure}
     \begin{center}
@@ -239,8 +240,8 @@ rule does not specify that the edge from b to d should be deleted. This leaves a
 \emph{dangling edge} from node d with no target. The dangling condition is used to
 ensure that rules result in no dangling edges.
 
-
 \subsubsection{Programs}
+\label{sec:Programs}
 
 A GP2 program defines the order in which to apply rules using 8 simple control
 structures:
@@ -594,10 +595,10 @@ implemented for imperative languages when considering GP2.
 \subsubsection{IDEs}
 \label{sec:IDEs}
 
-Oftentimes, a debugger is available from within the Integrated Development
-Environment (IDE) for a language. For example, the Visual Studio IDE for C, C++,
-and C\# includes the Visual Studio Debugger \citep{msdnsite}. One of the most
-prevalent Java IDEs, Eclipse, integrates with \texttt{jdb} \citep{eclipsesite}.
+A debugger is often available from within the Integrated Development Environment
+(IDE) for a language. For example, the Visual Studio IDE for C, C++, and C\#
+includes the Visual Studio Debugger \citep{msdnsite}. One of the most prevalent
+Java IDEs, Eclipse, integrates with \texttt{jdb} \citep{eclipsesite}.
 
 When an IDE integrates with a debugger, it can provide additional functionality
 by allowing the programmer to interact with the source code and the debugger
@@ -606,6 +607,9 @@ to be set directly on a line of source code in the editor, for instance. IDEs
 often allow the programmer to trace program execution through the source code,
 by highlighting each line of code as the programmer steps through in the debugger.
 
+It may be useful to use some of these ideas for GP2. For instance, when stepping
+through a GP2 program, it would be helpful to highlight the current statement or
+rule being executed, to give the user context.
 
 \subsubsection{Edit-and-Continue}
 \label{sec:EditAndContinue}
@@ -619,7 +623,16 @@ beginning. Edit-and-continue is useful for reducing the time taken to find and
 fix bugs, since fixes can be implemented and tested without having to stop and
 restart the program's execution.
 
+It is unclear whether edit-and-continue would be a good addition to GP2. On one
+hand, it can speed up debugging because the programmer does not have to start the
+program again from the beginning. On the other hand, because GP2 is such a high
+level language, it may not make sense to resume a program that has been edited.
+There is a high chance that the modifications would affect the algorithm enough
+that the current state would not be reached if the program was restarted from
+the beginning.
+
 \subsubsection{Reverse Debugging}
+\label{sec:ReverseDebugging}
 
 \texttt{gdb} supports what is called \emph{reverse debugging} \citep{gdbreversesite}.
 This allows program execution to actually be reversed, running the program
@@ -643,6 +656,17 @@ breakpoint is reached. In theory, although \texttt{gdb} does not support this,
 this system could allow a form of ''checkpointing'' where execution can be skipped
 directly back to an arbitrary point by simply restoring the state from that point.
 
+Reverse debugging may be a useful feature for GP2, because it would allow a
+programmer to step backwards through the execution of a GP2 program to inspect
+the intermediate graph before and after a rule application, to see what changed.
+This method is more akin to tracing than traditional debugging, since the debugger
+is storing a history of everything that occurs during execution.
+
+While the implementation of reverse debugging in \texttt{gdb} is limited to the
+Linux platform, this is because its implementation requires monitoring calls to
+the kernel and system APIs. This is irrelevant to GP2, because it would only
+need to trace rule matches and applications, both of which are implemented inside
+GP2 itself.
 
 %==============================================================================
 
