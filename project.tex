@@ -580,6 +580,17 @@ which allow the programmer to specify a line of source code and have the program
 execute normally until the breakpoint is reached, at which point execution will
 pause, or \emph{break}.
 
+Because GP2 has a rule-based structure, unlike imperative programming languages,
+it is not clear what a ''line of code'' represents in a GP2 program. The textual
+part of a GP2 program can indeed have lines, but since a single line in a GP2
+program can be complex and use many rules, this is too high-level to consider a
+''line of code'' as a debugger does. In an imperative language, a single line of
+code may only perform one or two actions, so inspecting each line individually
+shows the flow of the program. In GP2, running a line of the textual program
+could result in tens or hundreds of rules being applied if \textsc{As-Long-As-Possible}
+is used, for example. It may be inappropriate to focus on how debuggers are
+implemented for imperative languages when considering GP2.
+
 \subsubsection{IDEs}
 \label{sec:IDEs}
 
