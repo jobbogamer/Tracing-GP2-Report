@@ -106,12 +106,6 @@ a result, called the \emph{output graph}.
 \subsubsection{Rules}
 \label{sec:Rules}
 
-Rules are the basic building blocks of a GP2 program and are defined by a
-left-hand-side (LHS), a right-hand-side (RHS), and optionally a conditional
-clause. A rule can be thought of as the definition of a transformation; a subgraph
-matching the LHS of the rule is transformed to resemble the RHS. An example of a
-GP2 rule is shown in \autoref{fig:RuleInGP2}.
-
 \begin{figure}
     \begin{center}
         \begin{tabular}{l}
@@ -143,16 +137,25 @@ GP2 rule is shown in \autoref{fig:RuleInGP2}.
     \label{fig:RuleInGP2}
 \end{figure}
 
+Rules are the basic building blocks of a GP2 program and are defined by a
+left-hand-side (LHS), a right-hand-side (RHS), and optionally a conditional
+clause. A rule can be thought of as the definition of a transformation; a subgraph
+matching the LHS of the rule is transformed to resemble the RHS. An example of a
+GP2 rule is shown in \autoref{fig:RuleInGP2}.
+
 The conditional clause is used to specify additional constraints on the subgraph
 matching the LHS. Any match has to both match the LHS and conform to the constraints
 defined by the conditional clause.
 
 In a compiled program, a rule is split into two phases. The \emph{match} phase
-searches the current graph for a subgraph which matches the LHS of the rule. If
-a match is found, the program moves on to the second phase, the \emph{application}.
-In this implementation of GP2, rule matches are chosen determinstically due to 
-the impracticality of generating all non-deterministic possibilities, which is
-what GP1 did. If no match is found for the LHS, the rule is considered \emph{failed}.
+searches the current graph for a subgraph which matches the LHS of the rule. This must
+be an \emph{injective match}, meaning that each item in the LHS must be matched with
+exactly one item in the host graph.
+
+In this implementation of GP2, rule matches are chosen determinstically due to the
+impracticality of generating all non-deterministic possibilities, which is what GP1 did.
+If no match is found for the LHS, the rule is considered \emph{failed}. If a match is
+found, the program moves on to the second phase, the \emph{application}.
 
 A rule specifies a number of \emph{interface nodes}, nodes which are present in both
 the LHS and the RHS. These interface nodes can be seen in \autoref{fig:RuleInGP2}; they
@@ -168,19 +171,6 @@ containing two nodes without an edge connecting them. If a match is found, it wi
 be transformed to resemble the RHS by adding an edge between the nodes.
 
 \subsubsection{The Dangling Condition}
-
-There is an additional condition which determines whether a rule can be matched, the
-\emph{dangling condition}. This condition states that if a rule causes a node to be
-deleted, the rule must also delete all edges incident to that node. In
-other words, all non-interface nodes in a rule match must have no incoming or outgoing
-edges which are not also part of the match.
-
-\autoref{fig:FailDanglingCondition} shows the result of attempting to apply a rule
-where the match violates the dangling condition. Since node b is not an interface
-node, it is deleted during the application of the \texttt{delete} rule. However, the
-rule does not specify that the edge from b to d should be deleted. This leaves a
-\emph{dangling edge} from node d with no target. The dangling condition is used to
-ensure that rules result in no dangling edges.
 
 \begin{figure}
     \begin{center}
@@ -235,6 +225,19 @@ ensure that rules result in no dangling edges.
     \caption{Attempting to apply a rule when the match violates the dangling condition}
     \label{fig:FailDanglingCondition}
 \end{figure}
+
+There is an additional condition which determines whether a rule can be matched, the
+\emph{dangling condition}. This condition states that if a rule causes a node to be
+deleted, the rule must also delete all edges incident to that node. In
+other words, all non-interface nodes in a rule match must have no incoming or outgoing
+edges which are not also part of the match.
+
+\autoref{fig:FailDanglingCondition} shows the result of attempting to apply a rule
+where the match violates the dangling condition. Since node b is not an interface
+node, it is deleted during the application of the \texttt{delete} rule. However, the
+rule does not specify that the edge from b to d should be deleted. This leaves a
+\emph{dangling edge} from node d with no target. The dangling condition is used to
+ensure that rules result in no dangling edges.
 
 
 \subsubsection{Programs}
