@@ -20,7 +20,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{3559}
+\wordcount{3577}
 
 
 \abstract{
@@ -39,32 +39,33 @@ the IDE.
 
 \cleardoublepage
 
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 \chapter{Introduction}
 \label{cha:Introduction}
 
-\section{Introductiony Bit}
-\label{sec:IntroductionyBit}
+\section{Motivation}
+\label{sec:Motivation}
 
-A section introducing the project.
+\emph{Introduce the project, explain why the project needs doing}
+
+%==============================================================================
 
 \section{Ethics}
 \label{sec:Ethics}
 
-A section discussing the ethics of the project.
-
-
+\emph{Discuss the ethical considerations for the project, which there may
+not be any at all, if no humans are involved.}
 
 \clearpage
+
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \chapter{Literature Review}
 \label{cha:LiteratureReview}
 
-%//////////////////////////////////////////////////////////////////////////////
-
 \section{Programming by Graph Transformation}
 \label{sec:ProgrammingByGraphTransformation}
-
-%==============================================================================
 
 \subsection{Graph Programming}
 \label{sec:GraphProgramming}
@@ -105,6 +106,8 @@ Programming in GP2 consists of an input graph, known as the \emph{host graph}, a
 set of \emph{rules}, and a \emph{program} which defines the order in which to
 apply the rules. Running a GP2 program on a host graph produces a new graph as
 a result, called the \emph{output graph}.
+
+%------------------------------------------------------------------------------
 
 \subsubsection{Rules}
 \label{sec:Rules}
@@ -172,6 +175,8 @@ the next part of the program.
 In the example in \autoref{fig:RuleInGP2}, the program will search for a subgraph
 containing two nodes without an edge connecting them. If a match is found, it will
 be transformed to resemble the RHS by adding an edge between the nodes.
+
+%------------------------------------------------------------------------------
 
 \subsubsection{The Dangling Condition}
 \label{sec:TheDanglingCondition}
@@ -242,6 +247,8 @@ node, it is deleted during the application of the \texttt{delete} rule. However,
 rule does not specify that the edge from b to d should be deleted. This leaves a
 \emph{dangling edge} from node d with no target. The dangling condition is used to
 ensure that rules result in no dangling edges.
+
+%------------------------------------------------------------------------------
 
 \subsubsection{Programs}
 \label{sec:Programs}
@@ -549,13 +556,10 @@ program to enter the fail state. This in turn means that the \textsc{Try-Then-El
 surrounding the program fails, and all the changes made to the input graph are
 reversed. The output graph is therefore identical to the input graph.
 
-
 %//////////////////////////////////////////////////////////////////////////////
 
 \section{Tracing and Debugging}
 \label{sec:TracingAndDebugging}
-
-%==============================================================================
 
 \subsection{Debugging in Imperative Languages}
 \label{sec:DebuggingInImperativeLanguages}
@@ -595,6 +599,8 @@ could result in tens or hundreds of rules being applied if \textsc{As-Long-As-Po
 is used, for example. It may be inappropriate to focus on how debuggers are
 implemented for imperative languages when considering GP2.
 
+%------------------------------------------------------------------------------
+
 \subsubsection{IDEs}
 \label{sec:IDEs}
 
@@ -613,6 +619,8 @@ by highlighting each line of code as the programmer steps through in the debugge
 It may be useful to use some of these ideas for GP2. For instance, when stepping
 through a GP2 program, it would be helpful to highlight the current statement or
 rule being executed, to give the user context.
+
+%------------------------------------------------------------------------------
 
 \subsubsection{Edit-and-Continue}
 \label{sec:EditAndContinue}
@@ -633,6 +641,8 @@ level language, it may not make sense to resume a program that has been edited.
 There is a high chance that the modifications would affect the algorithm enough
 that the current state would not be reached if the program was restarted from
 the beginning.
+
+%------------------------------------------------------------------------------
 
 \subsubsection{Reverse Debugging}
 \label{sec:ReverseDebugging}
@@ -743,7 +753,7 @@ For the feature to be most useful, it would have to be integrated into the edito
 
 \clearpage
 
-%//////////////////////////////////////////////////////////////////////////////
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \chapter{Requirements}
 \label{cha:Requirements}
@@ -754,6 +764,8 @@ For the feature to be most useful, it would have to be integrated into the edito
 \emph{How are requirements gathered? e.g. interviews with possible users,
 user stories, etc}
 
+%//////////////////////////////////////////////////////////////////////////////
+
 \section{System Requirements}
 \label{sec:SystemRequirements}
 
@@ -762,7 +774,17 @@ methods outlined earlier.}
 
 \clearpage
 
-%//////////////////////////////////////////////////////////////////////////////
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+\chapter{Design}
+\label{cha:Design}
+
+\emph{Explain the design phase, what was considered, and what ultimately 
+became the choice for what to do.}
+
+\clearpage
+
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \chapter{Implementation}
 \label{cha:Implementation}
@@ -772,7 +794,7 @@ implement debugging or tracing for the end user?}
 
 \clearpage
 
-%//////////////////////////////////////////////////////////////////////////////
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \chapter{Evaluation}
 \label{cha:Evaluation}
@@ -783,10 +805,14 @@ implement debugging or tracing for the end user?}
 \emph{Go back and compare the implemented debugging tools to the requirements
 from \autoref{sec:SystemRequirements}.}
 
+%//////////////////////////////////////////////////////////////////////////////
+
 \section{Performance}
 \label{sec:Performance}
 
 \emph{Test the performance of some GP2 alogrithms with tracing turned on and off.}
+
+%//////////////////////////////////////////////////////////////////////////////
 
 \section{User Feedback}
 \label{sec:UserFeedback}
@@ -796,12 +822,14 @@ from them.}
 
 \clearpage
 
-%//////////////////////////////////////////////////////////////////////////////
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \chapter{Conclusions}
 \label{cha:Conclusions}
 
 \emph{Summary of what has been achieved in the project.}
+
+%//////////////////////////////////////////////////////////////////////////////
 
 \section{Future Work}
 \label{sec:FutureWork}
@@ -811,7 +839,7 @@ improvements could be made by someone else?}
 
 \clearpage
 
-%//////////////////////////////////////////////////////////////////////////////
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \bibliography{references}
 
