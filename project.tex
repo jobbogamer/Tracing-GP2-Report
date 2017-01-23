@@ -783,6 +783,54 @@ methods outlined earlier.}
 \emph{Explain the design phase, what was considered, and what ultimately 
 became the choice for what to do.}
 
+%==============================================================================
+
+\section{Implementation of GP2}
+\label{sec:ImplementationOfGP2}
+
+There are two implementations of GP2, an interpreter written in Haskell
+\citep[ch. 5.3]{bak2015}, and a compiler written in C \citep[ch. 5.5]{bak2015}.
+The interpreter is intended to provide a reference for other implementations of
+GP2, and for the GP2 developers. The GP2 IDE uses the compiler, not the
+interpreter, to run the user's program.
+
+The interpreter may be of some interest, since an interpreter runs ''live'',
+moving through the program executing each statement as it is reached. This
+behaviour could be exploited to implement a form of debugging, by pausing
+execution of the interpreter at various points and outputting the current state
+of the program.
+
+To take advantage of the interpreter, the GP2 editor would have to be modified
+so that it runs the user's program using the interpreter rather than the compiler.
+
+The other difference between the interpreter and the compiler is that the compiled
+program only produces one output for a given input to a program. The interpreter
+returns all unique output graphs, up to isomorphism. For debugging purposes, this
+may be of interest to the user, since it allows them to see all the possibilities
+of their program. To the developer of the debugger, this is a disadvantage, since
+the GP2 IDE does not currently support displaying all possible outputs.
+
+\subsubsection{Backtracking in the GP2 Compiler}
+\label{sec:BacktrackingInTheGP2Compiler}
+
+To support some operations, such as \textsc{If-Then-Else}, the GP2 compiler uses
+\emph{backtracking}, where a changes to the graph are reversed \citep[ch. 5.8]{bak2015}.
+If the condition in an \textsc{If-Then-Else} structure fails, any changes need
+to be reversed before applying the \textsc{Else} subprogram.
+
+This feature of the compiler could be used as part of the debugging features,
+by using it to allow the user to step backwards through the program as it runs,
+similar to the reverse debugging mentioned in \autoref{sec:ReverseDebugging}. It
+would allow the user to see the state of the graph before a certain rule was
+applied, for instance.
+
+However, this backtracking is not available at all points in a program's
+execution; backtracking code is only added by the compiler if static analysis
+shows that it is necessary. For example, since the \textsc{As-Long-As-Possible}
+construct cannot fail, the compiler does not add backtracking code for it. The
+compiler would have to be modified to add backtracking code to the entire
+program.
+
 \clearpage
 
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
