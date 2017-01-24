@@ -557,6 +557,89 @@ program to enter the fail state. This in turn means that the \textsc{Try-Then-El
 surrounding the program fails, and all the changes made to the input graph are
 reversed. The output graph is therefore identical to the input graph.
 
+%------------------------------------------------------------------------------
+
+\subsubsection{Labels}
+\label{sec:Labels}
+
+Nodes and edges in a graph defined in GP2 can also have \emph{labels}. Each node
+or edge can either have one label or it can be unlabelled. A graph is
+\emph{partially labelled} if some of the nodes and edges have labels, and it is
+\emph{totally labelled} if every node and edge has a label.
+
+Labels can be used cosmetically, without affecting the execution of the program,
+or they can be included in rules to have the program read and modify labels.
+
+\begin{figure}
+    \begin{center}
+        \begin{tikzpicture}
+            \node (list) {\texttt{list}} {};
+            \node (ss1)  [below=1mm of list] {\rotatebox{90}{$\subseteq$}} {};
+            \node (atom) [below=1mm of ss1]  {\texttt{atom}} {};
+            \node (ss2)  [below left=1mm of atom] {\rotatebox{45}{$\subseteq$}} {};
+            \node (ss3)  [below right=1mm of atom] {\rotatebox{135}{$\subseteq$}} {};
+            \node (int)  [below left=1mm of ss2] {\texttt{int}} {};
+            \node (string) [below right=1mm of ss3] {\texttt{string}} {};
+            \node (ss4)  [below=1mm of string] {\rotatebox{90}{$\subseteq$}} {};
+            \node (char) [below=1mm of ss4] {\texttt{char}} {};
+
+        \end{tikzpicture}
+    \end{center}
+    \caption{GP2's type hierarchy for labels}
+    \label{fig:TypeHierarchy}
+\end{figure}
+
+GP2 has a type hierarchy for labels, shown in \autoref{fig:TypeHierarchy}. Labels
+can be of any of these five types. An \texttt{atom} consists of a single entity,
+either an \texttt{int} or a \texttt{string}. A \texttt{list} is a collection of
+\texttt{atom}s concatenated together; the concatenation is shown using a colon
+(\texttt{:}).
+
+When matching a rule involving labels, GP2 finds a variable assignment which
+matches the values of the labels in the graph. The values in this assignment are
+identical when used in the RHS of the rule. When using labels in a rule, the type
+of each label must be specified so that GP2 can find an assignment for each one.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{l}
+            
+            \texttt{swap(x, y: int)}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}            {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=of transition]  {\texttt{y}}{};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]       {\texttt{x}}{}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=of transition] {\texttt{y}}{};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]      {\texttt{x}}{}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\
+
+            \texttt{where x > y}
+
+        \end{tabular}
+    \end{center}
+    \caption{A GP2 rule which uses labels}
+    \label{fig:ExampleRuleWithLabels}
+\end{figure}
+
+The rule in \autoref{fig:ExampleRuleWithLabels} will only match a pair
+of nodes where the labels are both integers, and the value of the source node's
+label is greater than the value of the target node's label. This rule
+demonstrates both that labels can be used as conditions in the program, and also
+that a rule can modify labels. It also shows that labels act like variables when
+used in a rule, since the values of \texttt{x} and \texttt{y} are re-used in the
+RHS.
+
 %//////////////////////////////////////////////////////////////////////////////
 
 \section{Tracing and Debugging}
