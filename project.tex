@@ -810,6 +810,14 @@ may be of interest to the user, since it allows them to see all the possibilitie
 of their program. To the developer of the debugger, this is a disadvantage, since
 the GP2 IDE does not currently support displaying all possible outputs.
 
+Additionally, because the interpreter is only a reference implementation, the
+compiler is the implementation intended for most users. If the IDE were to be
+changed to run the interpreter for debugging programs, checks would have to be
+made to ensure that the interpreter produces identical outputs to a compiled
+version of the same program. This may involve adding a ''single-result mode'' to
+the interpreter, where only one output graph is produced, instead of all
+possibilities. This would require substantial changes to the interpreter.
+
 \subsubsection{Backtracking in the GP2 Compiler}
 \label{sec:BacktrackingInTheGP2Compiler}
 
