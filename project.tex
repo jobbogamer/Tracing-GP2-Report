@@ -811,6 +811,68 @@ the programmer can reduce the number of trace points to reduce the trace size.
 
 %==============================================================================
 
+\subsection{Debugging Other Graph Programming Tools}
+\label{sec:DebuggingOtherGraphProgrammingTools}
+
+Each of the three other graph programming tools mentioned in
+\autoref{sec:GraphProgramming} have their own debugging or tracing tools.
+
+\subsubsection{AGG}
+
+Of the three tools, AGG has the simplest debugging tools. It allows the user to
+select a rule in their graph grammar and then look through all the matches for
+that rule, by showing them on the current graph.
+
+A unique feature of AGG is that it also allows the user to manually create a
+match; by selecting nodes and edges first in the LHS of the rule, and then in
+the graph, the user creates a mapping between the rule and the current graph to
+create a match. The tool will alert the user if they attempt to select a mapping
+which is not a true match.
+
+When a match has been chosen, either automatically or manually, the rule can then
+be applied by clicking a \texttt{Transformation Step} button in the editor. After
+a rule has been applied, an \texttt{Undo Step} button becomes available which
+reverts the changes made by the most recent rule application.
+
+\subsubsection{GROOVE}
+
+GROOVE also allows the user to inspect all possible rule matches for the current
+graph. In the list of rules shown in the editor, the possible matches for each are
+shown underneath each rule. These matches can be clicked to highlight them on the
+graph, and double-clicking applies the rule, updating the graph.
+
+Similar to AGG, it is possible to undo a single rule application. However, GROOVE
+also keeps a history of all previous graph states. In the ''State Space Explorer'',
+the tool shows a transition diagram containing all the previously visited graph
+states, with the transitions representing the rule applied to reach a given state.
+In this view, the user can select a previous state and jump back to it, allowing
+the user to undo multiple rule applications at once, or even undoing previous rule
+applications and re-applying other rules, in one step.
+
+\subsubsection{GrGen}
+
+GrGen's debugger is different in that it is controlled using a command-line style
+interface, rather than using buttons in the editor UI. It provides a command to
+apply a single rule, similar to the other two tools.
+
+However, when applying a rule, GrGen can show more detail. It can show the steps
+required to apply a rule: the match, the modification to the graph, and the result.
+It shows each of these stages individually, highlighting the relevant areas on the
+graph at each stage.
+
+Another unique feature of GrGen's debugger is that it allows the user to tell the
+program to run until the end of the current loop. GrGen supports a loop structure
+similar to GP2's \textsc{As-Long-As-Possible}, and the debugger's \texttt{step out}
+command will continue to execute until the current loop ends, giving control back
+to the user.
+
+Finally, GrGren also supports a feature similar to breakpoints. It allows the user
+to specify a condition, and when that condition is met, execution will pause. One
+type of condition which can be specified is a certain modification to the graph,
+such as pausing execution when a specific node is deleted from the graph.
+
+%==============================================================================
+
 \subsection{Previous Work on Debugging in GP2}
 \label{sec:PreviousWorkOnDebuggingInGP2}
 
