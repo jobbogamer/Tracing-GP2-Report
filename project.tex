@@ -947,12 +947,12 @@ methods outlined earlier.}
 \emph{Explain the design phase, what was considered, and what ultimately 
 became the choice for what to do.}
 
-%==============================================================================
+%//////////////////////////////////////////////////////////////////////////////
 
 \section{Design Considerations}
 
-\subsection{Implementation of GP2}
-\label{sec:ImplementationOfGP2}
+\subsection{Implementations of GP2}
+\label{sec:ImplementationsOfGP2}
 
 There are two implementations of GP2, an interpreter written in Haskell
 \citep[ch. 5.3]{bak2015}, and a compiler written in C \citep[ch. 5.5]{bak2015}.
@@ -984,7 +984,9 @@ version of the same program. This may involve adding a ''single-result mode'' to
 the interpreter, where only one output graph is produced, instead of all
 possibilities. This would require substantial changes to the interpreter.
 
-\subsubsection{Backtracking in the GP2 Compiler}
+%==============================================================================
+
+\subsection{Backtracking in the GP2 Compiler}
 \label{sec:BacktrackingInTheGP2Compiler}
 
 To support some operations, such as \textsc{If-Then-Else}, the GP2 compiler uses
@@ -1004,6 +1006,14 @@ shows that it is necessary. For example, since the \textsc{As-Long-As-Possible}
 construct cannot fail, the compiler does not add backtracking code for it. The
 compiler would have to be modified to add backtracking code to the entire
 program.
+
+%==============================================================================
+
+\subsection{Non-determinism}
+\label{sec:Nondeterminism}
+
+\emph{GP2's definition supports non-determinism but the compiler doesn't. How
+does this affect the design decisions for the debugger?}
 
 \clearpage
 
