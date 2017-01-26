@@ -904,11 +904,30 @@ For the feature to be most useful, it would have to be integrated into the edito
 \chapter{Requirements}
 \label{cha:Requirements}
 
-\section{Requirements Gathering}
-\label{sec:RequirementsGathering}
+Before designing and implementing a system, the requirements for the system need
+to be considered. These requirements should be based on expected real-world usage
+of the tool and keep the goals of the tool in mind.
 
-\emph{How are requirements gathered? e.g. interviews with possible users,
-user stories, etc}
+\section{Potential Users}
+\label{sec:Potential Users}
+
+In order to decide what the requirements for a debugging tool are, it is useful
+to consider the types of user who would potentially use such a tool. There are
+two main potential audiences for a GP2 debugging tool:
+
+\begin{itemize}
+    \item Programmers who have written a GP2 program which they would like to
+          debug. Either the program produces unexpected output, or it never
+          terminates, so the programmer wishes to use the debugging tools to
+          understand why their program is behaving incorrectly, and then fix the
+          bug.
+
+    \item New users of GP2 who are still learning the language. GP2 is an
+          unconvential language and its concepts can be unfamiliar to
+          inexperienced users. Allowing these users to step through a GP2
+          program would let them see how GP2 works and help them to understand
+          the language faster.
+\end{itemize}
 
 %//////////////////////////////////////////////////////////////////////////////
 
