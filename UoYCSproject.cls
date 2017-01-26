@@ -48,7 +48,7 @@
 \RequirePackage{microtype} % micro-typographical extensions for
                            % pdf(e)(la)tex
 \RequirePackage[british]{babel} % British hyphenation patterns, etc.
-\RequirePackage{fixltx2e}
+%\RequirePackage{fixltx2e}
 \RequirePackage{ifthen}
 
 \pagestyle{headings}
