@@ -12,6 +12,7 @@
 
 \usepackage{mathtools}
 \usepackage{amsmath}
+\usepackage{tabularx}
 
 \author{Joshua Asch}
 
@@ -936,11 +937,87 @@ two main potential audiences for a GP2 debugging tool:
 
 Consideration should also be given to how the new features are integrated into
 GP2. The experience of using existing GP2 features should be unaffected, and the
-codebase should stay maintainable for future developers of GP2.
+codebase should stay maintainable for future developers of GP2. The high-level
+requirements this leads to are:
 
 \begin{itemize}
-    \item \emph{Something insightful...}
+    \item Backwards compatibility. Adding a debugging tool should not impact the
+          existing features of GP2, the compiler, or the IDE. Programs written
+          before the addition of debugging tools should still be runnable in the
+          new IDE.
+
+    \item Make debugging optional. The user should not be forced to use the
+          debugging tools every time they run their program, and should be able
+          to choose when to enable them.
+
+    \item Minimise the performance impact. Running a program with debugging tools
+          should affect performance as little as possible, and running with
+          debugging disabled should have no performance impact compared to the
+          previous version of GP2.
+
+    \item Keep the codebase maintainable. When modifying existing code, or adding
+          new code, follow conventions and make code readable. Make the intent
+          of any changes clear to ensure future developers will understand what
+          has been changed.
 \end{itemize}
+
+%//////////////////////////////////////////////////////////////////////////////
+
+\section{List of Requirements}
+\label{sec:ListOfRequirements}
+
+\autoref{tab:SystemRequirements} lists all requirements identified for the GP2
+debugging tool.
+
+\begin{table}[tbp]
+    \begin{tabularx}{\linewidth}{|l|X|}
+        \hline
+        \textbf{ID} & \textbf{Description} \\
+        \hline
+        1    &  The system must be able to trace execution of a GP2 program. \\ \hline
+        1.1  &  The system must be able to apply individual rules, one at a time,
+                to step through a program. \\ \hline
+        1.2  &  It is desirable for the system to allow the user to step
+                backwards through a program. \\ \hline
+        1.3  &  It is desirable for the system to allow the user to execute an
+                entire control sequence in one step. \\ \hline
+
+        2    &  The system must have a visual debugging component. \\ \hline
+        2.1  &  The system must highlight the rule being applied when stepping
+                through a program. \\ \hline
+        2.2  &  The system must highlight the next rule match in the intermediate
+                graph. \\ \hline
+        2.3  &  It is desirable for the system to highlight changes which were
+                made as a result of the previously applied rule. \\ \hline
+        2.4  &  It is desirable for the system to highlight the current position
+                in the textual portion of the program. \\ \hline
+        2.5  &  The system must show each intermediate graph in the IDE. \\ \hline
+
+        3    &  The system must allow debugging to be controlled from within the
+                GP2 IDE. \\ \hline
+        3.1  &  The system must provide a way for the user to advance execution
+                by one step. \\ \hline
+        3.2  &  It is desirable for the system to provide a way for the user to
+                backtrack execution by one step. \\ \hline
+        3.3  &  It is desirable for the system to provide a way for the user to
+                find a match for the next rule, but not apply the rule. \\ \hline
+        3.4  &  It is desirable for the system to provide a way for the user to
+                apply a rule for which a match has been found but not yet applied.
+                \\ \hline
+        3.5  &  The system must provide a way to run an entire program without
+                debugging it. \\ \hline
+
+        4    &  The system must act in a predictable and consistent way during
+                each execution of a program. \\ \hline
+        4.1  &  The system must produce identical results whether debugging is
+                enabled or not. \\ \hline
+        4.2  &  The system must be able to load existing projects created before
+                the system was modified. \\ \hline
+    
+    \end{tabularx}
+    \caption{List of system requirements}
+    \label{tab:SystemRequirements}
+\end{table}
 
 \clearpage
 
@@ -1041,7 +1118,7 @@ implement debugging or tracing for the end user?}
 \label{sec:RequirementsTracing}
 
 \emph{Go back and compare the implemented debugging tools to the requirements
-from \autoref{sec:SystemRequirements}.}
+from \autoref{cha:Requirements}.}
 
 %//////////////////////////////////////////////////////////////////////////////
 
