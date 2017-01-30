@@ -216,10 +216,17 @@ either an \texttt{int} or a \texttt{string}. A \texttt{list} is a collection of
 \texttt{atom}s concatenated together; the concatenation is shown using a colon
 (\texttt{:}).
 
+Labels behave in two subtly different ways depending on where they are used. In a
+graph, a label has a specific value, similar to an integer or string literal in a
+convential programming language. When used in a rule, labels can either use literal
+values to match nodes with exact label values, or they can use expressions which
+can match a range of label values.
+
 When matching a rule involving labels, GP2 finds a variable assignment which
-matches the values of the labels in the graph. The values in this assignment are
-identical when used in the RHS of the rule. When using labels in a rule, the type
-of each label must be specified so that GP2 can find an assignment for each one.
+matches the expressions of the labels in the graph. The values in this assignment
+are identical when used in the RHS of the rule. When using labels in a rule, the
+type of each label must be specified so that GP2 can find an assignment for each
+one.
 
 \begin{figure}
     \begin{center}
