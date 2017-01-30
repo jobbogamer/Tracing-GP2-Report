@@ -224,9 +224,13 @@ can match a range of label values.
 
 When matching a rule involving labels, GP2 finds a variable assignment which
 matches the expressions of the labels in the graph. The values in this assignment
-are identical when used in the RHS of the rule. When using labels in a rule, the
-type of each label must be specified so that GP2 can find an assignment for each
-one.
+are identical when used in the RHS of the rule.
+
+When using labels in a rule, the type of each label must be specified so that GP2
+can find an assignment for each one. A rule which specifies a certain label type
+can match any label with that type or a more specific type in the type hierarchy.
+For example, a rule which contains a label of type \texttt{string} can match a
+node which has a \texttt{char} label. The \texttt{list} type will match any label.
 
 \begin{figure}
     \begin{center}
