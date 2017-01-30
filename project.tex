@@ -359,9 +359,9 @@ structures:
 
     \item[\textsc{Rule Set}]
     Rules in curly braces ``\texttt{\{R$_{\text{1}}$, R$_{\text{2}}$, R$_{\text{3}}$\}}''
-    define a set, where exactly one rule from the set is executed, unless no rule in
-    the set can be matched. The implementation of GP2 selects a rule determinstically,
-    though the the specification allows non-determinism.
+    define a set, where exactly one rule from the set is executed, chosen
+    non-determinstically. If there are no rules in the set which match, the
+    program fails in the same way as if a single rule failed to match. 
 
     \item[\textsc{If-Then-Else}]
     In the statement ``\texttt{if C then P else Q}'', the sub-program \texttt{C}
@@ -377,23 +377,31 @@ structures:
     \texttt{P}, but they \emph{are} reverted before executing \texttt{Q}.
 
     \item[\textsc{As-Long-As-Possible}]
-    A subprogram followed by an exclamation point ``\texttt{P!}'' is matched and
-    applied repeatedly until it fails. When \texttt{P} fails, it does not transition
-    the program to the fail state.
+    A subprogram followed by an exclamation point ``\texttt{P!}'' is executed
+    repeatedly until it fails. When \texttt{P} fails, the graph is reverted back
+    to the last successful state, that is, the state it was in at the end of the
+    last successfully applied rule from \texttt{P}.
 
     \item[\textsc{Procedure}]
     Similar to a C preprocessor macro, a procedure is simply a named subprogram
     where any reference to the procedure name can be replaced with the definition
-    of the procedure.
+    of the procedure. Procedures are not allowed to be recursive.
 
     \item[\textsc{Skip}]
     A no-op which always succeeds, and does not affect the graph. Invoked using the
-    keyword ``\texttt{skip}''.
+    keyword ``\texttt{skip}''. This is the same as executing a rule with an empty
+    LHS and an empty RHS, which always matches and does nothing to the graph.
 
     \item[\textsc{Fail}]
-    A no-op which always fails and does not affect the graph. This is the same as
-    attempting to execute a rule for which there are no matches. Invoked using
+    A statement which always fails and does not affect the graph. This is the same
+    as attempting to execute a rule for which there are no matches. Invoked using
     the keyword ``\texttt{fail}''.
+
+    \item[\textsc{Or}]
+    In the statement ''\texttt{P or Q}'', exactly one subprogram, either \texttt{P}
+    or \texttt{Q} is chosen non-deterministically and executed. Unlike the
+    \textsc{Rule Set} construction, if the chosen subprogram fails, the other is
+    \emph{not} applied instead, and the program fails.
 \end{description}
 
 For GP2, a subprogram is either a single rule, referenced by its name, or one of
