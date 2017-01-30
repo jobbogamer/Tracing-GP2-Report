@@ -167,16 +167,99 @@ found, the program moves on to the second phase, the \emph{application}.
 
 A rule specifies a number of \emph{interface nodes}, nodes which are present in both
 the LHS and the RHS. These interface nodes can be seen in \autoref{fig:RuleInGP2}; they
-are the nodes with small numeric labels. During the application phase, any nodes in the
-LHS which are \emph{not} interface nodes will be deleted. Similarly, any non-interface
-nodes which appear in the RHS will be created. At the end of the application phase,
-the subgraph will match the RHS of the rule definition. The new graph created by the
-application of this rule, an \emph{intermediate graph}, is then used as the input to
-the next part of the program.
+are the nodes with small numeric identifers below them. During the application phase,
+any nodes in the LHS which are \emph{not} interface nodes will be deleted. Similarly,
+any non-interface nodes which appear in the RHS will be created. At the end of the
+application phase, the subgraph will match the RHS of the rule definition. The new
+graph created by the application of this rule, an \emph{intermediate graph}, is then
+used as the input to the next part of the program.
 
 In the example in \autoref{fig:RuleInGP2}, the program will search for a subgraph
 containing two nodes without an edge connecting them. If a match is found, it will
 be transformed to resemble the RHS by adding an edge between the nodes.
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Labels}
+\label{sec:Labels}
+
+Nodes and edges in a graph defined in GP2 can also have \emph{labels}. Each node
+or edge can either have one label or it can be unlabelled. A graph is
+\emph{partially labelled} if some of the nodes and edges have labels, and it is
+\emph{totally labelled} if every node and edge has a label.
+
+Labels can be used cosmetically, without affecting the execution of the program,
+or they can be included in rules to have the program read and modify labels.
+
+\begin{figure}
+    \begin{center}
+        \begin{tikzpicture}
+            \node (list) {\texttt{list}} {};
+            \node (ss1)  [below=1mm of list] {\rotatebox{90}{$\subseteq$}} {};
+            \node (atom) [below=1mm of ss1]  {\texttt{atom}} {};
+            \node (ss2)  [below left=1mm of atom] {\rotatebox{45}{$\subseteq$}} {};
+            \node (ss3)  [below right=1mm of atom] {\rotatebox{135}{$\subseteq$}} {};
+            \node (int)  [below left=1mm of ss2] {\texttt{int}} {};
+            \node (string) [below right=1mm of ss3] {\texttt{string}} {};
+            \node (ss4)  [below=1mm of string] {\rotatebox{90}{$\subseteq$}} {};
+            \node (char) [below=1mm of ss4] {\texttt{char}} {};
+
+        \end{tikzpicture}
+    \end{center}
+    \caption{GP2's type hierarchy for labels}
+    \label{fig:TypeHierarchy}
+\end{figure}
+
+GP2 has a type hierarchy for labels, shown in \autoref{fig:TypeHierarchy}. Labels
+can be of any of these five types. An \texttt{atom} consists of a single entity,
+either an \texttt{int} or a \texttt{string}. A \texttt{list} is a collection of
+\texttt{atom}s concatenated together; the concatenation is shown using a colon
+(\texttt{:}).
+
+When matching a rule involving labels, GP2 finds a variable assignment which
+matches the values of the labels in the graph. The values in this assignment are
+identical when used in the RHS of the rule. When using labels in a rule, the type
+of each label must be specified so that GP2 can find an assignment for each one.
+
+\begin{figure}
+    \begin{center}
+        \begin{tabular}{l}
+            
+            \texttt{swap(x, y: int)}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}            {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=of transition]  {\texttt{y}}{};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]       {\texttt{x}}{}
+                    edge[pre] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=of transition] {\texttt{y}}{};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]      {\texttt{x}}{}
+                    edge[post] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\
+
+            \texttt{where x > y}
+
+        \end{tabular}
+    \end{center}
+    \caption{A GP2 rule which uses labels}
+    \label{fig:ExampleRuleWithLabels}
+\end{figure}
+
+The rule in \autoref{fig:ExampleRuleWithLabels} will only match a pair
+of nodes where the labels are both integers, and the value of the source node's
+label is greater than the value of the target node's label. This rule
+demonstrates both that labels can be used as conditions in the program, and also
+that a rule can modify labels. It also shows that labels act like variables when
+used in a rule, since the values of \texttt{x} and \texttt{y} are re-used in the
+RHS.
 
 %------------------------------------------------------------------------------
 
@@ -187,7 +270,7 @@ be transformed to resemble the RHS by adding an edge between the nodes.
     \begin{center}
         \begin{tabular}{l}
 
-            \texttt{delete}
+            \texttt{delete(x, y, z: list)}
 
             \\
 
@@ -195,14 +278,14 @@ be transformed to resemble the RHS by adding an edge between the nodes.
 
                 \node         (transition) {$\Rightarrow$}            {};
 
-                \node[vertex] (lhs 3) [label=below:\tiny{\texttt{2}},left=5mm of transition]  {};
-                \node[vertex] (lhs 2) [left=of lhs 3]                                     {}
+                \node[vertex] (lhs 3) [label=below:\tiny{\texttt{2}},left=5mm of transition] {\texttt{z}} {};
+                \node[vertex] (lhs 2) [left=of lhs 3]                                        {\texttt{y}} {}
                     edge[pre] (lhs 3);
-                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]       {}
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]          {\texttt{x}} {}
                     edge[pre] (lhs 2);
 
-                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=5mm of transition] {};
-                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]      {}
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=5mm of transition] {\texttt{x}} {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]          {\texttt{z}} {}
                     edge[post] (rhs 1);
 
             \end{tikzpicture}
@@ -213,20 +296,20 @@ be transformed to resemble the RHS by adding an edge between the nodes.
 
                 \node (transition) {$\Rightarrow$} {};
 
-                \node[vertex] (lhs c) [left=5mm of transition, yshift=-10mm] {c} {};
-                \node[vertex] (lhs b) [left=of lhs c]                    {b} {}
+                \node[vertex] (lhs c) [left=5mm of transition, yshift=-10mm] {\texttt{3}} {};
+                \node[vertex] (lhs b) [left=of lhs c]                        {\texttt{2}} {}
                     edge[pre] (lhs c);
-                \node[vertex] (lhs a) [left=of lhs b]                    {a} {}
+                \node[vertex] (lhs a) [left=of lhs b]                        {\texttt{1}} {}
                     edge[pre] (lhs b);
-                \node[vertex] (lhs d) [above=of lhs b]                   {d} {}
+                \node[vertex] (lhs d) [above=of lhs b]                       {\texttt{4}} {}
                     edge[pre] (lhs b);
 
 
-                \node[vertex]     (rhs a)         [right=5mm of transition, yshift=-10mm] {a} {};
-                \node[invisible]  (rhs invisible) [right=of rhs a]                            {};
-                \node[vertex]     (rhs c)         [right=of rhs invisible]                {c} {}
+                \node[vertex]     (rhs a)         [right=5mm of transition, yshift=-10mm] {\texttt{1}} {};
+                \node[invisible]  (rhs invisible) [right=of rhs a]                                     {};
+                \node[vertex]     (rhs c)         [right=of rhs invisible]                {\texttt{3}} {}
                     edge[post]    (rhs a);
-                \node[vertex]     (rhs d)         [above=of rhs invisible]                {d} {}
+                \node[vertex]     (rhs d)         [above=of rhs invisible]                {\texttt{4}} {}
                     edge[pre]     (rhs invisible);
 
             \end{tikzpicture}
@@ -244,10 +327,10 @@ other words, all non-interface nodes in a rule match must have no incoming or ou
 edges which are not also part of the match.
 
 \autoref{fig:FailDanglingCondition} shows the result of attempting to apply a rule
-where the match violates the dangling condition. Since node b is not an interface
+where the match violates the dangling condition. Since node 2 is not an interface
 node, it is deleted during the application of the \texttt{delete} rule. However, the
-rule does not specify that the edge from b to d should be deleted. This leaves a
-\emph{dangling edge} from node d with no target. The dangling condition is used to
+rule does not specify that the edge from 4 to 2 should be deleted. This leaves a
+\emph{dangling edge} from node 4 with no target. The dangling condition is used to
 ensure that rules result in no dangling edges.
 
 %------------------------------------------------------------------------------
@@ -557,89 +640,6 @@ bottom-left and top-right of the graph. Because this rule was successfully appli
 program to enter the fail state. This in turn means that the \textsc{Try-Then-Else}
 surrounding the program fails, and all the changes made to the input graph are
 reversed. The output graph is therefore identical to the input graph.
-
-%------------------------------------------------------------------------------
-
-\subsubsection{Labels}
-\label{sec:Labels}
-
-Nodes and edges in a graph defined in GP2 can also have \emph{labels}. Each node
-or edge can either have one label or it can be unlabelled. A graph is
-\emph{partially labelled} if some of the nodes and edges have labels, and it is
-\emph{totally labelled} if every node and edge has a label.
-
-Labels can be used cosmetically, without affecting the execution of the program,
-or they can be included in rules to have the program read and modify labels.
-
-\begin{figure}
-    \begin{center}
-        \begin{tikzpicture}
-            \node (list) {\texttt{list}} {};
-            \node (ss1)  [below=1mm of list] {\rotatebox{90}{$\subseteq$}} {};
-            \node (atom) [below=1mm of ss1]  {\texttt{atom}} {};
-            \node (ss2)  [below left=1mm of atom] {\rotatebox{45}{$\subseteq$}} {};
-            \node (ss3)  [below right=1mm of atom] {\rotatebox{135}{$\subseteq$}} {};
-            \node (int)  [below left=1mm of ss2] {\texttt{int}} {};
-            \node (string) [below right=1mm of ss3] {\texttt{string}} {};
-            \node (ss4)  [below=1mm of string] {\rotatebox{90}{$\subseteq$}} {};
-            \node (char) [below=1mm of ss4] {\texttt{char}} {};
-
-        \end{tikzpicture}
-    \end{center}
-    \caption{GP2's type hierarchy for labels}
-    \label{fig:TypeHierarchy}
-\end{figure}
-
-GP2 has a type hierarchy for labels, shown in \autoref{fig:TypeHierarchy}. Labels
-can be of any of these five types. An \texttt{atom} consists of a single entity,
-either an \texttt{int} or a \texttt{string}. A \texttt{list} is a collection of
-\texttt{atom}s concatenated together; the concatenation is shown using a colon
-(\texttt{:}).
-
-When matching a rule involving labels, GP2 finds a variable assignment which
-matches the values of the labels in the graph. The values in this assignment are
-identical when used in the RHS of the rule. When using labels in a rule, the type
-of each label must be specified so that GP2 can find an assignment for each one.
-
-\begin{figure}
-    \begin{center}
-        \begin{tabular}{l}
-            
-            \texttt{swap(x, y: int)}
-
-            \\
-
-            \begin{tikzpicture}
-
-                \node         (transition) {$\Rightarrow$}            {};
-
-                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=of transition]  {\texttt{y}}{};
-                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]       {\texttt{x}}{}
-                    edge[pre] (lhs 2);
-
-                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=of transition] {\texttt{y}}{};
-                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]      {\texttt{x}}{}
-                    edge[post] (rhs 1);
-
-            \end{tikzpicture}
-
-            \\
-
-            \texttt{where x > y}
-
-        \end{tabular}
-    \end{center}
-    \caption{A GP2 rule which uses labels}
-    \label{fig:ExampleRuleWithLabels}
-\end{figure}
-
-The rule in \autoref{fig:ExampleRuleWithLabels} will only match a pair
-of nodes where the labels are both integers, and the value of the source node's
-label is greater than the value of the target node's label. This rule
-demonstrates both that labels can be used as conditions in the program, and also
-that a rule can modify labels. It also shows that labels act like variables when
-used in a rule, since the values of \texttt{x} and \texttt{y} are re-used in the
-RHS.
 
 %//////////////////////////////////////////////////////////////////////////////
 
