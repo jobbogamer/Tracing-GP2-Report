@@ -13,6 +13,13 @@
 \usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{tabularx}
+\usepackage{listings}
+
+\lstset{
+    language=C,
+    showstringspaces=false,
+    basicstyle=\ttfamily
+}
 
 \author{Joshua Asch}
 
@@ -1140,10 +1147,57 @@ previous changes have been reverted? Maybe keep a reference to the branch point?
 \subsection{Non-determinism}
 \label{sec:Nondeterminism}
 
-\emph{GP2's definition supports non-determinism but the compiler doesn't. How
-does this affect the design decisions for the debugger?}
+While the definition of GP2 includes non-determinism, such as when choosing a
+rule from a \textsc{Rule Set}, the implementation of the C compiler is mostly
+deterministic. When executing a \textsc{Rule Set}, the generated C program
+will always select the first rule in the set which matches, rather than
+non-deterministically selecting from all the rules which match. This is shown
+in \autoref{lst:RuleSetGeneratedCode}, which shows the code which the compiler
+generates for the statement ``\texttt{\{r1, r2, r3\}}''. This code tries each
+rule in turn, and stops when it finds the first one which has a match.
 
-\emph{Or statement is random...}
+\begin{lstlisting}[
+    caption=Generated code for a \textsc{Rule Set} structure,
+    label=lst:RuleSetGeneratedCode
+]
+THIS CODE HAS NOT BEEN WRITTEN YET!!!
+\end{lstlisting}
+
+If a user is familiar with the GP2 specification, they may expect their program
+to run non-deterministically. They may also expect features in the debugger
+related to this non-determinism, such as showing all the possible matches for
+a rule, or showing all the matching rules in a \textsc{Rule Set}. However,
+because the code for a \textsc{Rule Set} does not attempt to match any other
+rules once a match is found, the debugger cannot show all matching rules.
+Enabling this would require modifying the compiler to find all matches before
+picking one, even if it still always picked the first match.
+
+The exception to this is the \textsc{Or} statement. In the GP2 compiler, this
+statement does not always choose the same option, but instead uses the
+\texttt{rand()} function to randomly choose between the two possibilities.
+This seems to act counter to requirement 4 for the debugger, which states
+that the system must be predictable, because on each execution of the program,
+it is random whether the first option or second option will be chosen.
+
+However, the debugger cannot take responsibility for how the user's program
+is structured. \autoref{lst:OrStatementAnalogy} shows plain C code which is
+analagous to a GP2 \textsc{Or} statement, which randomly calls one of two
+functions based on a random number. A C programmer would not expect the
+debugger to always follow the same execution path when debugging this code,
+so it is reasonable to take the same approach with a GP2 debugger.
+
+\begin{lstlisting}[
+    caption=C code analagous to GP2's \textsc{Or} statement,
+    label=lst:OrStatementAnalogy
+]
+int random = rand();
+if ((random % 2) == 0) {
+    someFunction();
+}
+else {
+    someOtherFunction();
+}
+\end{lstlisting}
 
 \clearpage
 
