@@ -1139,8 +1139,44 @@ construct cannot fail, the compiler does not add backtracking code for it. The
 compiler would have to be modified to add backtracking code to the entire
 program.
 
-\emph{What to do when changes are reverted -- how should the user be told that
-previous changes have been reverted? Maybe keep a reference to the branch point?}
+%------------------------------------------------------------------------------
+
+\subsubsection{Communicating Backtracking to the User}
+\label{sec:CommunicatingBacktrackingToTheUser}
+
+When the user is debugging a program which causes backtracking to occur, the
+tool must indicate in some way that this has happened. For inexperienced users
+especially, if the graph reverts back to a previous state with no explanation,
+it could be extremely confusing.
+
+There are multiple ways the debugging tool could communicate backtracking to
+the user:
+
+\begin{itemize}
+    \item Show a message when backtracking occurs. This is the simplest option,
+          which would involve showing a message somewhere in the IDE when the
+          graph is reverted. This would explain to the user what has happened,
+          although they may still not understand why the backtracking occurred,
+          or what previous state was restored.
+
+    \item Highlight the part of the user's program where the backtracking is
+          rooted. For instance, if the program contains
+          ``\texttt{if r1 then p1 else p2}'' (assuming \texttt{r1} is a rule
+          and \texttt{p1} and \texttt{p2} are procedures), ``\texttt{if r1}''
+          could be highlighted differently to indicate that it may produce
+          backtracking. This would give the user more insight into why the
+          backtracking has occurred, although it may still not be clear which
+          previous graph state has been restored.
+
+    \item Show the previous state somewhere in the IDE. This method would
+          provide the most context. It allows the user to see exactly what will
+          happen when backtracking occurs. It could also be combined with the
+          previous idea to give additional information. Combining both would
+          allow the user to see the cause of the backtracking, and also what 
+          changes occurred.
+\end{itemize}
+
+
 
 %==============================================================================
 
