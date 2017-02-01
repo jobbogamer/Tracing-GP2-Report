@@ -1247,12 +1247,34 @@ else {
 }
 \end{lstlisting}
 
+In a similar vein, the order of rules within a \textsc{Rule Set} can affect the
+execution of a program, since the first matching rule is always applied, as
+discussed previously. This means that if the user edits their program and
+re-orders the rules in a \textsc{Rule Set}, their program may give different
+results. Again, this issue is due to the structure of the program, which the
+debugger cannot take responsibility for.
+
 %==============================================================================
 
 \subsection{Program Representation}
 \label{sec:ProgramRepresentation}
 
+When a user creates a graph using the visual editor in the IDE, the graph must
+be converted to a text based format in order to compile and run the GP2 program.
+Depending on the position of elements in the editor, isomorphic graphs may be
+converted to different textual representations, with the nodes and edges listed
+in a different order, for example.
 
+This is relevant to the debugger because when running a program, the order of
+nodes and edges will affect which matches are selected when applying a rule. If
+the user runs their program and then rearranges the nodes in the editor, running
+the program again may give a different result graph. This would be surprising to
+a user, since they did not modify the structure of the graph, only its layout.
+
+Without modifying the algorithm for converting a graph to the text based
+representation, it is not possible to avoid the problem. It may be
+useful to warn the user if the representation of their graph changes, so that
+they are aware it may give different results.
 
 \clearpage
 
