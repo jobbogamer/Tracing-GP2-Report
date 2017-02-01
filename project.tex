@@ -6,19 +6,21 @@
 \tikzset{
     vertex/.style={circle,draw,minimum size=10mm},
     invisible/.style={minimum size=10mm},
-    pre/.style={->,semithick},
-    post/.style={<-,semithick}
+    pre/.style={->,semithick,>=stealth},
+    post/.style={<-,semithick,>=stealth}
 }
 
 \usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{tabularx}
 \usepackage{listings}
+\usepackage{framed}
 
 \lstset{
     language=C,
     showstringspaces=false,
-    basicstyle=\ttfamily
+    basicstyle=\ttfamily,
+    frame=single
 }
 
 \author{Joshua Asch}
@@ -122,6 +124,7 @@ a result, called the \emph{output graph}.
 \label{sec:Rules}
 
 \begin{figure}
+    \begin{framed}
     \begin{center}
         \begin{tabular}{l}
 
@@ -148,6 +151,7 @@ a result, called the \emph{output graph}.
 
         \end{tabular}
     \end{center}
+    \end{framed}
     \caption{A rule in GP2}
     \label{fig:RuleInGP2}
 \end{figure}
@@ -199,6 +203,7 @@ Labels can be used cosmetically, without affecting the execution of the program,
 or they can be included in rules to have the program read and modify labels.
 
 \begin{figure}
+    \begin{framed}
     \begin{center}
         \begin{tikzpicture}
             \node (list) {\texttt{list}} {};
@@ -213,6 +218,7 @@ or they can be included in rules to have the program read and modify labels.
 
         \end{tikzpicture}
     \end{center}
+    \end{framed}
     \caption{GP2's type hierarchy for labels}
     \label{fig:TypeHierarchy}
 \end{figure}
@@ -240,6 +246,7 @@ For example, a rule which contains a label of type \texttt{string} can match a
 node which has a \texttt{char} label. The \texttt{list} type will match any label.
 
 \begin{figure}
+    \begin{framed}
     \begin{center}
         \begin{tabular}{l}
             
@@ -267,6 +274,7 @@ node which has a \texttt{char} label. The \texttt{list} type will match any labe
 
         \end{tabular}
     \end{center}
+    \end{framed}
     \caption{A GP2 rule which uses labels}
     \label{fig:ExampleRuleWithLabels}
 \end{figure}
@@ -285,6 +293,7 @@ RHS.
 \label{sec:TheDanglingCondition}
 
 \begin{figure}
+\begin{framed}
     \begin{center}
         \begin{tabular}{l}
 
@@ -314,7 +323,7 @@ RHS.
 
                 \node (transition) {$\Rightarrow$} {};
 
-                \node[vertex] (lhs c) [left=5mm of transition, yshift=-10mm] {\texttt{3}} {};
+                \node[vertex] (lhs c) [left=2.5mm of transition, yshift=-10mm] {\texttt{3}} {};
                 \node[vertex] (lhs b) [left=of lhs c]                        {\texttt{2}} {}
                     edge[pre] (lhs c);
                 \node[vertex] (lhs a) [left=of lhs b]                        {\texttt{1}} {}
@@ -323,7 +332,7 @@ RHS.
                     edge[pre] (lhs b);
 
 
-                \node[vertex]     (rhs a)         [right=5mm of transition, yshift=-10mm] {\texttt{1}} {};
+                \node[vertex]     (rhs a)         [right=2.5mm of transition, yshift=-10mm] {\texttt{1}} {};
                 \node[invisible]  (rhs invisible) [right=of rhs a]                                     {};
                 \node[vertex]     (rhs c)         [right=of rhs invisible]                {\texttt{3}} {}
                     edge[post]    (rhs a);
@@ -334,6 +343,7 @@ RHS.
 
         \end{tabular}
     \end{center}
+    \end{framed}
     \caption{Attempting to apply a rule when the match violates the dangling condition}
     \label{fig:FailDanglingCondition}
 \end{figure}
@@ -439,6 +449,7 @@ searching for a rule match; for example, in this program, \texttt{joined\_reds}
 will only match when both the nodes' colours are red.
 
 \begin{figure}
+\begin{framed}
     \begin{center}
         \begin{verbatim}
 Main = try (init; Colour!; if Invalid then fail)
@@ -544,11 +555,13 @@ Invalid = {joined_reds, joined_blues}
 
         \end{tabular}
     \end{center}
+    \end{framed}
     \caption{Definition of 2-colouring in GP2}
     \label{fig:ExampleProgramDefinition}
 \end{figure}
 
 \begin{figure}
+    \begin{framed}
     \begin{center}
         \begin{tabular}{l}    
 
@@ -557,7 +570,7 @@ Invalid = {joined_reds, joined_blues}
 
                 \node (transition1) {$\Rightarrow$} {};
 
-                \node[vertex]  (12) [above left=7.5mm of transition1] {};
+                \node[vertex]  (12) [above left=5mm of transition1] {};
                 \node[vertex]  (13) [below=of 12]               {}
                     edge[post] (12);
                 \node[vertex]  (11) [left=of 12]                {}
@@ -567,7 +580,7 @@ Invalid = {joined_reds, joined_blues}
                     edge[pre]  (12)
                     edge[post] (13);
 
-                \node[vertex]  (21) [above right=7.5mm of transition1,fill=red] {};
+                \node[vertex]  (21) [above right=5mm of transition1,fill=red] {};
                 \node[vertex]  (22) [right=of 21]                         {}
                     edge[post] (21);
                 \node[vertex]  (23) [below=of 22]                         {}
@@ -577,9 +590,9 @@ Invalid = {joined_reds, joined_blues}
                     edge[pre]  (22)
                     edge[post] (23);
 
-                \node (transition2) [below right=7.5mm of 22] {$\Rightarrow$} {};
+                \node (transition2) [below right=5mm of 22] {$\Rightarrow$} {};
 
-                \node[vertex]  (31) [above right=7.5mm of transition2,fill=red] {};
+                \node[vertex]  (31) [above right=5mm of transition2,fill=red] {};
                 \node[vertex]  (32) [right=of 31,fill=blue]               {}
                     edge[post] (31);
                 \node[vertex]  (33) [below=of 32]                         {}
@@ -589,9 +602,9 @@ Invalid = {joined_reds, joined_blues}
                     edge[pre]  (32)
                     edge[post] (33);
 
-                \node (transition3) [below right=7.5mm of 34] {$\Downarrow$} {};
+                \node (transition3) [below right=5mm of 34] {$\Downarrow$} {};
 
-                \node[vertex]  (41) [below left=7.5mm of transition3,fill=red] {};
+                \node[vertex]  (41) [below left=5mm of transition3,fill=red] {};
                 \node[vertex]  (42) [right=of 41,fill=blue]                  {}
                     edge[post] (41);
                 \node[vertex]  (43) [below=of 42,fill=red]                   {}
@@ -601,9 +614,9 @@ Invalid = {joined_reds, joined_blues}
                     edge[pre]  (42)
                     edge[post] (43);
 
-                \node (transition4) [below left=7.5mm of 41] {$\Leftarrow$} {};
+                \node (transition4) [below left=5mm of 41] {$\Leftarrow$} {};
 
-                \node[vertex]  (52) [above left=7.5mm of transition4,fill=blue] {};
+                \node[vertex]  (52) [above left=5mm of transition4,fill=blue] {};
                 \node[vertex]  (51) [left=of 52,fill=red]                   {}
                     edge[pre]  (52);
                 \node[vertex]  (53) [below=of 52,fill=red]                  {}
@@ -613,9 +626,9 @@ Invalid = {joined_reds, joined_blues}
                     edge[pre]  (52)
                     edge[post] (53);
 
-                \node (transition5) [below left=7.5mm of 51, yshift=2.5mm] {$\xLeftarrow{*}$} {};
+                \node (transition5) [below left=5mm of 51, yshift=2.5mm] {$\xLeftarrow{*}$} {};
 
-                \node[vertex]  (62) [above left=7.5mm of transition5, yshift=-2.5mm] {};
+                \node[vertex]  (62) [above left=5mm of transition5, yshift=-2.5mm] {};
                 \node[vertex]  (61) [left=of 62]                    {}
                     edge[pre]  (62);
                 \node[vertex]  (63) [below=of 62]                   {}
@@ -629,6 +642,7 @@ Invalid = {joined_reds, joined_blues}
 
         \end{tabular}
     \end{center}
+    \end{framed}
     \caption{Example execution of 2-colouring}
     \label{fig:ExampleProgramExecution}
 \end{figure}
@@ -1176,8 +1190,6 @@ the user:
           changes occurred.
 \end{itemize}
 
-
-
 %==============================================================================
 
 \subsection{Non-determinism}
@@ -1234,6 +1246,13 @@ else {
     someOtherFunction();
 }
 \end{lstlisting}
+
+%==============================================================================
+
+\subsection{Program Representation}
+\label{sec:ProgramRepresentation}
+
+
 
 \clearpage
 
