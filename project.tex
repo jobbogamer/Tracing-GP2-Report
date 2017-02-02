@@ -1276,6 +1276,140 @@ representation, it is not possible to avoid the problem. It may be
 useful to warn the user if the representation of their graph changes, so that
 they are aware it may give different results.
 
+%//////////////////////////////////////////////////////////////////////////////
+
+\section{Proposed Solutions}
+\label{sec:ProposedSolutions}
+
+Two different possible high-level designs are outlined below, along with the
+advantages and disadvantages of each.
+
+%==============================================================================
+
+\subsection{Modify Compiler to Run Partial Programs}
+\label{sec:ProposedDesign1}
+
+Following a similar method to the previous work on adding debugging to GP2
+\citep{taylor2016}, the compiler would be modified so that it can run part of a
+program and stop, giving intermediate results. The IDE would interact with the
+compiler to control how much of the program to run, and to display the
+intermediate graphs to the user.
+
+The IDE would have two modes for running a program. The first mode would act
+exactly as the current version of the IDE, running the entire program and
+displaying the result. No changes would need to be made to the IDE for this mode.
+
+The second mode would be for debugging the program, and would provide the user
+with controls to step through their program. Each time a step is taken, the
+compiler would be invoked on the most recent intermediate graph, solving the
+problem from the previous project of having to re-run the first steps. To
+enable this, the output must also include some reference to the point which has
+been reached in the program, in order to continue from the same point next time.
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Advantages}
+\label{sec:ProposedDesign1Advantages}
+
+\begin{itemize}
+    \item Similar work to this has already been done, so implementing this
+          design would be an extension of that rather than a new solution
+          created from scratch.
+
+    \item Non-terminating or long-running programs do not have to be run in their
+          entirety, saving the user time when debugging a program, since they do
+          not have to wait for execution to finish.
+
+    \item As shown in the previous project, it is possible to implement partial
+          execution in the compiler without affecting compilation or runtime
+          performance. It is likely that the tracing method would impact runtime
+          performance in some way.
+\end{itemize}
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Disadvantages}
+\label{sec:ProposedDesign1Disadvantages}
+
+\begin{itemize}
+    \item It would be difficult to allow the user to step backwards through the
+          program with this method, because each invocation of the compiler
+          would be separate, meaning the use of backtracking would be impossible,
+          and if the output is simply a graph and the current position in the
+          program, there is no way to discover what changes were made to the graph
+          during the last invocation.
+
+    \item Continuing from a partially executed state would be impossible if the
+          user edits their program or the input graph before continuing. While
+          this would be an error on the user's part, it could potentially be
+          confusing if they edit the program to fix a bug and then click continue
+          instead of restarting from the beginning.
+
+    \item \emph{Another one???}
+\end{itemize}
+
+%==============================================================================
+
+\subsection{Use Tracing to Step Through Execution History}
+\label{sec:ProposedDesign2}
+
+Instead of pausing execution to show the current state of the program, this
+method would instead add tracing to the user's program, and the IDE would run
+the entire program before stepping through the history. This is similar to how
+tools such as Hat (discussed in \autoref{sec:TracingInFunctionalLanguages}) work.
+
+The existing way of running a program in the IDE would remain unchanged, and
+would not enable tracing, to avoid any performance impact of having tracing
+turned on. A second button in the UI would run the program with tracing turned
+on, and then switch the IDE into a mode which allows the user to examine the
+execution history of their program.
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Advantages}
+\label{sec:ProposedDesign2Advantages}
+
+\begin{itemize}
+    \item It would be possible to add the ability to jump to any point in the
+          program's execution, since all states would be stored. Using the other
+          proposed method, jumping to a specific point would involve running the
+          program and somehow detecting when the requested state is reached.
+
+    \item Stepping through a program would be much faster than using partial
+          execution because another process does not have to be executed at each
+          step.
+
+    \item Debugging would not be dependent on the compiler, once the programs has
+          been compiled and run, so certain additional debugging features could
+          be added to the IDE without requiring the compiler to be updated. 
+\end{itemize}
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Disadvantages}
+\label{sec:ProposedDesign2Disadvantages}
+
+\begin{itemize}
+    \item Debugging a non-terminating program may be impossible because the
+          program may never output a trace, unless the compiler can be modified
+          to produce programs which terminate upon receiving a signal, and save
+          their trace before exiting.
+
+    \item Storing a trace may use a lot of memory or disk space, depending on
+          the implementation.
+
+    \item It would not be possible to add the ability for a user to choose a
+          rule to apply, or a match to apply a rule to, since execution has
+          already finished when the user regains control.
+\end{itemize}
+
+%==============================================================================
+
+\section{Chosen Solution}
+\label{sec:ChosenSolution}
+
+\emph{Which one was chosen??? And why???}
+
 \clearpage
 
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
