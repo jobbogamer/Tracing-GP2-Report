@@ -761,11 +761,13 @@ restart the program's execution.
 
 It is unclear whether edit-and-continue would be a good addition to GP2. On one
 hand, it can speed up debugging because the programmer does not have to start the
-program again from the beginning. On the other hand, because GP2 is such a high
-level language, it may not make sense to resume a program that has been edited.
-There is a high chance that the modifications would affect the algorithm enough
-that the current state would not be reached if the program was restarted from
-the beginning.
+program again from the beginning. On the other hand, it is not clear how this
+feature could be implemented in GP2. It would not make sense for the user to be
+able to edit the input graph or an intermediate graph while execution is paused,
+because the result of the program would be incorrect. Editing the rules and
+program text would make more sense, but this could lead to problems, such as if
+the user pauses execution after matching a rule, and then edits that rule in
+a way that makes the match incorrect.
 
 %------------------------------------------------------------------------------
 
@@ -850,6 +852,14 @@ in the compiled program. However, storing a full trace of an entire program take
 up space either in memory or on disk; the advantage of a manual tool like Hood is
 the programmer can reduce the number of trace points to reduce the trace size.
 
+Another disadvantage of Hat is that it has a very large impact on performance,
+running more than ten times slower than the original Haskell program \citep{runciman2000}.
+Hat adds a lot of overhead at runtime, since the program has to do a lot of
+extra work to store the tracing data. On the other hand, Freja is also a tracing
+tool, yet Chitil, Runciman, and Koopman state that the overhead is ''not
+noticeable''. It is clear that the performance impact of these tools depends on
+their implementation.
+
 %==============================================================================
 
 \subsection{Debugging Other Graph Programming Tools}
@@ -921,8 +931,8 @@ There has been some previous work to add debugging facilities to GP2 \citep{tayl
 This work was focused on modifying the compiler to support stepping through a
 program.
 
-With the new compiler, command line arguments were added to allow the user to
-specify how big a ''step'' should be, and how many steps to execute before stopping.
+In that project, command line arguments were added to allow the user to specify
+how big a ''step'' should be, and how many steps to execute before stopping.
 This allows GP2 to approximate breakpoints by picking an appropriate step size
 and count in order to finish execution at the point the programmer is interested in.
 
