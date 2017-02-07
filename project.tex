@@ -1390,7 +1390,11 @@ been reached in the program, in order to continue from the same point next time.
           confusing if they edit the program to fix a bug and then click continue
           instead of restarting from the beginning.
 
-    \item \emph{Another one???}
+    \item Adding various granularity options for partial execution would require
+          adding many new command line arguments to the compiler. Having a lot
+          of command line arguments related to debugging may confuse users, and
+          could also lead to potential bugs when using these arguments
+          programmatically from the IDE.
 \end{itemize}
 
 %==============================================================================
@@ -1453,7 +1457,25 @@ execution history of their program.
 \section{Chosen Solution}
 \label{sec:ChosenSolution}
 
-\emph{Which one was chosen??? And why???}
+Using ??????????? has been selected as the chosen design to implement debugging
+features in GP2. This is because tracing will allow the user additional
+navigation around their program, such as stepping backwards. 
+
+This solution has trade-offs, namely the inability to trace a non-terminating
+program 
+
+Runtime performance, while one of the requirements outlined in \autoref{sec:ListOfRequirements},
+is less important than the user's ability to actually debug their program. For
+the same reason that IDEs such as Visual Studio disable compiler optimisation
+by default when debugging, an accurate debugger is more useful than a higher
+performance one.
+
+A lot of memory and disk space is available on modern hardware; it is unlikely
+that a GP2 trace would exhaust the available resources on a relatively recent
+machine. In addition, the GP2 IDE is not currently distributed outside of the
+University of York, meaning that the target hardware is mostly the university
+hardware, which is designed to have a large amount of both RAM and hard disk
+space available.
 
 \clearpage
 
