@@ -1229,7 +1229,31 @@ rule in turn, and stops when it finds the first one which has a match.
     caption=Generated code for a \textsc{Rule Set} structure,
     label=lst:RuleSetGeneratedCode
 ]
-THIS CODE HAS NOT BEEN WRITTEN YET!!!
+do
+{
+  if(matchMain_r1(M_Main_r1))
+  {
+    applyMain_r1(M_Main_r1, false);
+    success = true;
+    break;
+  }
+  if(matchMain_r2(M_Main_r2))
+  {
+    applyMain_r2(M_Main_r2, false);
+    success = true;
+    break;
+  }
+  if(matchMain_r3(M_Main_r3))
+  {
+    applyMain_r3(M_Main_r3, false);
+    success = true;
+  }
+  else
+  {
+    ...
+    // Failure handling omitted for brevity
+  }
+} while(false);
 \end{lstlisting}
 
 If a user is familiar with the GP2 specification, they may expect their program
