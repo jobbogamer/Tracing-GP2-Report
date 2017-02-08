@@ -30,7 +30,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{3577}
+\wordcount{7856}
 
 
 \abstract{
@@ -1033,8 +1033,6 @@ task in those situations.
 \emph{An experienced GP2 programmer has a bug in their program and wants to use
 the debugging tools to find it.}
 
-\emph{Put an example program with a subtle bug. }
-
 %==============================================================================
 
 \subsection{New User Learning GP2}
@@ -1051,8 +1049,8 @@ r1 will fail to match to further highlight the differece?}
 \section{List of Requirements}
 \label{sec:ListOfRequirements}
 
-\autoref{tab:SystemRequirements} lists all requirements identified for the GP2
-debugging tool.
+\autoref{tab:SystemRequirements} shows a list of all requirements which have
+been identified for the GP2 debugging tool.
 
 \begin{table}[tbp]
     \begin{tabularx}{\linewidth}{|l|X|}
@@ -1064,14 +1062,13 @@ debugging tool.
                 to step through a program. \\ \hline
         1.2  &  It is desirable for the system to allow the user to step
                 backwards through a program. \\ \hline
-        1.3  &  It is desirable for the system to allow the user to execute an
-                entire control sequence in one step. \\ \hline
+        1.3  &  It is desirable for the system to execute an entire control sequence
+                in one step. \\ \hline
 
         2    &  The system must have a visual debugging component. \\ \hline
         2.1  &  The system must highlight the rule being applied when stepping
                 through a program. \\ \hline
-        2.2  &  The system must highlight the next rule match in the intermediate
-                graph. \\ \hline
+        2.2  &  The system must highlight the next rule match in the graph. \\ \hline
         2.3  &  It is desirable for the system to highlight changes which were
                 made as a result of the previously applied rule. \\ \hline
         2.4  &  It is desirable for the system to highlight the current position
@@ -1080,15 +1077,13 @@ debugging tool.
 
         3    &  The system must allow debugging to be controlled from within the
                 GP2 IDE. \\ \hline
-        3.1  &  The system must provide a way for the user to advance execution
-                by one step. \\ \hline
-        3.2  &  It is desirable for the system to provide a way for the user to
-                backtrack execution by one step. \\ \hline
-        3.3  &  It is desirable for the system to provide a way for the user to
-                find a match for the next rule, but not apply the rule. \\ \hline
-        3.4  &  It is desirable for the system to provide a way for the user to
-                apply a rule for which a match has been found but not yet applied.
-                \\ \hline
+        3.1  &  The system must provide a way to advance execution by one step. \\ \hline
+        3.2  &  It is desirable for the system to provide a way to backtrack
+                execution by one step. \\ \hline
+        3.3  &  The system must provide a way to find a match for the next rule,
+                but not apply the rule. (See requirement 2.2) \\ \hline
+        3.4  &  The system must provide a way to apply a rule for which a match
+                has been found but not yet applied. (See requirement 3.4) \\ \hline
         3.5  &  The system must provide a way to run an entire program without
                 debugging it. \\ \hline
 
@@ -1098,9 +1093,8 @@ debugging tool.
                 enabled or not. \\ \hline
         4.2  &  The system must be able to load existing projects created before
                 the system was modified. \\ \hline
-    
     \end{tabularx}
-    \caption{List of system requirements}
+    \caption{List of system requirements identified for the debugging tool}
     \label{tab:SystemRequirements}
 \end{table}
 
@@ -1461,11 +1455,23 @@ The second solution, tracing a program and then allowing the user to step throug
 the execution history, has been selected as the chosen design to implement
 debugging features in GP2.
 
-This solution has advantages over the other design, such as
+This solution has advantages over the other design, such as the ability to
+more easily implement more program traversal methods, including backwards
+stepping and jumping to a specific point in time. Each step through the trace
+will also be much faster that the other design; the IDE does not have to wait
+for the program to run a step and return the results, because the program has
+already been run.
 
-The solution also has trade-offs, 
+Another advantage of this design is that it can also help the problem of debugging
+a program which uses the \textsc{Or} statement. Since the trace can be used
+repeatedly once the program has finished running, the user can step through the
+program multiple times without having to re-run the program. This means that 
+the branch chosen when stepping through the \textsc{Or} statement will remain
+constant until the user edits the program and has to run it again.
 
-Runtime performance, while one of the requirements outlined in \autoref{sec:ListOfRequirements},
+The solution also has trade-offs, such as a possible impact on runtime
+performance; extra work needs to be done to store the trace. Runtime performance,
+while one of the requirements outlined in \autoref{sec:ListOfRequirements},
 is less important than the user's ability to actually debug their program. For
 the same reason that IDEs such as Visual Studio disable compiler optimisation
 by default when debugging, an accurate debugger is more useful than a higher
@@ -1478,23 +1484,21 @@ University of York, meaning that the target hardware is mostly the university
 hardware, which is designed to have a large amount of both RAM and hard disk
 space available.
 
-\begin{itemize}
-    \item \emph{Trace format! Need to come up with a format to read and write
-          traces.}
-    \item \emph{New features! Tracing can be modified in the IDE without
-          updating the compiler, so you don't have to re-run your program to
-          get extra features during tracing.}
-    \item \emph{Non-terminating! Periodically flush the trace to disk, so that
-          if the timeout occurs, at least something will be available to step
-          through. Might miss some info from the end, but if it's looping, that
-          info will probably be the same as earlier anyway.}
-    \item \emph{Timeout! Allow the user to specify a timeout, in case they've
-          written a super complicated program that runs longer than the default
-          30 seconds.}
-    \item \emph{Non-determinism! The or statement will always pick the same
-          branch until you re-run the program. Step through multiple times while
-          still consistently getting the same behaviour.}
-\end{itemize}
+Additionally, a trace format will need to be designed and implemented so that
+the program and the IDE can communicate. This will be a simple Domain-Specific
+Language (DSL) which represents the actions a GP2 program takes. Part of this
+format can be based on the existing DSL which defines the machine readable 
+format of graphs and programs in GP2.
+
+Finally, although the other proposed design would have trivially allowed
+non-terminating programs to be debugged, this design does not have a clear
+solution to this problem. It is more difficult to support non-terminating
+programs with tracing, since as first glance it appears the program has to
+finish running before it can output a trace. However, it is possible to get
+around this by, for example, periodically writing a partial trace to disk. Then,
+if the program is non-terminating and needs to be killed, the user will still
+be able to trace through the earlier part of the execution and be able to debug
+their program.
 
 \clearpage
 
