@@ -1457,12 +1457,13 @@ execution history of their program.
 \section{Chosen Solution}
 \label{sec:ChosenSolution}
 
-Using ??????????? has been selected as the chosen design to implement debugging
-features in GP2. This is because tracing will allow the user additional
-navigation around their program, such as stepping backwards. 
+The second solution, tracing a program and then allowing the user to step through
+the execution history, has been selected as the chosen design to implement
+debugging features in GP2.
 
-This solution has trade-offs, namely the inability to trace a non-terminating
-program 
+This solution has advantages over the other design, such as
+
+The solution also has trade-offs, 
 
 Runtime performance, while one of the requirements outlined in \autoref{sec:ListOfRequirements},
 is less important than the user's ability to actually debug their program. For
@@ -1476,6 +1477,24 @@ machine. In addition, the GP2 IDE is not currently distributed outside of the
 University of York, meaning that the target hardware is mostly the university
 hardware, which is designed to have a large amount of both RAM and hard disk
 space available.
+
+\begin{itemize}
+    \item \emph{Trace format! Need to come up with a format to read and write
+          traces.}
+    \item \emph{New features! Tracing can be modified in the IDE without
+          updating the compiler, so you don't have to re-run your program to
+          get extra features during tracing.}
+    \item \emph{Non-terminating! Periodically flush the trace to disk, so that
+          if the timeout occurs, at least something will be available to step
+          through. Might miss some info from the end, but if it's looping, that
+          info will probably be the same as earlier anyway.}
+    \item \emph{Timeout! Allow the user to specify a timeout, in case they've
+          written a super complicated program that runs longer than the default
+          30 seconds.}
+    \item \emph{Non-determinism! The or statement will always pick the same
+          branch until you re-run the program. Step through multiple times while
+          still consistently getting the same behaviour.}
+\end{itemize}
 
 \clearpage
 
