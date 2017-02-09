@@ -1037,12 +1037,101 @@ the debugging tools to find it.}
 
 \subsection{New User Learning GP2}
 
-\emph{An inexperienced GP2 programmer is trying to use the debugging tools to
-learn how GP2 works.}
+In the second scenario, the user is inexperienced with GP2 and is still trying
+to learn the language. They understand most of how the language works, but they
+are having trouble with understanding the in semantics of \textsc{If-Then-Else}.
 
-\emph{Trying to learn the difference between if and try. Writes a simple program
-with three rules. Programs are "if r1 then r2 else r3" and "try r1 then r2 else r3".
-r1 will fail to match to further highlight the differece?}
+\begin{figure}
+    \begin{framed}
+        \begin{center}
+            \begin{tabular}{l}
+                \texttt{Main = if insert then bridge else loop}
+                \\\\
+                \texttt{insert}
+                \\
+                \begin{tikzpicture}
+                    \node         (transition) {$\Rightarrow$}            {};
+
+                    \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=5mm of transition] {};
+                    \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]          {}
+                        edge[pre] (lhs 2);
+
+                    \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=5mm of transition] {};
+                    \node[vertex] (rhs 2) [right=of rhs 1]                                        {}
+                        edge[post] (rhs 1);
+                    \node[vertex] (rhs 3) [label=below:\tiny{\texttt{2}}, right=of rhs 2]         {}
+                        edge[post] (rhs 2);
+                \end{tikzpicture}
+                \\\\
+                \texttt{bridge}
+                \\
+                \begin{tikzpicture}
+                   \node         (transition) {$\Rightarrow$}            {};
+
+                    \node[vertex] (lhs 3) [label=below:\tiny{\texttt{3}},left=2.5mm of transition]   {};
+                    \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=of lhs 3]            {}
+                        edge[pre] (lhs 3);
+                    \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2]            {}
+                        edge[pre] (lhs 2);
+
+                    \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2.5mm of transition]  {};
+                    \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1]           {}
+                        edge[post] (rhs 1);
+                    \node[vertex] (rhs 3) [label=below:\tiny{\texttt{3}},right=of rhs 2]           {}
+                        edge[post] (rhs 2)
+                        edge[post,bend right=45] (rhs 1);
+                \end{tikzpicture}
+                \\\\
+                \texttt{loop}
+                \\
+                \begin{tikzpicture}
+                    \node         (transition) {$\Rightarrow$}            {};
+
+                    \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=5mm of transition] {};
+
+                    \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=5mm of transition] {}
+                        edge [post,loop above] (rhs 1);
+                \end{tikzpicture}
+                \\\\
+                Input graph:
+                \\\\
+                \begin{tikzpicture}
+                    \node[vertex] (node 1) [yshift=5mm]                 {};
+                    \node[vertex] (node 2) [right=of node 1] {}
+                        edge[post] (node 1);
+                \end{tikzpicture}
+            \end{tabular}
+        \end{center}
+    \end{framed}
+    \caption{Simple program to learn the semantics of \textsc{If-Then-Else}}
+    \label{fig:LearnSemanticsOfIf}
+\end{figure}
+
+They have written a very simple GP2 program, shown in \autoref{fig:LearnSemanticsOfIf},
+which consists of three rules and a single \textsc{If-Then-Try} statement. When
+they run this program on the input graph shown, they incorrectly expect the
+output graph to match the RHS of the \texttt{bridge} rule, because they expect
+\texttt{insert} to be applied, followed by \texttt{bridge}.
+
+In actuality, this program fails, because the changes made by \texttt{insert}
+are reverted before attempting to match \texttt{bridge}, meaning there is no
+possible match for \texttt{bridge}.
+
+The result confuses the user, who then decides to use the debugger to step
+through the program to see what happened. The first thing they see is the
+program tries to match \texttt{insert} and succeeds, which they expected.
+However, then they advance to the next execution step and are surprised that
+no changes have been made to the graph. They then realise that they had mixed
+up the semantics of \textsc{If-Then-Else} and \textsc{Try-Then-Else}.
+
+Ideally in this situation, the debugger would explicitly show that backtracking
+will occur once the \texttt{if} condition has been verified. It may also allow
+the user to step backwards and forwards over the program so they can make sure
+they understand what is happening.
+
+By inspecting the execution of this simple program, the user has successfully
+used the debugger to aid their learning; even though the debugger does not
+explain the semantics directly, the user can understand how the program works.
 
 %//////////////////////////////////////////////////////////////////////////////
 
