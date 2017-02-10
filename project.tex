@@ -381,12 +381,13 @@ structures:
     program fails in the same way as if a single rule failed to match. 
 
     \item[\textsc{If-Then-Else}]
-    In the statement ``\texttt{if C then P else Q}'', the sub-program \texttt{C}
-    is executed, and the result, i.e. success or failure, is recorded, before
-    reverting any changes caused by C. Then, if C succeeded, \texttt{P} is
-    executed on the original graph. If it failed, then \texttt{Q} is executed on
-    the original graph. Note that by taking a copy first, any changes made by
-    \texttt{C} are reverted before executing either \texttt{P} or \texttt{Q}.
+    In the statement ``\texttt{if C then P else Q}'', a copy of the graph is taken,
+    before executing the sub-program \texttt{C}. The result, i.e. success or failure,
+    is then used to determine whether to run \texttt{P} or \texttt{Q}. If C succeeded,
+    \texttt{P} is executed on the copy of the original graph. If it failed, then
+    \texttt{Q} is executed on the original graph. Note that by taking a copy first,
+    any changes made by \texttt{C} are always reverted before executing either
+    \texttt{P} or \texttt{Q}.
 
     \item[\textsc{Try-Then-Else}]
     Similar to \textsc{If-Then-Else}, but \texttt{C} is only reverted if it fails.
