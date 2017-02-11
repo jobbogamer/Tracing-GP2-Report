@@ -7,7 +7,8 @@
     vertex/.style={circle,draw,minimum size=10mm},
     invisible/.style={minimum size=10mm},
     pre/.style={->,semithick,>=stealth},
-    post/.style={<-,semithick,>=stealth}
+    post/.style={<-,semithick,>=stealth},
+    bi/.style={-,semithick}
 }
 
 \usepackage{mathtools}
@@ -512,32 +513,12 @@ Invalid = {joined_reds, joined_blues}
 
                 \node         (transition) {$\Rightarrow$}                                          {};
 
-                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition,fill=blue]  {};
-                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=blue]       {}
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition,fill=cyan]  {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=cyan]       {}
                     edge[pre] (lhs 2);
 
-                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=blue] {};
-                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=blue]      {}
-                    edge[post] (rhs 1);
-
-            \end{tikzpicture}
-
-            \\\\
-
-            \texttt{colour\_red}
-
-            \\
-
-            \begin{tikzpicture}
-
-                \node         (transition) {$\Rightarrow$}                                          {};
-
-                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition]            {};
-                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=red]        {}
-                    edge[pre] (lhs 2);
-
-                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=red]  {};
-                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=blue]      {}
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=cyan] {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=cyan]      {}
                     edge[post] (rhs 1);
 
             \end{tikzpicture}
@@ -553,12 +534,32 @@ Invalid = {joined_reds, joined_blues}
                 \node         (transition) {$\Rightarrow$}                                          {};
 
                 \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition]            {};
-                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=blue]       {}
-                    edge[pre] (lhs 2);
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=red]        {}
+                    edge[bi] (lhs 2);
 
-                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=blue] {};
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=red]  {};
+                \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=cyan]      {}
+                    edge[bi] (rhs 1);
+
+            \end{tikzpicture}
+
+            \\\\
+
+            \texttt{colour\_red}
+
+            \\
+
+            \begin{tikzpicture}
+
+                \node         (transition) {$\Rightarrow$}                                          {};
+
+                \node[vertex] (lhs 2) [label=below:\tiny{\texttt{2}},left=2mm of transition]            {};
+                \node[vertex] (lhs 1) [label=below:\tiny{\texttt{1}},left=of lhs 2,fill=cyan]       {}
+                    edge[bi] (lhs 2);
+
+                \node[vertex] (rhs 1) [label=below:\tiny{\texttt{1}},right=2mm of transition,fill=cyan] {};
                 \node[vertex] (rhs 2) [label=below:\tiny{\texttt{2}},right=of rhs 1,fill=red]       {}
-                    edge[post] (rhs 1);
+                    edge[bi] (rhs 1);
 
             \end{tikzpicture}
 
@@ -602,7 +603,7 @@ Invalid = {joined_reds, joined_blues}
                 \node (transition2) [below right=5mm of 22] {$\Rightarrow$} {};
 
                 \node[vertex]  (31) [above right=5mm of transition2,fill=red] {};
-                \node[vertex]  (32) [right=of 31,fill=blue]               {}
+                \node[vertex]  (32) [right=of 31,fill=cyan]               {}
                     edge[post] (31);
                 \node[vertex]  (33) [below=of 32]                         {}
                     edge[post] (32);
@@ -614,7 +615,7 @@ Invalid = {joined_reds, joined_blues}
                 \node (transition3) [below right=5mm of 34] {$\Downarrow$} {};
 
                 \node[vertex]  (41) [below left=5mm of transition3,fill=red] {};
-                \node[vertex]  (42) [right=of 41,fill=blue]                  {}
+                \node[vertex]  (42) [right=of 41,fill=cyan]                  {}
                     edge[post] (41);
                 \node[vertex]  (43) [below=of 42,fill=red]                   {}
                     edge[post] (42);
@@ -625,12 +626,12 @@ Invalid = {joined_reds, joined_blues}
 
                 \node (transition4) [below left=5mm of 41] {$\Leftarrow$} {};
 
-                \node[vertex]  (52) [above left=5mm of transition4,fill=blue] {};
+                \node[vertex]  (52) [above left=5mm of transition4,fill=cyan] {};
                 \node[vertex]  (51) [left=of 52,fill=red]                   {}
                     edge[pre]  (52);
                 \node[vertex]  (53) [below=of 52,fill=red]                  {}
                     edge[post] (52);
-                \node[vertex]  (54) [below=of 51,fill=blue]                  {}
+                \node[vertex]  (54) [below=of 51,fill=cyan]                  {}
                     edge[post] (51)
                     edge[pre]  (52)
                     edge[post] (53);
