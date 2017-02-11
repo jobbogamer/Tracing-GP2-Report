@@ -194,13 +194,9 @@ be transformed to resemble the RHS by adding an edge between the nodes.
 \subsubsection{Labels}
 \label{sec:Labels}
 
-Nodes and edges in a graph defined in GP2 can also have \emph{labels}. Each node
-or edge can either have one label or it can be unlabelled. A graph is
-\emph{partially labelled} if some of the nodes and edges have labels, and it is
-\emph{totally labelled} if every node and edge has a label.
-
-Labels can be used cosmetically, without affecting the execution of the program,
-or they can be included in rules to have the program read and modify labels.
+Nodes and edges in a graph defined in GP2 can also have \emph{labels}. Labels
+can be used cosmetically, without affecting the execution of the program, or
+they can be included in rules to have the program read and modify labels.
 
 \begin{figure}
     \begin{framed}
@@ -226,8 +222,12 @@ or they can be included in rules to have the program read and modify labels.
 GP2 has a type hierarchy for labels, shown in \autoref{fig:TypeHierarchy}. Labels
 can be of any of these five types. An \texttt{atom} consists of a single entity,
 either an \texttt{int} or a \texttt{string}. A \texttt{list} is a collection of
-\texttt{atom}s concatenated together; the concatenation is shown using a colon
-(\texttt{:}).
+zero or more \texttt{atom}s concatenated together; the concatenation is shown using
+a colon (\texttt{:}).
+
+Host graphs and the LHS and RHS of rules must be \emph{totally labelled}, meaning
+that every node and edge must have a label. If the programmer wishes to use a node
+or edge which appears to be unlabelled, they can use the empty list for that label.
 
 Labels behave in two subtly different ways depending on where they are used. In a
 graph, a label has a specific value, similar to an integer or string literal in a
@@ -359,7 +359,7 @@ where the match violates the dangling condition. Since node 2 is not an interfac
 node, it is deleted during the application of the \texttt{delete} rule. However, the
 rule does not specify that the edge from 4 to 2 should be deleted. This leaves a
 \emph{dangling edge} from node 4 with no target. The dangling condition is used to
-ensure that rules result in no dangling edges.
+ensure that rule applications result in no dangling edges.
 
 %------------------------------------------------------------------------------
 
@@ -377,8 +377,9 @@ structures:
     \item[\textsc{Rule Set}]
     Rules in curly braces ``\texttt{\{R$_{\text{1}}$, R$_{\text{2}}$, R$_{\text{3}}$\}}''
     define a set, where exactly one rule from the set is executed, chosen
-    non-determinstically. If there are no rules in the set which match, the
-    program fails in the same way as if a single rule failed to match. 
+    non-determinstically from all rules in the set which have a valid match.
+    If there are no rules in the set which match, the program fails in the
+    same way as if a single rule failed to match.
 
     \item[\textsc{If-Then-Else}]
     In the statement ``\texttt{if C then P else Q}'', a copy of the graph is taken,
@@ -400,6 +401,10 @@ structures:
     to the last successful state, that is, the state it was in at the end of the
     last successfully applied rule from \texttt{P}.
 
+    The keyword \texttt{break} can also be used to exit from a loop before reaching
+    the end. When using \texttt{break}, the graph is \emph{not} reverted before
+    continuing with the program.
+
     \item[\textsc{Procedure}]
     Similar to a C preprocessor macro, a procedure is simply a named subprogram
     where any reference to the procedure name can be replaced with the definition
@@ -413,7 +418,8 @@ structures:
     \item[\textsc{Fail}]
     A statement which always fails and does not affect the graph. This is the same
     as attempting to execute a rule for which there are no matches. Invoked using
-    the keyword ``\texttt{fail}''.
+    the keyword ``\texttt{fail}''. It can also be simulated using an empty
+    \textsc{Rule Set} \texttt{\{\}}.
 
     \item[\textsc{Or}]
     In the statement ''\texttt{P or Q}'', exactly one subprogram, either \texttt{P}
@@ -437,7 +443,9 @@ does not halt execution of the program.
 version of the program used as a case study in Bak's thesis on GP2 \citep[p.126]{bak2015}.
 It is a simple program which determines whether a graph is \emph{2-colourable},
 that is, its nodes can be coloured using two different colours without two nodes
-of the same colour being connected by an edge.
+of the same colour being connected by an edge. This program requires that the
+graph is \emph{connected}, meaning there is an undirected path between every pair
+of nodes.
 
 This program consists of four rules and uses many of the constructs outlined
 previously, including \textsc{Try-Then-Else}, \textsc{If-Then-Else},
@@ -863,7 +871,7 @@ their implementation.
 
 %==============================================================================
 
-\subsection{Debugging Other Graph Programming Tools}
+\subsection{Debugging With Other Graph Programming Tools}
 \label{sec:DebuggingOtherGraphProgrammingTools}
 
 Each of the three other graph programming tools mentioned in
