@@ -881,7 +881,7 @@ their implementation.
 \label{sec:DebuggingOtherGraphProgrammingTools}
 
 Each of the three other graph programming tools mentioned in
-\autoref{sec:GraphProgramming} have their own debugging or tracing tools.
+Section~\ref{sec:GraphProgramming} have their own debugging or tracing tools.
 
 \subsubsection{AGG}
 
@@ -1359,8 +1359,8 @@ to be reversed before applying the \textsc{Else} subprogram.
 
 This feature of the compiler could be used as part of the debugging features,
 by using it to allow the user to step backwards through the program as it runs,
-similar to the reverse debugging mentioned in \autoref{sec:ReverseDebugging}. It
-would allow the user to see the state of the graph before a certain rule was
+similar to the reverse debugging mentioned in Section~\ref{sec:ReverseDebugging}.
+It would allow the user to see the state of the graph before a certain rule was
 applied, for instance.
 
 However, this backtracking is not available at all points in a program's
@@ -1601,7 +1601,8 @@ been reached in the program, in order to continue from the same point next time.
 Instead of pausing execution to show the current state of the program, this
 method would instead add tracing to the user's program, and the IDE would run
 the entire program before stepping through the history. This is similar to how
-tools such as Hat (discussed in \autoref{sec:TracingInFunctionalLanguages}) work.
+tools such as Hat (discussed in Section~\ref{sec:TracingInFunctionalLanguages})
+work.
 
 The existing way of running a program in the IDE would remain unchanged, and
 would not enable tracing, to avoid any performance impact of having tracing
@@ -1673,7 +1674,7 @@ constant until the user edits the program and has to run it again.
 
 The solution also has trade-offs, such as a possible impact on runtime
 performance; extra work needs to be done to store the trace. Runtime performance,
-while one of the requirements outlined in \autoref{sec:ListOfRequirements},
+while one of the requirements outlined in Section~\ref{sec:ListOfRequirements},
 is less important than the user's ability to actually debug their program. For
 the same reason that IDEs such as Visual Studio disable compiler optimisation
 by default when debugging, an accurate debugger is more useful than a higher
