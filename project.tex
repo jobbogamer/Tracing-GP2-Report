@@ -13,6 +13,7 @@
 
 \usepackage{mathtools}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{tabularx}
 \usepackage{listings}
 \usepackage{framed}
@@ -1045,13 +1046,105 @@ task in those situations.
 \subsection{Experienced GP2 Programmer}
 
 In the first scenario, the user is an experienced GP2 programmer who understands
-all the concepts and semantics of GP2. They have written a program to ?????????
-??????????? but there seems to be a bug in the program, because ???????????????.
+all the concepts and semantics of GP2. They have written a program similar to
+the one shown in \autoref{fig:ExampleProgramDefinition}, to determine whether a
+graph is two-colourable.
 
-They cannot spot the error just by looking at their program, so they decide to
-use the debugger to step through the program... \emph{to be continued...}
+However, their program is slightly different, and does not output the coloured
+graph when it is two-colourable; instead, the original, uncoloured graph is
+always returned, and an extra node is added to show the result. If the graph is
+two-colourable, a green node is added, otherwise a red node is added. The
+program they have written is shown in \autoref{fig:AlternateTwoColourableProgram},
+along with the two new rules, \texttt{add\_red\_node} and \texttt{add\_green\_node}.
+The other rules are omitted since they are identical to the rules in the
+original program.
 
+\begin{figure}
+    \begin{framed}
+        \begin{nscenter}
+            \begin{verbatim}
+Main = if (init; Colour!; Invalid)
+           then add_red_node
+           else add_green_node
+Colour = {colour_blue, colour_red}
+Invalid = {joined_blues, joined_blues}
+            \end{verbatim}
 
+            \begin{tabular}{l @{\hskip 20mm} l}
+                \texttt{add\_red\_node} & \texttt{add\_green\_node}
+                
+                \\
+
+                \begin{tikzpicture}
+                    \node         (transition) {$\Rightarrow$}                                           {};
+                    \node         (lhs) [left=5mm of transition] {$\varnothing$}                         {};
+                    \node[vertex] (rhs) [label=below:\tiny{\texttt{1}},right=5mm of transition,fill=red] {};
+                \end{tikzpicture}
+
+                &
+
+                \begin{tikzpicture}
+                    \node         (transition) {$\Rightarrow$}                                           {};
+                    \node         (lhs) [left=5mm of transition] {$\varnothing$}                         {};
+                    \node[vertex] (rhs) [label=below:\tiny{\texttt{1}},right=5mm of transition,fill=green] {};
+                \end{tikzpicture}
+            \end{tabular}
+        \end{nscenter}
+    \end{framed}
+    \caption{Alternate version of the 2-colourable program}
+    \label{fig:AlternateTwoColourableProgram}
+\end{figure}
+
+Unfortunately, when they test their program, for some inputs it gives the
+incorrect result; for certain non-two-colourable graphs, the program still adds
+a green node to indicate that it is two-colourable. Just by inspecting the
+program, the user cannot determine what the bug is with the program, so they
+decide to use the simplest possible non-two-colourable input graph, shown in
+\autoref{fig:SimplestNonTwoColourableGraph}, and use the debugger to step
+through their program.
+
+\begin{figure}
+    \begin{framed}
+        \begin{nscenter}
+            \begin{tikzpicture}
+                \node[vertex] (top) {};
+                \node[vertex] (left) [below=5mm of top, xshift=-10mm] {}
+                    edge[pre] (top);
+                \node[vertex] (right) [right=10mm of left] {}
+                    edge[post] (top)
+                    edge[pre] (left);
+            \end{tikzpicture}
+        \end{nscenter}
+    \end{framed}
+    \caption{Simplest possible non-two-colourable graph}
+    \label{fig:SimplestNonTwoColourableGraph}
+\end{figure}
+
+As they step through the program, the \texttt{init} rule colours the top node red,
+then \texttt{colour\_blue} is applied, followed by \texttt{colour\_red}. This results
+in the graph being coloured red, blue, red running clockwise. Clearly the rules
+for colouring nodes are defined correctly, so the bug must be in the error
+detection logic.
+
+They continue stepping through the program and it reaches the \texttt{Invalid}
+procedure. They use the debugger to highlight a match for \texttt{Invalid}
+without applying it, and it turns out there are none, which should not be the
+case. They first look at the definitions for the \texttt{joined\_reds} and
+\texttt{joined\_blues} rules, and they are definitely correct. Finally they look
+at the definition of \texttt{Invalid} itself, and realise they have put
+\texttt{joined\_blues} in the rule set twice, so \texttt{joined\_reds} is never
+actually used.
+
+The bug in this program was fairly subtle, since the general structure of the
+program is mostly correct; there are two rules in \texttt{Invalid} as expected,
+but the same rule was added twice. Without the debugger to step through the
+program, it may have taken much longer to spot this mistake, since stepping
+through allowed the user to see the coloured graph before it was reverted by
+the \texttt{if} statement.
+
+The ability to view a match without applying it also helped in this case, since
+it allowed the user to see that none of the rules in \texttt{Invalid} matched,
+without automatically exiting the \texttt{if} condition when no rules matched.
 
 %==============================================================================
 
