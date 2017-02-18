@@ -17,10 +17,13 @@
 \usepackage{tabularx}
 \usepackage{listings}
 \usepackage{framed}
+\usepackage[toc,page]{appendix}
 
 \newenvironment{nscenter}
     {\parskip=0pt\par\nopagebreak\centering}
     {\par\noindent\ignorespacesafterend}
+
+\newcommand{\includecode}[4][c]{\lstinputlisting[caption=#3,label=#4,language=#1]{#2}}
 
 \lstset{
     language=C,
@@ -36,7 +39,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{7856}
+\wordcount{8740}
 
 
 \abstract{
@@ -1710,8 +1713,30 @@ their program.
 \chapter{Implementation}
 \label{cha:Implementation}
 
-\emph{What has changed in the GP2 compiler and in the editor, and how does this
-implement debugging or tracing for the end user?}
+\section{Trace File Format}
+
+The running program and the IDE must communicate in some way in order for the
+debugging interface in the IDE to show the execution of the program. To do this,
+the program trace is stored in a file on disk, so that the program can write to
+it and the IDE can read from it.
+
+The format used for these files is completely internal to the GP2 system and
+does not need to be edited or read directly by users. This means that the format
+can focus on requirements such as being easy to parse in the IDE's C++ code,
+rather than focusing on making it human readable.
+
+Two formats were considered for trace files, one formatted as an XML document,
+and one formatted as a plain text document with a custom structure inside. An
+example trace file in each format is shown in \autoref{lst:XMLFileFormatExample}
+and \autoref{lst:PlainTextFileFormatExample}. These examples both show a
+theoretical execution of the buggy 2-colouring program from
+\autoref{fig:AlternateTwoColourableProgram}.
+
+\includecode[xml]{xmltraceexample.xml}{XML based trace file example}{lst:XMLFileFormatExample}
+
+\includecode{plaintraceexample.txt}{Plain text trace file example}{lst:PlainTextFileFormatExample}
+
+\emph{PICK ONE AND EXPLAIN WHY!!}
 
 \clearpage
 

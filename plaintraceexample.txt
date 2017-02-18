@@ -1,0 +1,34 @@
+PROG ; 2-colouring.gp2 ; triangle.host
+IFFS ; 1
+CNDS
+RULE ; init ; n0
+MARK ; n0 ; 0 ; 1
+LOPS
+ITRS
+PRCS ; Colour
+SETS ; colour_red,colour_blue
+RULE ; colour_blue ; n0,n1,e0
+MARK ; n1 ; 0 ; 2
+SETE
+PRCE
+ITRE
+ITRS
+PRCS ; Colour
+SETS ; colour_red,colour_blue
+RULE ; colour_red ; n1,n2,e1
+MARK ; n2 ; 0 ; 1
+SETE
+PRCE
+ITRE
+LOPE
+PRCS ; Invalid
+SETS ; joined_blues,joined_blues
+RULE ; joined_blues ; fail
+SETE
+PRCE
+CNDE
+ELSS
+RULE ; add_green_node ; ()
+NEWN ; 3 ; () ; 3 ; 0
+ELSE
+IFFE
