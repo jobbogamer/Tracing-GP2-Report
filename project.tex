@@ -39,7 +39,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{8740}
+\wordcount{9140}
 
 
 \abstract{
@@ -1729,14 +1729,53 @@ Two formats were considered for trace files, one formatted as an XML document,
 and one formatted as a plain text document with a custom structure inside. An
 example trace file in each format is shown in \autoref{lst:XMLFileFormatExample}
 and \autoref{lst:PlainTextFileFormatExample}. These examples both show a
-theoretical execution of the buggy 2-colouring program from
+theoretical execution of the incorrect 2-colouring program from
 \autoref{fig:AlternateTwoColourableProgram}.
 
 \includecode[xml]{xmltraceexample.xml}{XML based trace file example}{lst:XMLFileFormatExample}
 
 \includecode{plaintraceexample.txt}{Plain text trace file example}{lst:PlainTextFileFormatExample}
 
-\emph{PICK ONE AND EXPLAIN WHY!!}
+In the XML format, each action in a program is represented by a tag. The
+attributes are used to provide details, such as the label of a node, or whether
+an \textsc{If-Then-Else} required backtracking.
+
+In the plain text format, each action is represented by a line of text similar
+to a line in assembly; it begins with a four-letter code representing the
+operation, which is followed by the details for the operation, separated by
+semicolons.
+
+The XML format was ultimately chosen because it has multiple advantages over the
+plain text format.
+
+One advantage of the XML format is that the Qt framework, which the GP2 IDE uses,
+has a built in XML parser which would make implementation much easier. Using the
+plain text format would require a custom parser to implement. GP2 project files
+(.gpp files) also use XML, meaning it can be expected that other GP2 developers
+understand how to use the XML parser from the Qt framework, making the code
+easier to maintain.
+
+In addition, the XML format is easier to understand by a user if they open the
+file directly. This is because each of the parameters are named, since XML tag
+attributes are name-value pairs. In the plain text format, the parameters are
+simply listed with no other information, making it harder to determine what
+each one means. The XML tag names are also more descriptive than the four letter
+codes from the plain text format.
+
+Whilst readability is not an important factor to end users, it increases
+maintainability for other GP2 developers, because it is easier to understand
+how GP2 interprets the format. It also means that it is easier to manually read
+a trace file if necessary, such as if the IDE crashes while trying to read the
+file.
+
+A disadvantage of this format is that, because every tag has to be closed for
+the XML to be valid, there may be situations where the trace file saved by the
+running program is invalid. For example, if the program contains a bug and fails
+to terminate, the user may have to kill the running program, which would cause
+the closing tags not to be written to the file. Additional code is required in
+the IDE to handle any cases where the end of the XML document is missing.
+This would not have occurred with the other format, because any number of lines
+form a valid file in that format.
 
 \clearpage
 
