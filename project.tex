@@ -39,7 +39,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{9140}
+\wordcount{9388}
 
 
 \abstract{
@@ -949,7 +949,7 @@ There has been some previous work to add debugging facilities to GP2 \citep{tayl
 This work was focused on modifying the compiler to support stepping through a
 program.
 
-In that project, command line arguments were added to allow the user to specify
+In that project, command-line arguments were added to allow the user to specify
 how big a ''step'' should be, and how many steps to execute before stopping.
 This allows GP2 to approximate breakpoints by picking an appropriate step size
 and count in order to finish execution at the point the programmer is interested in.
@@ -1590,8 +1590,8 @@ been reached in the program, in order to continue from the same point next time.
           instead of restarting from the beginning.
 
     \item Adding various granularity options for partial execution would require
-          adding many new command line arguments to the compiler. Having a lot
-          of command line arguments related to debugging may confuse users, and
+          adding many new command-line arguments to the compiler. Having a lot
+          of command-line arguments related to debugging may confuse users, and
           could also lead to potential bugs when using these arguments
           programmatically from the IDE.
 \end{itemize}
@@ -1776,6 +1776,37 @@ the closing tags not to be written to the file. Additional code is required in
 the IDE to handle any cases where the end of the XML document is missing.
 This would not have occurred with the other format, because any number of lines
 form a valid file in that format.
+
+%//////////////////////////////////////////////////////////////////////////////
+
+\section{Modifications to the Compiler}
+
+\subsection{New Command-Line Argument}
+
+Since tracing is optional, the compiler needs to be told when to enable it. The
+simplest way to do this was to add a new command-line flag which enables tracing
+when it is set.
+
+The alternative would have been to communicate this in the program text with a
+keyword or command to enable tracing. This would have been more complicated,
+because the parser in the compiler would need updating, not just the command-line
+interface. Additionally, there are no other keywords of this type in the GP2
+syntax, but there \emph{are} command-line arguments for the compiler; it is best
+to follow the precedent when adding new features, to provide a consistent
+experience to users and to keep the system maintainable.
+
+The new command-line flag, \texttt{-t}, sets a new Boolean global variable,
+\texttt{program\_tracing}, to \texttt{true}. If the flag is not specified, the
+variable defaults to \texttt{false}. This global variable is then used when
+generating C code to determine whether or not to add tracing code.
+
+Care had to be taken when naming this variable, since there are some macros
+designed to be used for debugging. \texttt{GRAPH\_TRACING}, \texttt{RULE\_TRACING},
+and \texttt{BACKTRACK\_TRACING} can be set by a developer working on the compiler
+in order to turn on specific types of tracing. The tracing enabled by these macros
+is no use for program tracing, since the output is designed to be human readable,
+and does not contain all the necessary information to step through the execution
+history of a program.
 
 \clearpage
 
