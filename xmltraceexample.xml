@@ -1,66 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <trace program="2_colouring.gp2"
     input_graph="triangle.host">
-  <if backtracking="true">
-    <condition>
-      <rule name="init">
-        <match>
-          <node id="0" />
-        </match>
-        <apply>
-          <remarked>
-            <node id="0" old="0" new="1" />
-          </remarked>
-        </apply>
-      </rule>
+  <if>
+    <backtracking>
+      <condition>
+        <rule name="init">
+          <match>
+            <node id="0" />
+          </match>
+          <apply>
+            <remarked>
+              <node id="0" old="0" new="1" />
+            </remarked>
+          </apply>
+        </rule>
 
-      <loop>
-        <iteration>
-          <prcoedure name="Colour">
-            <ruleset rules="colour_red,colour_blue">
-              <rule name="colour_blue">
-                <match>
-                  <node id="0" />
-                  <node id="1" />
-                  <edge id="0" />
-                </match>
-                <apply>
-                  <remarked>
-                    <node id="1" old="0" new="2" />
-                  </remarked>
-                </apply>
-              </rule>
-            </ruleset>
-          </prcoedure>
-        </iteration>
+        <loop>
+          <iteration>
+            <prcoedure name="Colour">
+              <ruleset rules="colour_red,colour_blue">
+                <rule name="colour_blue">
+                  <match>
+                    <node id="0" />
+                    <node id="1" />
+                    <edge id="0" />
+                  </match>
+                  <apply>
+                    <remarked>
+                      <node id="1" old="0" new="2" />
+                    </remarked>
+                  </apply>
+                </rule>
+              </ruleset>
+            </prcoedure>
+          </iteration>
 
-        <iteration>
-          <prcoedure name="Colour">
-            <ruleset rules="colour_red,colour_blue">
-              <rule name="colour_red">
-                <match>
-                  <node id="1" />
-                  <node id="2" />
-                  <edge id="1" />
-                </match>
-                <apply>
-                  <remarked>
-                    <node id="2" old="0" new="1" />
-                  </remarked>
-                </apply>
-              </rule>
-            </ruleset>
-          </prcoedure>
-        </iteration>
-      </loop>
+          <iteration>
+            <prcoedure name="Colour">
+              <ruleset rules="colour_red,colour_blue">
+                <rule name="colour_red">
+                  <match>
+                    <node id="1" />
+                    <node id="2" />
+                    <edge id="1" />
+                  </match>
+                  <apply>
+                    <remarked>
+                      <node id="2" old="0" new="1" />
+                    </remarked>
+                  </apply>
+                </rule>
+              </ruleset>
+            </prcoedure>
+          </iteration>
+        </loop>
 
-      <prcoedure name="Invalid">
-        <ruleset rules="joined_blues,joined_blues">
-          <rule name="joined_blues">
-          </rule>
-        </ruleset>
-      </prcoedure>
-    </condition>
+        <prcoedure name="Invalid">
+          <ruleset rules="joined_blues,joined_blues">
+            <rule name="joined_blues">
+            </rule>
+          </ruleset>
+        </prcoedure>
+      </condition>
+    </backtracking>
 
     <else>
       <rule name="add_green_node">
