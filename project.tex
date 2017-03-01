@@ -1346,9 +1346,10 @@ Additionally, because the interpreter is only a reference implementation, the
 compiler is the implementation intended for most users. If the IDE were to be
 changed to run the interpreter for debugging programs, checks would have to be
 made to ensure that the interpreter produces identical outputs to a compiled
-version of the same program. This may involve adding a ''single-result mode'' to
-the interpreter, where only one output graph is produced, instead of all
-possibilities. This would require substantial changes to the interpreter.
+version of the same program. This would involve using the interpreter in
+single-result mode, which causes the interpreter to return one result graph
+instead of all possible results. However, it still cannot be guaranteed that
+the single result matches the result produced by the compiler.
 
 %==============================================================================
 
