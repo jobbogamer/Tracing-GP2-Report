@@ -1665,7 +1665,7 @@ execution history of their program.
           already finished when the user regains control.
 \end{itemize}
 
-%==============================================================================
+%//////////////////////////////////////////////////////////////////////////////
 
 \section{Chosen Solution}
 \label{sec:ChosenSolution}
@@ -1719,14 +1719,9 @@ if the program is non-terminating and needs to be killed, the user will still
 be able to trace through the earlier part of the execution and be able to debug
 their program.
 
-\clearpage
+%==============================================================================
 
-%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-\chapter{Implementation}
-\label{cha:Implementation}
-
-\section{Trace File Format}
+\subsection{Trace File Format}
 
 The running program and the IDE must communicate in some way in order for the
 debugging interface in the IDE to show the execution of the program. To do this,
@@ -1790,7 +1785,12 @@ the IDE to handle any cases where the end of the XML document is missing.
 This would not have occurred with the other format, because any number of lines
 form a valid file in that format.
 
-%//////////////////////////////////////////////////////////////////////////////
+\clearpage
+
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+\chapter{Implementation}
+\label{cha:Implementation}
 
 \section{Modifications to the Compiler}
 
