@@ -1032,6 +1032,18 @@ requirements this leads to are:
           new code, follow conventions and make code readable. Make the intent
           of any changes clear to ensure future developers will understand what
           has been changed.
+
+    \item Consider dependencies between components. To implement debugging will
+          require modifying both the compiler and the IDE. It is important to
+          consider the dependencies between these components, to ensure that
+          they can still function independently.
+
+          It is also important to consider the dependencies between new code and
+          existing code. If bugs are discovered in the compiler, for example, it
+          must be possible to fix them without needing to modify the code added
+          for debugging, and vice versa, since compilation and debugging should
+          be separate components. Compilation should still work independently
+          of debugging. 
 \end{itemize}
 
 %//////////////////////////////////////////////////////////////////////////////
