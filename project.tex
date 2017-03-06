@@ -1793,8 +1793,10 @@ form a valid file in that format.
 \label{cha:Implementation}
 
 \section{Modifications to the Compiler}
+\label{sec:ModificationsToCompiler}
 
 \subsection{New Command-Line Argument}
+\label{sec:NewCommandLineArgument}
 
 Since tracing is optional, the compiler needs to be told when to enable it. The
 simplest way to do this was to add a new command-line flag which enables tracing
@@ -1821,6 +1823,65 @@ is no use for program tracing, since the output is designed to be human readable
 and does not contain all the necessary information to step through the execution
 history of a program.
 
+%==============================================================================
+
+\subsection{Tracing Module}
+\label{sec:TracingModule}
+
+GP2 has a static library named \texttt{libGP2} which contains modules for
+performing various tasks such as searching for nodes and edges, and modifying
+graph objects. It is used to avoid the compiler having to generate the same code
+for every compiled program, since none of the operations performed by \texttt{libGP2}
+are different for different programs.
+
+To implement the tracing functionality, a new module was added to \texttt{libGP2}
+called \texttt{tracing}, which contains functions for creating and updating a
+tracefile. This was created in \texttt{libPG2} because the tracing itself is
+not dependent on the compiled program; the act of printing to the tracefile is
+always the same, and all that differs are the actual details being printed.
+
+The tracing module contains a set of functions which print data to a tracefile
+when called by the compiled C program. Two of these are for creating and closing
+the tracefile itself; these are intended to be called at the very beginning and
+end of the program. Two are for beginning and ending \emph{contexts}, discussed
+in detail later in this section. The rest are called whenever the program modifies
+the graph in some way, and record details about these changes. For instance, the
+\texttt{traceCreatedNode()} function takes a pointer to a newly created graph
+node, and adds a line to the tracefile containing all the details necessary to
+recreate that node when stepping through the tracefile in the IDE.
+
+%------------------------------------------------------------------------------
+
+\subsubsection{Contexts}
+\label{sec:Contexts}
+
+sausage
+
+%==============================================================================
+
+\subsection{Changes to Compiled Code}
+\label{sec:ChangesToCompiledCode}
+
+When tracing is enabled in the compiler using the previously dicussed command-line
+argument, additional code is generated in the compiled C program to call the
+functions in the tracing module at the correct times.
+
+At the beginning of the generated \texttt{main()} function, the compiler generates
+a call to \texttt{beginTraceFile()}, which creates a new file in the same
+directory as the output graph, and starts the file by printing the XML doctype
+specifier, and an opening \texttt{<trace>} tag containing the name of the program
+being run, and the filename of the input graph.
+
+There is a matching call to \texttt{finishTraceFile()} in the generated \texttt{garbageCollect()}
+function. This function is called whenever the program is about to exit, meaning
+either the end of \texttt{main()} is reached, a rule fails to match, or the GP2
+\textsc{Fail} statement is used. This call could not simply be put at the end
+of \texttt{main()}, since the compiled program exits early if a failure occurs.
+\texttt{finishTraceFile()} must always be called, no matter how the program exits,
+because the tracefile must contain a closing \texttt{</trace>} tag for the XML
+to be valid. If it is invalid, the IDE will fail to parse the file, and it will
+not be able to step through the trace.
+ 
 \clearpage
 
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
