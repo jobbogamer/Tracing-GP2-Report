@@ -1903,6 +1903,23 @@ in turn and closes that context, until the stack is empty and the tracefile can
 be closed. If contexts were left open, the XML file would be invalid and parsing
 would fail.
 
+Contexts can also have a \emph{label}, implemented using an XML attribute; most
+commonly this label is a name, such as the name of a procedure or rule. This is
+achieved by calling \texttt{traceBeginNamedContext()} and passing both the
+context and the name label. For example, \\
+\texttt{traceBeginNamedContext("procedure", "Colour")} would print
+\texttt{<procedure name="Colour">} to the tracefile.
+
+Branch structures use a special type of label called \texttt{backtracking}, which
+contains either \texttt{true} or \texttt{false} depending on whether backtracking
+is required for that structure. As discussed in Subsection~\ref{sec:BacktrackingInTheGP2Compiler},
+in some cases the compiler does not generate backtracking code because the
+rules applied in the conditional part of the structure do not make changes to
+the graph. In this case, the \texttt{backtracking} label is set to \texttt{false}
+so that the IDE knows the changes do not need to be reversed once tracing reaches
+the end of the condition. This is achieved using the \texttt{traceBeginLabelledContext()}
+function.
+
 %==============================================================================
 
 \subsection{Changes to Compiled Code}
