@@ -1831,8 +1831,8 @@ history of a program.
 GP2 has a static library named \texttt{libGP2} which contains modules for
 performing various tasks such as searching for nodes and edges, and modifying
 graph objects. It is used to avoid the compiler having to generate the same code
-for every compiled program, since none of the operations performed by \texttt{libGP2}
-are different for different programs.
+for every compiled program, since the operations performed by \texttt{libGP2}
+are generic and aren't program-specific.
 
 To implement the tracing functionality, a new module was added to \texttt{libGP2}
 called \texttt{tracing}, which contains functions for creating and updating a
@@ -1855,7 +1855,53 @@ recreate that node when stepping through the tracefile in the IDE.
 \subsubsection{Contexts}
 \label{sec:Contexts}
 
-sausage
+GP2 programs have structure, including control flow and procedures. These
+structures can also be nested; for example the condition of a \textsc{If-Then-Else}
+statement can contain a \textsc{Procedure}, which itself could contain a loop,
+and so on. To be able to step through a user's program, the IDE needs to keep
+track of the structure of the program, so it can follow the execution and show
+the user what part of the program is being executed.
+
+The tracing module uses the nested structure of XML documents to record the
+structure of a GP2 program, by nesting GP2 constructs into \emph{contexts} in the
+tracefile. A context is simply an XML tag describing the GP2 construct being
+used, such as a \texttt{<loop>} context containing the steps carried out inside
+an \textsc{As-Long-As-Possible} structure.
+
+When the program enters a structure at runtime, it calls the \\
+\texttt{traceBeginContext()} function in the tracing module, passing the type of
+context as the argument. For instance, when entering a loop, the program will call
+\texttt{traceBeginContext("loop")}, which causes a \texttt{<loop>} tag to be
+printed to the tracefile.
+
+Each context also must be closed when the program exits that structure; continuing
+the example from before, the program will call \\
+\texttt{traceEndContext()} when it finishes the loop. This prints the closing
+\texttt{</loop>} tag in the tracefile.
+
+No argument is required when closing a context, because the tracing module keeps
+track of the current nesting of contexts, and always closes the most recently
+opened one. To track the nesting of contexts, the tracing module uses a stack.
+When a new context is opened, an element is pushed onto the stack which contains
+the context's name. When the program calls \texttt{traceEndContext()}, the
+topmost item is popped from the stack, and the name is read, so that the correct
+name is used in the closing tag.
+
+This stack structure works because XML tags must always be closed in the reverse
+order to how they were opened. For instance, \\
+\texttt{<loop><procedure></loop></procedure>} would be invalid, because the
+tags are not closed in reverse order. It also makes sense to do this because
+when GP2 structures are nested, the outer one cannot end before the inner one;
+a loop cannot end before a procedure inside the loop finishes.
+
+The tracing module must keep track of contexts because when a failure occurs in
+the GP2 program, no further code is executed before performing garbage collection
+and terminating; this means that there will possibly be contexts left open by
+the program. The implementation of \texttt{finishTraceFile()} uses the context
+stack to ensure all open contexts are closed. It pops each item from the stack
+in turn and closes that context, until the stack is empty and the tracefile can
+be closed. If contexts were left open, the XML file would be invalid and parsing
+would fail.
 
 %==============================================================================
 
