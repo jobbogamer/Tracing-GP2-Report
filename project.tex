@@ -1927,7 +1927,69 @@ of \texttt{main()}, since the compiled program exits early if a failure occurs.
 because the tracefile must contain a closing \texttt{</trace>} tag for the XML
 to be valid. If it is invalid, the IDE will fail to parse the file, and it will
 not be able to step through the trace.
+
+In the compiled program, the \texttt{main()} function contains the high level
+structure of the program; rule matching and application are functions called
+from \texttt{main()}. In the code to generate \texttt{main()}, additional code
+was added at each point where a control structure starts or ends. For example,
+\autoref{lst:ProcedureGeneration} shows pseudocode for generating C code to
+run a GP2 \textsc{Procedure}. 
+
+\begin{lstlisting}[
+    caption=Pseudocode for generating a \textsc{Procedure},
+    label=lst:ProcedureGeneration
+]
+if (GP2 structure is of type Procedure) {
+  if (program_tracing) {
+    generateCode(traceBeginNamedContext("procedure",
+        procedure.name));
+  }
+  generateProcedureCode(procedure);
+  if (program_tracing) {
+    generateCode(traceEndContext());
+  }
+}
+\end{lstlisting}
  
+The only change to the original code is the new conditional statements which
+check whether tracing is enabled, and if it is, make the calls to begin and end
+the \texttt{<procedure>} context. The changes to all other GP2 structures are
+similar, simply adding two extra function calls if tracing is enabled. Because
+such a small amount of code was added to the compiler in each location, it is
+still easy to understand the code, and to see which lines are related to tracing.
+
+The other change is when generating the functions for matching and applying rules.
+In the case of matching, the  function \texttt{traceRuleMatch()} is called,
+passing a pointer to a \texttt{Morphism} object, which contains a list of the
+nodes, edges, and variables used in a rule match. The tracing module then 
+iterates over the objects in the \texttt{Morphism} and prints them into the
+tracefile inside a \texttt{<match>} context. The function also takes a Boolean
+argument specifying whether the match was successful or not; this is required
+since an empty \texttt{Morphism} can either mean the match failed, or there are
+simply no nodes or edges in the match (the LHS of the rule is empty).
+
+During a rule application, a tracing function call is generated each time a
+change is made to the graph. For instance, when an edge or node is deleted from
+the graph, or when a node is relabelled. There is a function for each type of
+graph operation in the tracing module, and the generated code calls the correct
+one in each case.
+
+In each case, it is simply one or two lines of code inside a conditional
+statement checking whether tracing is enabled. The addition of tracing to the
+compiler did not have a large impact on the amount of code required, except for
+the addition of the tracing module itself in \texttt{libGP2}. However, since all
+the tracing code is contained in that module, it is easy to remove if necessary,
+and the existing compiler code can function independently of having the module
+present, as long as the \texttt{program\_tracing} variable is set to \texttt{false}
+when the tracing module is missing.
+
+%//////////////////////////////////////////////////////////////////////////////
+
+\section{Changes to the IDE}
+\label{sec:ChangesToTheIDE}
+
+Stuff
+
 \clearpage
 
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
