@@ -1469,13 +1469,18 @@ do
 \end{lstlisting}
 
 If a user is familiar with the GP2 specification, they may expect their program
-to run non-deterministically. They may also expect features in the debugger
-related to this non-determinism, such as showing all the possible matches for
-a rule, or showing all the matching rules in a \textsc{Rule Set}. However,
-because the code for a \textsc{Rule Set} does not attempt to match any other
-rules once a match is found, the debugger cannot show all matching rules.
-Enabling this would require modifying the compiler to find all matches before
-picking one, even if it still always picked the first match.
+to behave non-deterministically, such as selecting rule matches
+non-deterministically, or producing multiple possible output graphs. They may
+also expect features in the debugger related to this non-determinism, such as
+showing all the possible matches for a rule, or showing all the matching rules
+in a \textsc{Rule Set}. However, because the compiler produces mostly 
+deterministic programs, it is not currently possible to support anything like
+this in the debugger.
+
+For example, the generated code for a \textsc{Rule Set} does not attempt to
+match any other rules once a match is found, so the debugger could not show all
+matching rules. Enabling this would require modifying the compiler to find all
+matches before picking one, even if it still always picked the first match.
 
 The exception to this is the \textsc{Or} statement. In the GP2 compiler, this
 statement does not always choose the same option, but instead uses the
@@ -1490,6 +1495,12 @@ analagous to a GP2 \textsc{Or} statement, which randomly calls one of two
 functions based on a random number. A C programmer would not expect the
 debugger to always follow the same execution path when debugging this code,
 so it is reasonable to take the same approach with a GP2 debugger.
+
+It would also not be possible to show the user the different outcomes which
+would occur in each branch of the \textsc{Or} statement, because only one is
+executed at runtime, and also because compiled GP2 programs are only capable
+of producing one output graph. It would require a lot of re-implementation in
+the compiler to support multiple outputs.
 
 \begin{lstlisting}[
     caption=C code analagous to GP2's \textsc{Or} statement,
