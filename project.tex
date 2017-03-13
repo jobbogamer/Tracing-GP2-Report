@@ -1726,12 +1726,11 @@ format of graphs and programs in GP2.
 Finally, although the other proposed design would have trivially allowed
 non-terminating programs to be debugged, this design does not have a clear
 solution to this problem. It is more difficult to support non-terminating
-programs with tracing, since as first glance it appears the program has to
-finish running before it can output a trace. However, it is possible to get
-around this by, for example, periodically writing a partial trace to disk. Then,
-if the program is non-terminating and needs to be killed, the user will still
-be able to trace through the earlier part of the execution and be able to debug
-their program.
+programs with tracing, since at first glance it appears the program has to
+finish running before it can output a trace. However, if the file is written
+while the program is still running, rather than storing the trace in memory and
+writing it to disk at the end, a partial trace can still be retrieved even if
+the running program is forcefully ended by the user.
 
 %==============================================================================
 
@@ -1794,10 +1793,30 @@ A disadvantage of this format is that, because every tag has to be closed for
 the XML to be valid, there may be situations where the trace file saved by the
 running program is invalid. For example, if the program contains a bug and fails
 to terminate, the user may have to kill the running program, which would cause
-the closing tags not to be written to the file. Additional code is required in
-the IDE to handle any cases where the end of the XML document is missing.
-This would not have occurred with the other format, because any number of lines
-form a valid file in that format.
+the closing tags not to be written to the file.
+
+There are two methods to get around this issue for non-terminating programs; the
+first is to add some way for the user to mark a point in the GP2 program text
+at which the tracefile is finished and closed. During compilation, if the compiler
+sees this mark, which could be a keyword or a special kind of comment, it would
+insert additional code to end the tracefile at that point before continuing with
+execution. The user could then press texttt{\textasciicircum C} at the
+command line to terminate the program, and continue using the tracefile.
+The disadvantage to this method is that it would involve modifying the specification
+of GP2 syntax to include the new mark. This would mean that the compiler is
+backwards-compatible, meaning that the new compiler can still compile old GP2 code,
+but not forwards-compatible, because old compilers would not be able to compile
+programs written using the new syntax.
+
+The second method is to add code to the compiled GP2 program which handles the
+termination signal sent when the user presses \texttt{\textasciicircum C}. This
+code would print any necessary closing tags to the tracefile before exiting. This
+would be simpler to implement, since the compiler could statically generate the
+signal handling code, rather than parsing additional information from the GP2
+program text. However, it would mean that the user must attempt to guess when to
+press \texttt{\textasciicircum C}; they must wait long enough for the program to
+reach the infinite loop before terminating. There is no way to tell at runtime
+where the program has reached.
 
 \clearpage
 
