@@ -1709,10 +1709,13 @@ performance one.
 
 A lot of memory and disk space is available on modern hardware; it is unlikely
 that a GP2 trace would exhaust the available resources on a relatively recent
-machine. In addition, the GP2 IDE is not currently distributed outside of the
-University of York, meaning that the target hardware is mostly the university
-hardware, which is designed to have a large amount of both RAM and hard disk
-space available.
+machine. For example, in \citep{GP2Interpreter}, a program is given to generate
+a Sierpinski triangle, a task which is known to be difficult and was posed as
+a competition for graph transformation tools \citep{SierpinskiCompetition}.
+Experimentally, running this GP2 program using the current version of the GP2
+compiler produces a C program which can produce the 12th-generation Sierpinski
+triangle, containing over 797,000 nodes and 1,594,000 edges, while using less
+than 250 MB of memory at runtime.
 
 Additionally, a trace format will need to be designed and implemented so that
 the program and the IDE can communicate. This will be a simple Domain-Specific
