@@ -18,6 +18,9 @@
 \usepackage{listings}
 \usepackage{framed}
 \usepackage[toc,page]{appendix}
+\usepackage{graphicx}
+
+\graphicspath{ {Screenshots/} }
 
 \newenvironment{nscenter}
     {\parskip=0pt\par\nopagebreak\centering}
@@ -39,7 +42,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{11,079}
+\wordcount{11,776}
 
 
 \abstract{
@@ -466,7 +469,7 @@ host graph can contain coloured nodes. The colour is taken into account when
 searching for a rule match; for example, in this program, \texttt{joined\_reds}
 will only match when both the nodes' colours are red.
 
-\begin{figure}
+\begin{figure}[!htb]
 \begin{framed}
     \begin{nscenter}
         \begin{verbatim}
@@ -1169,7 +1172,7 @@ In the second scenario, the user is inexperienced with GP2 and is still trying
 to learn the language. They understand most of how the language works, but they
 are having trouble with understanding the in semantics of \textsc{If-Then-Else}.
 
-\begin{figure}
+\begin{figure}[!htb]
     \begin{framed}
         \begin{nscenter}
             \begin{tabular}{l}
@@ -2038,7 +2041,64 @@ when the tracing module is missing.
 \section{Changes to the IDE}
 \label{sec:ChangesToTheIDE}
 
-Stuff
+\subsection{UI Changes}
+\label{sec:UIChanges}
+
+\begin{figure}[!htb]
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{TracingCheckbox}
+    \end{nscenter}
+    \caption{Checkbox to enable tracing for a run configuration.}
+    \label{fig:TracingCheckbox}
+\end{figure}
+
+There are two changes in the IDE's UI. First, a checkbox has been added for each
+run configuration in the Run tab, shown in \autoref{fig:TracingCheckbox}. Enabling
+this checkbox before running a run configuration sets the new compiler command-line
+argument to enable tracing for that run. If the checkbox is disabled, the program
+runs without tracing, resulting in identical behaviour to before the IDE was
+modified. This means the user is free to use the IDE without being forced to run
+tracing.
+
+\begin{figure}[!htb]
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{TracingTab}
+    \end{nscenter}
+    \caption{Tracing tab in the IDE.}
+    \label{fig:TracingTab}
+\end{figure}
+
+The other modification was to add a new tab to the left side of the window
+which, when clicked, opens a screen where the user can view and control the trace.
+This screen is shown in \autoref{fig:TracingTab}.
+
+At the top of this screen is the graph at the current point in the trace. This
+graph view is updated whenever the user steps forward or backward in the trace,
+to reflect the graph as it would have appeared if the program ended at that point.
+
+Below the graph view is a status bar, a small line of text which is updated to
+give the user information about the state of the program. For example, when a rule
+fails to match, a message is displayed in the status bar. The status bar is necessary
+because some situations, such as failed rule matches, cannot be displayed on the graph
+or in the program text, since there is no well-defined or clear way to do so.
+
+Next is a row of buttons which are used to control the trace. It is possible to
+step forward and backward by one step, or to jump directly to the beginning or the
+end of the trace. There is also a button which highlights a rule match, if there
+is a valid match. The match is shown in the graph view by highlighting the nodes
+and edges which comprise the match. The button then changes to allow the user to
+apply the rule on the match being shown.
+
+Finally, at the bottom of the screen, there is a copy of the program text. In this
+section, the next step of the program is highlighted with a green background. This
+shows the user what will be executed if they press the ''Step Forward'' button. Some
+IDEs, such as Visual Studio, display a marker on the left edge of the program text
+to show the next line of code which will be executed. This would not work for GP2,
+because there may be multiple rule calls on a single line of a GP2 program, and it
+is important to distinguish which one is the next to be called. This is why the
+individual program tokens must be highlighted, instead of the entire line.
+
+
 
 \clearpage
 
