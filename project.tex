@@ -2098,6 +2098,20 @@ because there may be multiple rule calls on a single line of a GP2 program, and 
 is important to distinguish which one is the next to be called. This is why the
 individual program tokens must be highlighted, instead of the entire line.
 
+\subsection{Tracing Backend}
+\label{sec:TracingBackend}
+
+To support reading tracefiles and displaying the trace in the UI, five new
+components were added to the IDE. These components were designed using the
+Model-View-Controller (MVC) pattern \citep{mvc}. Three components comprise the
+\emph{model}, which read the tracefile and track the state of the trace; one is
+the \emph{view}, which controls the UI elements on-screen; and the last is the
+\emph{controller}, which handles communication between the view and the model.
+
+Using MVC makes the system easier to maintain and modify; for example, if a bug
+is discovered in the model related to parsing the tracefile, the view component
+does not need to be modified, since the view simply updates the user interface
+based on the data it receives from the controller.
 
 
 \clearpage
