@@ -1,5 +1,11 @@
 \documentclass[authoryearcitations]{UoYCSproject}
 
+\usepackage[
+    bindingoffset=13mm,
+    includehead, includefoot,
+    left=2cm, right=2cm, top=2cm, bottom=2cm
+]{geometry}
+
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
 
@@ -1756,9 +1762,9 @@ and \autoref{lst:PlainTextFileFormatExample}. These examples both show a
 theoretical execution of the incorrect 2-colouring program from
 \autoref{fig:AlternateTwoColourableProgram}.
 
-\includecode[xml]{xmltraceexample.xml}{XML based trace file example}{lst:XMLFileFormatExample}
+\includecode[xml]{CodeSnippets/xmltraceexample.xml}{XML based trace file example}{lst:XMLFileFormatExample}
 
-\includecode{plaintraceexample.txt}{Plain text trace file example}{lst:PlainTextFileFormatExample}
+\includecode{CodeSnippets/plaintraceexample.txt}{Plain text trace file example}{lst:PlainTextFileFormatExample}
 
 In the XML format, each action in a program is represented by a tag. The
 attributes are used to provide details, such as the label of a node, or whether
@@ -1904,9 +1910,9 @@ tracefile. A context is simply an XML tag describing the GP2 construct being
 used, such as a \texttt{<loop>} context containing the steps carried out inside
 an \textsc{As-Long-As-Possible} structure.
 
-When the program enters a structure at runtime, it calls the \\
-\texttt{traceBeginContext()} function in the tracing module, passing the type of
-context as the argument. For instance, when entering a loop, the program will call
+When the program enters a structure at runtime, it calls the \texttt{traceBeginContext()}
+function in the tracing module, passing the type of context as the argument.
+For instance, when entering a loop, the program will call
 \texttt{traceBeginContext("loop")}, which causes a \texttt{<loop>} tag to be
 printed to the tracefile.
 
@@ -1942,8 +1948,8 @@ would fail.
 Contexts can also have a \emph{label}, implemented using an XML attribute; most
 commonly this label is a name, such as the name of a procedure or rule. This is
 achieved by calling \texttt{traceBeginNamedContext()} and passing both the
-context and the name label. For example, \\
-\texttt{traceBeginNamedContext("procedure", "Colour")} would print
+context and the name label. For example, \texttt{traceBeginNamedContext("procedure", "Colour")}
+would print \\
 \texttt{<procedure name="Colour">} to the tracefile.
 
 Branch structures use a special type of label called \texttt{backtracking}, which
@@ -2125,8 +2131,8 @@ of the system.
 \begin{itemize}
     \item The \texttt{TraceParser} class is responsible for reading the tracefile
           and determining the steps the program took while it was running. It is
-          implemented using a \texttt{QXMLStreamReader}, an API which parses an
-          XML document from a data stream; it does not require an entire XML file
+          implemented using the Qt class \texttt{QXMLStreamReader}, which
+          parses an XML document from a data stream; it does not require an entire XML file
           to begin the parsing process. This is useful because it means the
           IDE can handle tracing even from a program which crashed or was forced
           to terminate early, even though the end of the tracefile will be missing
