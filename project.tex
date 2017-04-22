@@ -42,7 +42,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{11,776}
+\wordcount{12,697}
 
 
 \abstract{
@@ -2113,6 +2113,102 @@ is discovered in the model related to parsing the tracefile, the view component
 does not need to be modified, since the view simply updates the user interface
 based on the data it receives from the controller.
 
+\subsubsection{Model}
+\label{sec:MVCModel}
+
+The model is made up of three C++ classes, each with a specific task. This
+modularity means that functionality is encapsulated within an object designed
+to perform that specific function, increasing the readability and maintainability
+of the system.
+
+\begin{itemize}
+    \item The \texttt{TraceParser} class is responsible for reading the tracefile
+          and determining the steps the program took while it was running. It is
+          implemented using a \texttt{QXMLStreamReader}, an API which parses an
+          XML document from a data stream; it does not require an entire XML file
+          to begin the parsing process. This is useful because it means the
+          IDE can handle tracing even from a program which crashed or was forced
+          to terminate early, even though the end of the tracefile will be missing
+          in these cases.
+
+          Each time the \texttt{TraceParser} is called, it parses one XML tag, such
+          as a \texttt{<procedure>} context, or a graph change such as a
+          \texttt{<createdNode>} element. This tag is then converted into a custom
+          C++ \texttt{TraceStep} structure which contains all the information about
+          that step in the trace, including the type of step, any changes made to
+          the graph during that step, and the name of the context. These structures
+          are then stored in a list, in order, so that iterating over the list steps
+          through the trace.
+
+    \item The \texttt{TraceHighlighter} class is used to determine which part of
+          the program text should be highlighted in the UI. Its \texttt{update()}
+          method takes a \texttt{TraceStep} structure as an argument, which is used
+          to find the matching portion of the program text.
+
+          For instance, if it is passed a \texttt{TraceStep} object representing a
+          rule call, it starts from the current highlighted position and searches
+          through the program looking for a call to a rule with the same name. Since
+          GP2 programs are executed in textual order, the first matching rule call it
+          finds must be the correct one.
+
+          When a \texttt{TraceStep} is passed in which represents the beginning or
+          end of a context (as defined in Section~\ref{sec:TracingModule}), it searches
+          for GP2 keywords, such as \texttt{if}, \texttt{try}, or \texttt{skip}, or
+          symbols, such as the loop operator \texttt{!} or curly braces \texttt{\{}
+          \texttt{\}} for a ruleset.
+
+    \item Finally, the \texttt{TraceRunner} class stores the state of the trace, and
+          calls the \texttt{TraceParser} and \texttt{TraceHighlighter} classes when
+          required. It is this class which handles method calls from the controller,
+          either to step through the trace in a specified direction or to find and
+          highlight a match for the current rule.
+
+          When the \texttt{step()} method is called, it attempts to load the next
+          \texttt{TraceStep} structure from the list. If there are none left in the
+          list, the \texttt{TraceParser} class is called in order to parse the next
+          step of the trace. The parsing is done incrementally in this way to increase
+          performance and reduce memory usage; parsing the entire tracefile may take
+          a significant amount of time if the program had a large number of steps, and
+          each of these steps would need to be stored in the list. By parsing
+          incrementally, trace steps are only parsed and stored when the user reaches
+          them in the trace, so if they exit the trace before the end, the parser did
+          not waste time parsing the end of the XML.
+
+          After loading the next \texttt{TraceStep}, any graph changes from that step
+          are applied to the graph. If the user is stepping backwards through the trace,
+          the graph changes from the step are reversed; for example, if a node was
+          added at that point, stepping backwards would remove the node from the graph.
+          The \texttt{TraceRunner} class exposes a \texttt{getGraph()} method to return
+          the current graph state for displaying in the UI; the controller calls this
+          method when the user clicks a button to step through.
+
+          Finally, the \texttt{TraceStep} \emph{after} the current one is then passed
+          to the \texttt{TraceHighlighter}, which returns the position in the program
+          which should be highlighted. As previously discussed, the next step is
+          highlighted, not the step which was just executed, so that the user is aware
+          of what will occur when they click the step button.
+
+\end{itemize}
+
+\subsubsection{View}
+\label{sec:MVCView}
+
+The view is a Qt \emph{form}, a special file format which tells the Qt
+framework which UI elements to display and how to display them. The view
+component does not contain any code; it simply describes how to build the UI as
+outlined in Subsection~\ref{sec:UIChanges}.
+
+\subsubsection{Controller}
+\label{sec:MVCController}
+
+The controller is a small C++ class which acts as a communication layer between
+the view and the model. When the user clicks a button in the view, the controller
+forwards a method call onto the model, performing the action intended by the
+button which was pressed.
+
+At the end of the method call linked to each button, the controller fetches the
+most recent graph and program highlight state from the \texttt{TraceRunner}, and
+uses it to update the view.
 
 \clearpage
 
