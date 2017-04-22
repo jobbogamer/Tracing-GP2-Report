@@ -1917,9 +1917,8 @@ For instance, when entering a loop, the program will call
 printed to the tracefile.
 
 Each context also must be closed when the program exits that structure; continuing
-the example from before, the program will call \\
-\texttt{traceEndContext()} when it finishes the loop. This prints the closing
-\texttt{</loop>} tag in the tracefile.
+the example from before, the program will call \texttt{traceEndContext()} when it
+finishes the loop. This prints the closing \texttt{</loop>} tag in the tracefile.
 
 No argument is required when closing a context, because the tracing module keeps
 track of the current nesting of contexts, and always closes the most recently
@@ -1930,11 +1929,10 @@ topmost item is popped from the stack, and the name is read, so that the correct
 name is used in the closing tag.
 
 This stack structure works because XML tags must always be closed in the reverse
-order to how they were opened. For instance, \\
-\texttt{<loop><procedure></loop></procedure>} would be invalid, because the
-tags are not closed in reverse order. It also makes sense to do this because
-when GP2 structures are nested, the outer one cannot end before the inner one;
-a loop cannot end before a procedure inside the loop finishes.
+order to how they were opened. For instance, \texttt{<loop><procedure></loop></procedure>}
+would be invalid, because the tags are not closed in reverse order. It also makes
+sense to do this because when GP2 structures are nested, the outer one cannot end
+before the inner one; a loop cannot end before a procedure inside the loop finishes.
 
 The tracing module must keep track of contexts because when a failure occurs in
 the GP2 program, no further code is executed before performing garbage collection
