@@ -42,7 +42,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{12,697}
+\wordcount{12,703}
 
 
 \abstract{
@@ -2103,10 +2103,11 @@ individual program tokens must be highlighted, instead of the entire line.
 
 To support reading tracefiles and displaying the trace in the UI, five new
 components were added to the IDE. These components were designed using the
-Model-View-Controller (MVC) pattern \citep{mvc}. Three components comprise the
-\emph{model}, which read the tracefile and track the state of the trace; one is
-the \emph{view}, which controls the UI elements on-screen; and the last is the
-\emph{controller}, which handles communication between the view and the model.
+Model-View-Controller (MVC) pattern \citep{mvc}. The \emph{model} reads the
+tracefile and tracks the state of the trace, and is formed of three of the
+five new components. The other two components are the \emph{view}, which
+controls what is shown on-screen, and the \emph{controller}, which handles
+communication between the view and the model.
 
 Using MVC makes the system easier to maintain and modify; for example, if a bug
 is discovered in the model related to parsing the tracefile, the view component
