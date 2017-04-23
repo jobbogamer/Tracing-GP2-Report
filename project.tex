@@ -48,7 +48,7 @@
 \date{Date TBC}
 \supervisor{Detlef Plump}
 \MEng
-\wordcount{12,703}
+\wordcount{13,169}
 
 
 \abstract{
@@ -2317,7 +2317,49 @@ the rest of the system.
 \section{Performance}
 \label{sec:Performance}
 
-\emph{Test the performance of some GP2 alogrithms with tracing turned on and off.}
+\begin{table}[!htb]
+    \begin{nscenter}
+        \begin{tabular}{|l|r|r|}
+            \hline
+            \textbf{Tracing} & \textbf{Average Compilation Time (ms)} & \textbf{Average Run Time (s)} \\ \hline
+            Disabled         & 9.6                                    & 12.970                        \\ \hline
+            Enabled          & 10.0                                   & 15.180                        \\ \hline
+        \end{tabular}
+        \caption{Average performance of the 11th-generation Sierpinski Triangle program.}
+        \label{tab:PerformanceTests}
+    \end{nscenter}
+\end{table}
+
+It is important that the changes made to GP2 did not negatively impact the speed
+of compiling and running a program, since it would make debugging a program
+cumbersome to have to wait longer for the program to execute.
+
+To check the performance of the system, the Sierpinski Triangle generation
+program mentioned in Section~\ref{sec:ChosenSolution} was compiled and run with
+tracing disabled and then with tracing enabled, to compare the time taken in
+both cases. The program was set to generate the 11th-generation Sierpinski
+Triangle.
+
+In each case, the program was compiled and run ten times, and the average time
+was taken. These tests were run on a PC with a 4.0 GHz processor and 24 GB of RAM
+using the UNIX \texttt{time} facility to measure the time taken.
+
+The results of these tests are shown in \autoref{tab:PerformanceTests}. There
+is very little difference between the compilation times, as expected, since compiling
+a program with tracing simply adds some additional function calls to the compiled
+C program.
+
+At runtime, the program with tracing enabled runs for approximately 17\% longer
+than the program with tracing disabled. This is due to the program writing trace
+data to the filesystem at each step. A performance decrease of 17\% is fairly small,
+and would probably not be noticeable for small programs with short runtimes. For
+larger programs which may take a minute or longer to run, the performance impact
+may be concerning, since it would be much more noticeable.
+
+It may be desirable for future work to be done on the tracing component in order
+to reduce the performance impact. However, as an initial implementation, a 17\%
+impact is acceptable, and the system is still reasonable to use, especially for
+small GP2 programs.
 
 \clearpage
 
