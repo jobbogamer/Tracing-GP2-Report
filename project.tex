@@ -2294,6 +2294,26 @@ for the tool to be useable.
 
 %//////////////////////////////////////////////////////////////////////////////
 
+\section{Maintainability}
+\label{sec:MaintainabilityEval}
+
+Some key goals were set out in Section~\ref{sec:IntegrationAndMaintainability}
+related to the maintainability of the system. Throughout the project, any
+modifications being made to the system were designed with ease of understanding
+in mind. The newly added code follows the conventions set out by the existing
+GP2 code, and all new code has comments. Semantic names were chosen for variables,
+functions, and methods to ensure future developers who are unfamiliar with the
+changes can understand what the code does.
+
+Careful thought was applied to ensure that tracing was optional when compiling
+and running a GP2 program, and that the new code did not create strong 
+dependencies between components. This has been achieved by separating the
+tracing components into separate modules, both in the compiler and the IDE,
+meaning they could easily be removed or changed without affecing the behaviour of
+the rest of the system.
+
+%//////////////////////////////////////////////////////////////////////////////
+
 \section{Performance}
 \label{sec:Performance}
 
