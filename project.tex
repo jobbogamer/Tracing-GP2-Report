@@ -2225,8 +2225,72 @@ uses it to update the view.
 \section{Requirements Tracing}
 \label{sec:RequirementsTracing}
 
-\emph{Go back and compare the implemented debugging tools to the requirements
-from \autoref{cha:Requirements}.}
+To evaluate the new functionality added to GP2, the implementation has been
+compared to the list of requirements outlined in Section~\ref{sec:ListOfRequirements}.
+\autoref{tab:RequirementsTracing} lists each of the requirements, along with whether
+that requirement has been met by the system.
+
+\begin{table}[!htb]
+    \begin{tabularx}{\linewidth}{|l|l|X|}
+        \hline
+        \textbf{ID} & \textbf{State} & \textbf{Summary} \\ \hline
+        1    &  Implemented     & A GP2 program can be traced from start to end, producing
+                                  the same result as the original output. \\ \hline
+        1.1  &  Implemented     & The ''Step Forward'' button applies one rule at a time. \\ \hline
+        1.2  &  Implemented     & The trace can be reversed to step backwards through the
+                                  program. \\ \hline
+        1.3  &  Not Implemented & It is only possible to step rule-by-rule, or to jump to
+                                  the beginning or end of the trace. There is no way to
+                                  execute an entire loop, for instance. \\ \hline
+
+        2    &  Implemented     & The GP2 IDE contains a Tracing tab which is used to
+                                  visually trace a program's execution. \\ \hline
+        2.1  &  Implemented     & Rule calls are highlighted in the program text when they
+                                  are executed in the trace. \\ \hline
+        2.2  &  Implemented     & The ''Find Match'' button highlights the match for the
+                                  current rule. However, this is a manual operation; the
+                                  match is not highlighted for every step unless requested
+                                  by the user. \\ \hline
+        2.3  &  Implemented     & The program text is highlighted in the Tracing tab to
+                                  show the current position. \\ \hline
+        2.4  &  Not Implemented & The system has no way to highlight which changes were made
+                                  by the previous rule application. \\ \hline
+        2.5  &  Implemented     & Whenever the graph changes, the latest graph is shown in
+                                  the IDE. \\ \hline
+
+        3    &  Implemented     & The user can control tracing using buttons in the tracing
+                                  tab of the IDE. \\ \hline
+        3.1  &  Implemented     & The ''Step Forward'' button advances the trace by one
+                                  step. \\ \hline
+        3.2  &  Implemented     & The ''Step Backward'' button reverses the trace by one
+                                  step. \\ \hline
+        3.3  &  Implemented     & The ''Find Match'' button highlights the match for the
+                                  next rule. \\ \hline
+        3.4  &  Implemented     & When the ''Find Match'' button is used, it becomes an
+                                  ''Apply Match'' button, which completes the application
+                                  of the rule. \\ \hline
+        3.5  &  Implemented     & Tracing can be disabled using the checkbox in the Run tab.
+                                  \\ \hline
+                
+        4    &  Implemented     & GP2 programs behave identically when tracing is enabled
+                                  and disabled, since all code changes are additive and did
+                                  not modify existing behaviour. \\ \hline
+        4.1  &  Implemented     & Enabling tracing simply outputs a tracefile during execution,
+                                  and does not change the behaviour of the program. The results
+                                  are identical whether tracing is enabled or disabled. \\ \hline
+        4.2  &  Implemented     & When old projects are loaded, tracing is disabled by
+                                  default for each run configuration. Nothing else needs
+                                  to be modified to run old programs. \\ \hline
+                
+    \end{tabularx}
+    \caption{State of each of the previously defined system requirements.}
+    \label{tab:RequirementsTracing}
+\end{table}
+
+All of the must-have system requirements have been implemented, meaning that the
+system successfully implements a debugging tool for GP2 programs. The two
+unimplemented requirements were defined as ''desirable'' and were not essential
+for the tool to be useable.
 
 %//////////////////////////////////////////////////////////////////////////////
 
