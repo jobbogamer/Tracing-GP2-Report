@@ -54,8 +54,8 @@
 \abstract{
 The University of York has developed a graph programming language, GP2 (Graph
 Programs 2), which has a small IDE. In this project, new features are designed,
-implemented, and evaluated which allow users to step through a GP2 program in
-the IDE.
+implemented, and evaluated which allow users to step through programs in the
+IDE to reason about them.
 }
 
 
@@ -75,7 +75,26 @@ the IDE.
 \section{Motivation}
 \label{sec:Motivation}
 
-\emph{Introduce the project, explain why the project needs doing}
+The University of York has created a graph programming language called GP2,
+which has its own Integrated Development Environment (IDE) for editing and
+running programs using the language.
+
+The current version of the IDE produces ''black-box'' programs where the user
+can only see the inputs (the program itself and a graph), and the output (another
+graph). If the output does not match the user's expectation, either because of
+a bug in the program or because their expectation was incorrect, they have no
+way to explore the execution of their program to find out why the program
+produced that output. The only way to find bugs in a GP2 program is to reason
+about the program and try to deduce how the input graph was manipulated to form
+the output.
+
+This project aims to add additional functionality to the GP2 toolset which will
+allow a GP2 programmer to see their program executed step-by-step in order to
+determine how exactly the program works. At each step of their program, they
+should be able to see how the input graph has changed, and what choices and
+actions the program is taking. This will allow programmers to reason in-depth
+about their programs to make it easier to find and fix bugs, or to strengthen
+their understanding of GP2 as a language.
 
 %==============================================================================
 
@@ -2368,7 +2387,7 @@ small GP2 programs.
 \chapter{Conclusions}
 \label{cha:Conclusions}
 
-\emph{Summary of what has been achieved in the project.}
+Flippity floppity
 
 %//////////////////////////////////////////////////////////////////////////////
 
