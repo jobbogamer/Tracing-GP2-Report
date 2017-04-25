@@ -2425,8 +2425,87 @@ improvements to the way GP2 programs can be reasoned about and debugged.
 \section{Future Work}
 \label{sec:FutureWork}
 
-\emph{What's missing (e.g. what requirements weren't met) and what other
-improvements could be made by someone else?}
+Whilst the system is fully functional, there are still a number of areas that
+have been identified where further work could improve the system further. These
+improvements could not be implemented in this project due to time constraints.
+
+\subsection{Performance}
+\label{sec:FWPerformance}
+
+As described in Section~\ref{sec:Performance}, enabling tracing has around a 17\%
+impact on the time it takes to run a program. This is due to the program writing
+to the filesytem every time trace data is collected.
+
+To improve the performance when tracing is enabled, writing to the tracefile
+could be performed in batches. Trace information would be stored in memory until
+either a specified amount of data is collected, or until a specified point in 
+the program is reached, such as the end of a procedure or the end of a loop
+iteration. At that point, all the trace information in memory would be written
+to the tracefile at once. This should decrease the amount of time spent waiting
+for the filesystem and therefore decrease the overall runtime of the program.
+
+\subsection{Skipping Over Program Structures}
+\label{sec:SkippingOverProgramStructures}
+
+One of the nice-to-have requirements was to allow the user to execute an entire
+control sequence as one step, such as executing an entire loop or procedure
+without stepping over the constituent parts.
+
+Implementing this feature would be fairly straightforward, since the tracefile
+uses nested \emph{contexts} (described in Section~\ref{sec:TracingModule}).
+To skip over a procedure, loop, or any other structure would simply require
+reading through the parsed \texttt{TraceStep} objects in the \texttt{TraceRunner}
+until the end of the current context is reached.
+
+For example, if the trace is currently in a \texttt{<loop>} context, skipping
+over the loop would involve iterating over the \texttt{TraceStep} structures
+until the closing \texttt{</loop>} step is found. Care would also have to be
+taken if there is a nested loop, making sure to only stop iterating when the
+\emph{current} loop ends, not any inner loops, since there would be additional
+\texttt{</loop>} steps in that case.
+
+\subsection{Highlighting Graph Changes}
+\label{sec:HighlightingGraphChanges}
+
+Another useful feature would be the ability to highlight in the tracing
+view any changes which were made to the graph by the previous step. In a large
+graph, this would make it easier to see exactly what was changed by a rule.
+
+This would be another simple feature to implement, since each \texttt{TraceStep}
+structure contains a list of changes made to the graph at that step. All that
+would be required is iterating over this list after executing the step, and
+highlighting all the nodes and edges referenced in that list.
+
+It would not be possible to highlight deleted nodes and edges, since they would
+no longer appear in the graph. In that case, it may be preferable to list the
+deleted objects in the status bar below the graph.
+
+\subsection{Breakpoints}
+\label{sec:FWBreakpoints}
+
+The final improvement that was identified was the addition of breakpoints. This
+would allow the user to mark a position in the program and have the trace run
+until that point. This would improve the user experience of debugging, because
+it means the user would not have to repeatedly click the ''Step Forward'' button
+to reach the point in the program they are interested in.
+
+This would be require more substantial work to implement than the previous
+features. There are two possible approaches to implementing breakpoints within
+the current architecture of the system.
+
+The first would be to add a keyword to the GP2 syntax which represents a
+breakpoint. When compiling a program containing this keyword, a function call
+would be generated to print a breakpoint into the tracefile. This would then
+appear as a special form of \texttt{TraceStep} in the IDE, and the \texttt{TraceRunner}
+could iterate over steps until it reaches that special step. This method would
+be a larger change, since it would require modifying the GP2 parser, lexer and
+compiler, as well as the IDE.
+
+The other option would be to allow the user to select a token in the program
+text in the tracing tab, and iterate through the trace until the \texttt{TraceHighlighter}
+highlights the selected token. This is a more lightweight change than adding
+a keyword to the language, but would require more work in the tracing UI, to 
+add the ability to select a program token.
 
 \clearpage
 
