@@ -2390,7 +2390,35 @@ small GP2 programs.
 \chapter{Conclusions}
 \label{cha:Conclusions}
 
-Flippity floppity
+In this project, a need was identified for a way to closely follow the execution
+of a GP2 program, in order to find bugs or improve understanding. To fulfil this
+requirement, the ability to trace a GP2 program was added to the compiler, and
+a way to read and follow traces was added to the IDE.
+
+When tracing is enabled in the compiler, additional function calls are added to
+the compiled program, each of which prints some data about the running program
+to an XML tracefile. Enough of these function calls are made throughout the
+execution of the program so that the tracefile contains enough information to
+fully recreate the actions taken by the program, after the program has finished
+running.
+
+In the IDE, a new module was added which parses the tracefile created by the
+program, and uses this to display the intermediate states of the program to the
+user. The user is able to step through the trace, both forwards and backwards,
+and see how the graph changes as the program progresses. The tracing section of
+the IDE also highlights the current position in the program text, and has the
+ability to highlight the nodes and edges in the graph which make up the match
+for a given rule call.
+
+The newly implemented system meets all the must-have requirements to be able to
+fully trace a program's execution. It also meets some additional non-essential
+requirements, such as being able to step backwards, to allow the user to see
+part of the program again without having to restart from the beginning.
+
+Overall, this project has been a success, and has achieved the goals which were
+set out. The tracing system is entirely functional and brings substantial
+improvements to the way GP2 programs can be reasoned about and debugged.
+
 
 %//////////////////////////////////////////////////////////////////////////////
 
