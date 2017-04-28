@@ -17,6 +17,7 @@
     bi/.style={-,semithick}
 }
 
+\usepackage{caption}
 \usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -64,10 +65,14 @@ IDE to reason about them.
 \begin{document}
 
 \maketitle
-\listoffigures
-\listoftables
 
-\cleardoublepage
+\listoffigures
+\begingroup
+\let\clearpage\relax
+\listoftables
+\endgroup
+
+\clearpage
 
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
@@ -2127,6 +2132,9 @@ because there may be multiple rule calls on a single line of a GP2 program, and 
 is important to distinguish which one being called. This is why the individual
 program tokens must be highlighted, rather than the entire line.
 
+Appendix~\ref{cha:AppA} contains a sequence of screenshots displaying the tracing
+UI as it changes during an entire trace of the 2-colouring program.
+
 \subsection{Tracing Backend}
 \label{sec:TracingBackend}
 
@@ -2531,5 +2539,52 @@ add the ability to select a program token.
 %XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 \bibliography{references}
+
+\clearpage
+
+%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+\begin{appendices}
+
+\chapter{Appendix A: Full Program Tracing Sequence}
+\label{cha:AppA}
+
+\begin{figure}[!htb]
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{SeqCollage1}
+    \end{nscenter}
+    \caption{Full program tracing sequence}
+    \label{fig:HighlightedMatch}
+\end{figure}
+
+\begin{figure}[!htb]
+    \ContinuedFloat
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{SeqCollage2}
+    \end{nscenter}
+    \caption{Full program tracing sequence (cont.)}
+    \label{fig:HighlightedMatch}
+\end{figure}
+
+\begin{figure}[!htb]
+    \ContinuedFloat
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{SeqCollage3}
+    \end{nscenter}
+    \caption{Full program tracing sequence (cont.)}
+    \label{fig:HighlightedMatch}
+\end{figure}
+
+\begin{figure}[!htb]
+    \ContinuedFloat
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{SeqCollage4}
+    \end{nscenter}
+    \caption{Full program tracing sequence (cont.)}
+    \label{fig:HighlightedMatch}
+\end{figure}
+
+
+\end{appendices}
 
 \end{document}
