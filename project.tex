@@ -2081,6 +2081,10 @@ runs without tracing, resulting in identical behaviour to before the IDE was
 modified. This means the user is free to use the IDE without being forced to run
 tracing.
 
+The other modification was to add a new tab to the left side of the window
+which, when clicked, opens a screen where the user can view and control the trace.
+This screen is shown in \autoref{fig:TracingTab}.
+
 \begin{figure}[!htb]
     \begin{nscenter}
         \includegraphics[width=\textwidth]{TracingTab}
@@ -2088,10 +2092,6 @@ tracing.
     \caption{Tracing tab in the IDE}
     \label{fig:TracingTab}
 \end{figure}
-
-The other modification was to add a new tab to the left side of the window
-which, when clicked, opens a screen where the user can view and control the trace.
-This screen is shown in \autoref{fig:TracingTab}.
 
 At the top of this screen is the graph at the current point in the trace. This
 graph view is updated whenever the user steps forward or backward in the trace,
@@ -2107,8 +2107,16 @@ Next is a row of buttons which are used to control the trace. It is possible to
 step forward and backward by one step, or to jump directly to the beginning or the
 end of the trace. There is also a button which highlights a rule match, if there
 is a valid match. The match is shown in the graph view by highlighting the nodes
-and edges which comprise the match. The button then changes to allow the user to
-apply the rule on the match being shown.
+and edges which comprise the match, as shown in \autoref{fig:HighlightedMatch}.
+The button then changes to allow the user to apply the rule on the match being shown.
+
+\begin{figure}[!htb]
+    \begin{nscenter}
+        \includegraphics[width=\textwidth]{HighlightedMatch}
+    \end{nscenter}
+    \caption{Match highlighted in the tracing graph view}
+    \label{fig:HighlightedMatch}
+\end{figure}
 
 Finally, at the bottom of the screen, there is a copy of the program text. In this
 section, the next step of the program is highlighted with a green background. This
@@ -2116,8 +2124,8 @@ shows the user what will be executed if they press the ''Step Forward'' button. 
 IDEs, such as Visual Studio, display a marker on the left edge of the program text
 to show the next line of code which will be executed. This would not work for GP2,
 because there may be multiple rule calls on a single line of a GP2 program, and it
-is important to distinguish which one is the next to be called. This is why the
-individual program tokens must be highlighted, instead of the entire line.
+is important to distinguish which one being called. This is why the individual
+program tokens must be highlighted, rather than the entire line.
 
 \subsection{Tracing Backend}
 \label{sec:TracingBackend}
