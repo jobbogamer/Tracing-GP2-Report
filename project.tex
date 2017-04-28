@@ -104,8 +104,8 @@ their understanding of GP2 as a language.
 \label{sec:Ethics}
 
 This project is not related to defence and is not safety-critical, so the impact
-of the work is very low from an ethical standpoint. No humans or animals will be
-involved during the development of this work.
+of the work is very low from an ethical standpoint. No humans or animals are
+involved in the development of this work.
 
 \clearpage
 
@@ -2355,7 +2355,8 @@ To check the performance of the system, the Sierpinski Triangle generation
 program mentioned in Section~\ref{sec:ChosenSolution} was compiled and run with
 tracing disabled and then with tracing enabled, to compare the time taken in
 both cases. The program was set to generate the 11th-generation Sierpinski
-Triangle.
+Triangle. This program is expected to take between 10 and 15 seconds, due to the
+algorithm requiring exponential time $O(2^{n})$ in the generation number.
 
 In each case, the program was compiled and run ten times, and the average time
 was taken. These tests were run on a PC with a 4.0 GHz processor and 24 GB of RAM
@@ -2421,15 +2422,30 @@ improvements to the way GP2 programs can be reasoned about and debugged.
 \label{sec:FutureWork}
 
 Whilst the system is fully functional, there are still a number of areas that
-have been identified where further work could improve the system further. These
-improvements could not be implemented in this project due to time constraints.
+have been identified where further work could improve on the system as it is at
+the end of this project. These improvements could not be implemented in this
+project due to time constraints.
+
+\subsection{User Feedback}
+\label{sec:UserFeedback}
+
+As part of the evaulation of the system, it was originally intended that a small
+subset of potential users would be shown the implemented tracing system and asked
+for some feedback or possible improvements. Due to the time constraints, it was
+not possible to arrange for users to test the system before the end of the project.
+
+It would be beneficial to get feedback from users, since it would give insight into
+how the system is used in the real world, and would potentially find issues with the
+user experience, such as confusing behaviour, which are not apparent from developer
+testing.
 
 \subsection{Performance}
 \label{sec:FWPerformance}
 
 As described in Section~\ref{sec:Performance}, enabling tracing has around a 17\%
-impact on the time it takes to run a program. This is due to the program writing
-to the filesytem every time trace data is collected.
+impact on the time it takes to run the Sierpinski Triangle program. It should be
+expected that the performance of other programs is also affected. This is due to
+the program writing to the filesytem every time trace data is collected.
 
 To improve the performance when tracing is enabled, writing to the tracefile
 could be performed in batches. Trace information would be stored in memory until
@@ -2484,7 +2500,7 @@ until that point. This would improve the user experience of debugging, because
 it means the user would not have to repeatedly click the ''Step Forward'' button
 to reach the point in the program they are interested in.
 
-This would be require more substantial work to implement than the previous
+This would require more substantial work to implement than the previous
 features. There are two possible approaches to implementing breakpoints within
 the current architecture of the system.
 

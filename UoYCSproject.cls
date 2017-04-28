@@ -85,7 +85,7 @@
 
 \date{\fbox{\Huge DRAFT PROCESSED \today}}
 
-\titlehead{The University of York\hfill Department of Computer Science}
+\titlehead{University of York\hfill Department of Computer Science}
 
 \subject{%
   \ifx\UoYCSP@degree\undefined%
