@@ -2409,7 +2409,7 @@ small GP2 programs.
 In this project, a need was identified for a way to closely follow the execution
 of a GP2 program, in order to find bugs or improve understanding. To fulfil this
 requirement, the ability to trace a GP2 program was added to the compiler, and
-a way to read and follow traces was added to the IDE.
+a way to view and control traces was added to the IDE.
 
 When tracing is enabled in the compiler, additional function calls are added to
 the compiled program, each of which prints some data about the running program
@@ -2421,7 +2421,7 @@ running.
 In the IDE, a new module was added which parses the tracefile created by the
 program, and uses this to display the intermediate states of the program to the
 user. The user is able to step through the trace, both forwards and backwards,
-and see how the graph changes as the program progresses. The tracing section of
+and see how the graph changes as the program progresses. The tracing UI in
 the IDE also highlights the current position in the program text, and has the
 ability to highlight the nodes and edges in the graph which make up the match
 for a given rule call.
@@ -2464,8 +2464,8 @@ testing.
 
 As described in Section~\ref{sec:Performance}, enabling tracing has around a 17\%
 impact on the time it takes to run the Sierpinski Triangle program. It should be
-expected that the performance of other programs is also affected. This is due to
-the program writing to the filesytem every time trace data is collected.
+expected that the performance of other programs is also similarly affected. This
+is due to the program writing to the filesytem every time trace data is collected.
 
 To improve the performance when tracing is enabled, writing to the tracefile
 could be performed in batches. Trace information would be stored in memory until
@@ -2480,7 +2480,7 @@ for the filesystem and therefore decrease the overall runtime of the program.
 
 One of the nice-to-have requirements was to allow the user to execute an entire
 control sequence as one step, such as executing an entire loop or procedure
-without stepping over the constituent parts.
+without stepping through the constituent parts.
 
 Implementing this feature would be fairly straightforward, since the tracefile
 uses nested \emph{contexts} (described in Section~\ref{sec:TracingModule}).
@@ -2514,8 +2514,8 @@ deleted objects in the status bar below the graph.
 \subsection{Breakpoints}
 \label{sec:FWBreakpoints}
 
-The final improvement that was identified was the addition of breakpoints. This
-would allow the user to mark a position in the program and have the trace run
+The final possible improvement that was identified was the addition of breakpoints.
+This would allow the user to mark a position in the program and have the trace run
 until that point. This would improve the user experience of debugging, because
 it means the user would not have to repeatedly click the ''Step Forward'' button
 to reach the point in the program they are interested in.
