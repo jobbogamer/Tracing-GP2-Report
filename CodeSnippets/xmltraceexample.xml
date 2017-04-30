@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<trace program="2_colouring.gp2"
-    input_graph="triangle.host">
+<trace program="2_colouring.gp2" input_graph="triangle.host">
   <if backtracking="true">
     <condition>
       <rule name="init">

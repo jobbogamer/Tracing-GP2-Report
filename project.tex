@@ -1021,11 +1021,11 @@ to consider the types of user who would potentially use such a tool. There are
 two main potential audiences for a GP2 debugging tool:
 
 \begin{itemize}
-    \item Programmers who have written a GP2 program which they would like to
-          debug. Either the program produces unexpected output, or it never
-          terminates, so the programmer wishes to use the debugging tools to
-          understand why their program is behaving incorrectly, and then fix the
-          bug.
+    \item Experienced GP 2 programmers who have written a GP2 program which they
+          would like to debug. Either the program produces unexpected output,
+          or it never terminates, so the programmer wishes to use the debugging
+          tools to understand why their program is behaving incorrectly, and
+          then fix the bug.
 
     \item New users of GP2 who are still learning the language. GP2 is an
           unconvential language and its concepts can be unfamiliar to
@@ -1044,7 +1044,7 @@ two main potential audiences for a GP2 debugging tool:
 \section{Integration and Maintainability}
 \label{sec:IntegrationAndMaintainability}
 
-Consideration should also be given to how the new features are integrated into
+Consideration should also be given to how new features are integrated into
 GP2. The experience of using existing GP2 features should be unaffected, and the
 codebase should stay maintainable for future developers of GP2. The high-level
 requirements this leads to are:
@@ -1069,17 +1069,17 @@ requirements this leads to are:
           of any changes clear to ensure future developers will understand what
           has been changed.
 
-    \item Consider dependencies between components. To implement debugging will
+    \item Consider dependencies between components. Implementing debugging will
           require modifying both the compiler and the IDE. It is important to
           consider the dependencies between these components, to ensure that
           they can still function independently.
 
           It is also important to consider the dependencies between new code and
-          existing code. If bugs are discovered in the compiler, for example, it
-          must be possible to fix them without needing to modify the code added
-          for debugging, and vice versa, since compilation and debugging should
-          be separate components. Compilation should still work independently
-          of debugging. 
+          existing code. If pre-existing bugs are discovered in the compiler,
+          for example, it must be possible to fix them without needing to modify
+          the code added for debugging, and vice versa, since compilation and
+          debugging should be separate components. Compilation should still work
+          independently of debugging. 
 \end{itemize}
 
 %//////////////////////////////////////////////////////////////////////////////
@@ -1142,15 +1142,15 @@ Invalid = {joined_blues, joined_blues}
             \end{tabular}
         \end{nscenter}
     \end{framed}
-    \caption{Alternate version of the 2-colourable program}
+    \caption{Alternate version of the 2-colouring program}
     \label{fig:AlternateTwoColourableProgram}
 \end{figure}
 
-Unfortunately, when they test their program, for some inputs it gives the
-incorrect result; for certain non-two-colourable graphs, the program still adds
-a green node to indicate that it is two-colourable. Just by inspecting the
-program, the user cannot determine what the bug is with the program, so they
-decide to use the simplest possible non-two-colourable input graph, shown in
+When they test their program, for some inputs it gives the incorrect result;
+for certain non-two-colourable graphs, the program still adds a green node to
+indicate that it is two-colourable. Just by inspecting the program, the user
+cannot determine what the bug is with the program, so they decide to use the
+simplest possible non-two-colourable input graph, shown in
 \autoref{fig:SimplestNonTwoColourableGraph}, and use the debugger to step
 through their program.
 
@@ -1188,8 +1188,8 @@ actually used.
 
 The bug in this program was fairly subtle, since the general structure of the
 program is mostly correct; there are two rules in \texttt{Invalid} as expected,
-but the same rule was added twice. Without the debugger to step through the
-program, it may have taken much longer to spot this mistake, since stepping
+but the same rule was mistakenly listed twice. Without the debugger to step through
+the program, it may have taken much longer to spot this mistake, since stepping
 through allowed the user to see the coloured graph before it was reverted by
 the \texttt{if} statement.
 
@@ -1203,7 +1203,7 @@ without automatically exiting the \texttt{if} condition when no rules matched.
 
 In the second scenario, the user is inexperienced with GP2 and is still trying
 to learn the language. They understand most of how the language works, but they
-are having trouble with understanding the in semantics of \textsc{If-Then-Else}.
+are having trouble understanding the semantics of \textsc{If-Then-Else}.
 
 \begin{figure}[!htb]
     \begin{framed}
@@ -1285,7 +1285,7 @@ The result confuses the user, who then decides to use the debugger to step
 through the program to see what happened. The first thing they see is the
 program tries to match \texttt{insert} and succeeds, which they expected.
 However, then they advance to the next execution step and are surprised that
-no changes have been made to the graph. They then realise that they had mixed
+the changes to the graph have been reverted. They then realise that they had mixed
 up the semantics of \textsc{If-Then-Else} and \textsc{Try-Then-Else}.
 
 Ideally in this situation, the debugger would explicitly show that backtracking
@@ -1295,7 +1295,8 @@ they understand what is happening.
 
 By inspecting the execution of this simple program, the user has successfully
 used the debugger to aid their learning; even though the debugger does not
-explain the semantics directly, the user can understand how the program works.
+explain the semantics directly, the user can use it to understand how the
+program works.
 
 %//////////////////////////////////////////////////////////////////////////////
 
@@ -1310,16 +1311,16 @@ been identified for the GP2 debugging tool.
         \hline
         \textbf{ID} & \textbf{Description} \\
         \hline
-        1    &  The system must be able to trace execution of a GP2 program. \\ \hline
-        1.1  &  The system must be able to apply individual rules, one at a time,
-                to step through a program. \\ \hline
+        1    &  The system must be able to show execution of a GP2 program step-by-step. \\ \hline
+        1.1  &  The system must be able to apply rules one at a time to step through
+                a program. \\ \hline
         1.2  &  It is desirable for the system to allow the user to step
                 backwards through a program. \\ \hline
-        1.3  &  It is desirable for the system to execute an entire control sequence
-                in one step. \\ \hline
+        1.3  &  It is desirable for the system to be able to execute an entire control
+                sequence in one step. \\ \hline
 
         2    &  The system must have a visual debugging component. \\ \hline
-        2.1  &  The system must highlight the rule being applied when stepping
+        2.1  &  The system must show the rule being applied when stepping
                 through a program. \\ \hline
         2.2  &  The system must highlight the next rule match in the graph. \\ \hline
         2.3  &  The system must highlight the current position in the textual
@@ -1367,7 +1368,7 @@ There are two implementations of GP2, an interpreter written in Haskell
 \citep{bak2015,GP2Interpreter}, and a compiler written in C
 \citep{bak2015,GP2Compiler}. The interpreter is intended to provide a
 reference for other implementations of GP2, and for the GP2 developers. The
-GP2 IDE uses the compiler, not the interpreter, to run the user's program.
+GP2 IDE uses the compiler, rather than the interpreter, to run the user's program.
 
 The interpreter may be of some interest, since an interpreter runs ''live'',
 moving through the program executing each statement as it is reached. This
@@ -1383,7 +1384,8 @@ program only produces one output for a given input to a program. The interpreter
 returns all unique output graphs, up to isomorphism. For debugging purposes, this
 may be of interest to the user, since it allows them to see all the possibilities
 of their program. To the developer of the debugger, this is a disadvantage, since
-the GP2 IDE does not currently support displaying all possible outputs.
+the GP2 IDE does not currently support displaying all possible outputs, so this
+functionality would require additional work.
 
 Additionally, because the interpreter is only a reference implementation, the
 compiler is the implementation intended for most users. If the IDE were to be
@@ -1392,7 +1394,7 @@ made to ensure that the interpreter produces identical outputs to a compiled
 version of the same program. This would involve using the interpreter in
 single-result mode, which causes the interpreter to return one result graph
 instead of all possible results. However, it still cannot be guaranteed that
-the single result matches the result produced by the compiler.
+the single result will match the result produced by the compiler.
 
 %==============================================================================
 
@@ -1401,8 +1403,8 @@ the single result matches the result produced by the compiler.
 
 To support some operations, such as \textsc{If-Then-Else}, the GP2 compiler uses
 \emph{backtracking}, where any changes to the graph are reversed \citep[ch. 5.8]{bak2015}.
-If the condition in an \textsc{If-Then-Else} structure fails, any changes need
-to be reversed before applying the \textsc{Else} subprogram.
+At the end of the conditional part of an \textsc{If-Then-Else}, any changes need
+to be reverted before continuing.
 
 This feature of the compiler could be used as part of the debugging features,
 by using it to allow the user to step backwards through the program as it runs,
@@ -1412,9 +1414,9 @@ applied, for instance.
 
 However, this backtracking is not available at all points in a program's
 execution; backtracking code is only added by the compiler if static analysis
-shows that it is necessary. For example, since the \textsc{As-Long-As-Possible}
-construct cannot fail, the compiler does not add backtracking code for it. The
-compiler would have to be modified to add backtracking code to the entire
+shows that it is necessary. For example, the compiler does not generate backtracking
+code for rules outside of conditionals, since these changes are never reverted.
+The compiler would have to be modified to add backtracking code to the entire
 program.
 
 %------------------------------------------------------------------------------
@@ -1522,7 +1524,7 @@ it is random whether the first option or second option will be chosen.
 
 However, the debugger cannot take responsibility for how the user's program
 is structured. \autoref{lst:OrStatementAnalogy} shows plain C code which is
-analagous to a GP2 \textsc{Or} statement, which randomly calls one of two
+analagous to a GP2 \textsc{Or} statement, randomly calling one of two
 functions based on a random number. A C programmer would not expect the
 debugger to always follow the same execution path when debugging this code,
 so it is reasonable to take the same approach with a GP2 debugger.
@@ -1559,7 +1561,7 @@ debugger cannot take responsibility for.
 \label{sec:ProgramRepresentation}
 
 When a user creates a graph using the visual editor in the IDE, the graph must
-be converted to a text based format in order to compile and run the GP2 program.
+be converted to a text-based format in order to compile and run the GP2 program.
 Depending on the position of elements in the editor, isomorphic graphs may be
 converted to different textual representations, with the nodes and edges listed
 in a different order, for example.
@@ -1571,7 +1573,7 @@ the program again may give a different result graph. This would be surprising to
 a user, since they did not modify the structure of the graph, only its layout.
 
 Without modifying the algorithm for converting a graph to the text based
-representation, it is not possible to avoid the problem. It may be
+representation, it is not possible to avoid this problem. It may be
 useful to warn the user if the representation of their graph changes, so that
 they are aware it may give different results.
 
@@ -1589,10 +1591,10 @@ advantages and disadvantages of each.
 \label{sec:ProposedDesign1}
 
 Following a similar method to the previous work on adding debugging to GP2
-\citep{taylor2016}, the compiler would be modified so that it can run part of a
-program and stop, giving intermediate results. The IDE would interact with the
-compiler to control how much of the program to run, and to display the
-intermediate graphs to the user.
+\citep{taylor2016}, the compiler would be modified so that part of a program
+can be run before stopping and giving the intermediate result. The IDE would
+interact with the compiler to control how much of the program to run, and to
+display the intermediate graphs to the user.
 
 The IDE would have two modes for running a program. The first mode would act
 exactly as the current version of the IDE, running the entire program and
@@ -1641,8 +1643,8 @@ been reached in the program, in order to continue from the same point next time.
     \item Continuing from a partially executed state would be impossible if the
           user edits their program or the input graph before continuing. While
           this would be an error on the user's part, it could potentially be
-          confusing if they edit the program to fix a bug and then click continue
-          instead of restarting from the beginning.
+          confusing if they edit the program to fix a bug and then try to continue
+          from the previous point.
 
     \item Adding various granularity options for partial execution would require
           adding many new command-line arguments to the compiler. Having a lot
@@ -1702,7 +1704,7 @@ execution history of their program.
     \item Storing a trace may use a lot of memory or disk space, depending on
           the implementation.
 
-    \item It would not be possible to add the ability for a user to choose a
+    \item It would not be possible to add features such as choosing a
           rule to apply, or a match to apply a rule to, since execution has
           already finished when the user regains control.
 \end{itemize}
@@ -1754,14 +1756,14 @@ Language (DSL) which represents the actions a GP2 program takes. Part of this
 format can be based on the existing DSL which defines the machine readable 
 format of graphs and programs in GP2.
 
-Finally, although the other proposed design would have trivially allowed
+Finally, while the other proposed design would have trivially allowed
 non-terminating programs to be debugged, this design does not have a clear
 solution to this problem. It is more difficult to support non-terminating
 programs with tracing, since at first glance it appears the program has to
 finish running before it can output a trace. However, if the file is written
 while the program is still running, rather than storing the trace in memory and
 writing it to disk at the end, a partial trace can still be retrieved even if
-the running program is forcefully ended by the user.
+the running program is forcefully terminated by the user.
 
 %==============================================================================
 
@@ -1785,6 +1787,8 @@ theoretical execution of the incorrect 2-colouring program from
 \autoref{fig:AlternateTwoColourableProgram}.
 
 \includecode[xml]{CodeSnippets/xmltraceexample.xml}{XML based trace file example}{lst:XMLFileFormatExample}
+
+\clearpage
 
 \includecode{CodeSnippets/plaintraceexample.txt}{Plain text trace file example}{lst:PlainTextFileFormatExample}
 
@@ -1822,8 +1826,8 @@ file.
 
 A disadvantage of this format is that, because every tag has to be closed for
 the XML to be valid, there may be situations where the trace file saved by the
-running program is invalid. For example, if the program contains a bug and fails
-to terminate, the user may have to kill the running program, which would cause
+running program could be invalid. For example, if the program contains a bug and
+fails to terminate, the user may have to kill the running program, which would cause
 the closing tags not to be written to the file.
 
 There are two methods to get around this issue for non-terminating programs; the
@@ -1831,10 +1835,10 @@ first is to add some way for the user to mark a point in the GP2 program text
 at which the tracefile is finished and closed. During compilation, if the compiler
 sees this mark, which could be a keyword or a special kind of comment, it would
 insert additional code to end the tracefile at that point before continuing with
-execution. The user could then press texttt{\textasciicircum C} at the
+execution. The user could then press \texttt{\textasciicircum C} at the
 command line to terminate the program, and continue using the tracefile.
 The disadvantage to this method is that it would involve modifying the specification
-of GP2 syntax to include the new mark. This would mean that the compiler is
+of GP2 syntax to include the new mark. This would result in a new compiler which is
 backwards-compatible, meaning that the new compiler can still compile old GP2 code,
 but not forwards-compatible, because old compilers would not be able to compile
 programs written using the new syntax.
