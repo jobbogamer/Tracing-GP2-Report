@@ -87,7 +87,7 @@ The University of York has created a graph programming language called GP 2,
 which has its own Integrated Development Environment (IDE) for editing and
 running programs using the language.
 
-The current version of the IDE produces ''black-box'' programs where the user
+The current version of the IDE produces ``black-box'' programs where the user
 can only see the inputs (the program itself and a graph), and the output (another
 graph). If the output does not match the user's expectation, either because of
 a bug in the program or because their expectation was incorrect, they have no
@@ -131,7 +131,7 @@ a graph programming language, the problem being solved is redefined in terms
 of a start graph and an algorithm represented by graph transformations. The final
 graph at the end of the algorithm gives the solution to the problem.
 
-Historically, programming by graph transformation required using a ''classic'' programming
+Historically, programming by graph transformation required using a ``classic'' programming
 language such as C or Java, implementing data structures to represent graphs, and
 directly making modifications to the graph in the program. However, recently some
 attempts have been made to create tools for graph programming which abstract away
@@ -467,7 +467,7 @@ structures:
     \textsc{Rule Set} \texttt{\{\}}.
 
     \item[\textsc{Or}]
-    In the statement ''\texttt{P or Q}'', exactly one subprogram, either \texttt{P}
+    In the statement ``\texttt{P or Q}'', exactly one subprogram, either \texttt{P}
     or \texttt{Q} is chosen non-deterministically and executed. Unlike the
     \textsc{Rule Set} construction, if the chosen subprogram fails, the program does
     not attempt to execute the other, and the program fails.
@@ -767,10 +767,10 @@ execute normally until the breakpoint is reached, at which point execution will
 pause, or \emph{break}.
 
 Because GP 2 has a rule-based structure, unlike imperative programming languages,
-it is not clear what a ''line of code'' represents in a GP 2 program. The textual
+it is not clear what a ``line of code'' represents in a GP 2 program. The textual
 part of a GP 2 program can indeed have lines, but since a single line in a GP 2
 program can be complex and use many rules, this is too high-level to consider a
-''line of code'' as a debugger does. In an imperative language, a single line of
+``line of code'' as a debugger does. In an imperative language, a single line of
 code may only perform one or two actions, so inspecting each line individually
 shows the flow of the program. In GP 2, running a line of the textual program
 could result in tens or hundreds of rules being applied if \textsc{As-Long-As-Possible}
@@ -846,7 +846,7 @@ simply restored, making it appear as if the reversed instruction was never
 executed. This implementation allows powerful interaction with the program; it
 can reverse a single instruction at a time, or it can be run backwards until a
 breakpoint is reached. In theory, although \texttt{gdb} does not support this,
-this system could allow a form of ''checkpointing'' where execution can be skipped
+this system could allow a form of ``checkpointing'' where execution can be skipped
 directly back to an arbitrary point by simply restoring the state from that point.
 
 Reverse debugging may be a useful feature for GP 2, because it would allow a
@@ -946,7 +946,7 @@ shown underneath each rule. These matches can be clicked to highlight them on th
 graph, and double-clicking applies the rule, updating the graph.
 
 Similar to AGG, it is possible to undo a single rule application. However, GROOVE
-also keeps a history of all previous graph states. In the ''State Space Explorer'',
+also keeps a history of all previous graph states. In the ``State Space Explorer'',
 the tool shows a transition diagram containing all the previously visited graph
 states, with the transitions representing the rule applied to reach a given state.
 In this view, the user can select a previous state and jump back to it, allowing
@@ -985,7 +985,7 @@ This work was focused on modifying the compiler to support stepping through a
 program.
 
 In that project, the GP 2 compiler was modified to add command-line arguments to
-compiled GP 2 programs, which allow the user to specify how big a ''step'' should be,
+compiled GP 2 programs, which allow the user to specify how big a ``step'' should be,
 and how many steps to execute before stopping. This allows the user to approximate
 breakpoints by picking an appropriate step size and count in order to finish execution
 at the point the programmer is interested in.
@@ -1370,7 +1370,7 @@ There are two implementations of GP 2, an interpreter written in Haskell
 reference for other implementations of GP 2, and for the GP 2 developers. The
 GP 2 IDE uses the compiler, rather than the interpreter, to run the user's program.
 
-The interpreter may be of some interest, since an interpreter runs ''live'',
+The interpreter may be of some interest, since an interpreter runs ``live'',
 moving through the program executing each statement as it is reached. This
 behaviour could be exploited to implement a form of debugging, by pausing
 execution of the interpreter at various points and outputting the current state
@@ -1884,7 +1884,7 @@ variable defaults to \texttt{false}. This global variable is then used when
 generating the C code to determine whether or not to add tracing code.
 
 Care had to be taken when naming this variable, since there are some macros
-designed to be used for debugging the compiler itself.. \texttt{GRAPH\_TRACING},
+designed to be used for debugging the compiler itself. \texttt{GRAPH\_TRACING},
 \texttt{RULE\_TRACING}, and \texttt{BACKTRACK\_TRACING} can be set by a developer
 working on the compiler in order to turn on specific types of tracing. The tracing
 enabled by these macros is no use for program tracing, since the output is designed
@@ -2129,7 +2129,7 @@ The button then changes to allow the user to apply the rule on the match being s
 
 Finally, at the bottom of the screen, there is a copy of the program text. In this
 section, the next step of the program is highlighted with a green background. This
-shows the user what will be executed if they press the ''Step Forward'' button. Some
+shows the user what will be executed if they press the ``Step Forward'' button. Some
 IDEs, such as Visual Studio, display a marker on the left edge of the program text
 to show the next line of code which will be executed. This would not work for GP 2,
 because there may be multiple rule calls on a single line of a GP 2 program, and it
@@ -2273,7 +2273,7 @@ that requirement has been met by the system.
         \textbf{ID} & \textbf{State} & \textbf{Summary} \\ \hline
         1    &  Implemented     & A GP 2 program can be traced from start to end, producing
                                   the same result as the original output. \\ \hline
-        1.1  &  Implemented     & The ''Step Forward'' button applies one rule at a time. \\ \hline
+        1.1  &  Implemented     & The ``Step Forward'' button applies one rule at a time. \\ \hline
         1.2  &  Implemented     & The trace can be reversed to step backwards through the
                                   program. \\ \hline
         1.3  &  Not Implemented & It is only possible to step rule-by-rule, or to jump to
@@ -2284,7 +2284,7 @@ that requirement has been met by the system.
                                   visually trace a program's execution. \\ \hline
         2.1  &  Implemented     & Rule calls are highlighted in the program text when they
                                   are executed in the trace. \\ \hline
-        2.2  &  Implemented     & The ''Find Match'' button highlights the match for the
+        2.2  &  Implemented     & The ``Find Match'' button highlights the match for the
                                   current rule. This is a manual operation; the
                                   match is not highlighted for every step unless requested
                                   by the user. \\ \hline
@@ -2297,14 +2297,14 @@ that requirement has been met by the system.
 
         3    &  Implemented     & The user can control tracing using buttons in the tracing
                                   tab of the IDE. \\ \hline
-        3.1  &  Implemented     & The ''Step Forward'' button advances the trace by one
+        3.1  &  Implemented     & The ``Step Forward'' button advances the trace by one
                                   step. \\ \hline
-        3.2  &  Implemented     & The ''Step Backward'' button reverses the trace by one
+        3.2  &  Implemented     & The ``Step Backward'' button reverses the trace by one
                                   step. \\ \hline
-        3.3  &  Implemented     & The ''Find Match'' button highlights the match for the
+        3.3  &  Implemented     & The ``Find Match'' button highlights the match for the
                                   next rule. \\ \hline
-        3.4  &  Implemented     & When the ''Find Match'' button is used, it becomes an
-                                  ''Apply Match'' button, which completes the application
+        3.4  &  Implemented     & When the ``Find Match'' button is used, it becomes an
+                                  ``Apply Match'' button, which completes the application
                                   of the rule. \\ \hline
         3.5  &  Implemented     & Tracing can be disabled using the checkbox in the Run tab.
                                   \\ \hline
@@ -2326,7 +2326,7 @@ that requirement has been met by the system.
 
 All of the must-have system requirements have been implemented, meaning that the
 system successfully implements a debugging tool for GP 2 programs. The two
-unimplemented requirements were defined as ''desirable'' and were not essential
+unimplemented requirements were defined as ``desirable'' and were not essential
 for the tool to be useable.
 
 %//////////////////////////////////////////////////////////////////////////////
@@ -2517,7 +2517,7 @@ deleted objects in the status bar below the graph.
 The final possible improvement that was identified was the addition of breakpoints.
 This would allow the user to mark a position in the program and have the trace run
 until that point. This would improve the user experience of debugging, because
-it means the user would not have to repeatedly click the ''Step Forward'' button
+it means the user would not have to repeatedly click the ``Step Forward'' button
 to reach the point in the program they are interested in.
 
 This would require more substantial work to implement than the previous
