@@ -1881,25 +1881,25 @@ experience to users and to keep the system maintainable.
 The new command-line flag, \texttt{-t}, sets a new Boolean global variable,
 \texttt{program\_tracing}, to \texttt{true}. If the flag is not specified, the
 variable defaults to \texttt{false}. This global variable is then used when
-generating C code to determine whether or not to add tracing code.
+generating the C code to determine whether or not to add tracing code.
 
 Care had to be taken when naming this variable, since there are some macros
-designed to be used for debugging. \texttt{GRAPH\_TRACING}, \texttt{RULE\_TRACING},
-and \texttt{BACKTRACK\_TRACING} can be set by a developer working on the compiler
-in order to turn on specific types of tracing. The tracing enabled by these macros
-is no use for program tracing, since the output is designed to be human readable,
-and does not contain all the necessary information to step through the execution
-history of a program.
+designed to be used for debugging the compiler itself.. \texttt{GRAPH\_TRACING},
+\texttt{RULE\_TRACING}, and \texttt{BACKTRACK\_TRACING} can be set by a developer
+working on the compiler in order to turn on specific types of tracing. The tracing
+enabled by these macros is no use for program tracing, since the output is designed
+to be human readable, and does not contain all the necessary information to step
+through the execution history of a program.
 
 %==============================================================================
 
 \subsection{Tracing Module}
 \label{sec:TracingModule}
 
-GP2 has a static library named \texttt{libGP2} which contains modules for
-performing various tasks such as searching for nodes and edges, and modifying
-graph objects. It is used to avoid the compiler having to generate the same code
-for every compiled program, since the operations performed by \texttt{libGP2}
+Part of GP2's implementation is a static library named \texttt{libGP2} which
+contains modules for performing various tasks such as searching for nodes and edges,
+and modifying graph objects. It is used to avoid the compiler having to generate
+the same code for every compiled program, since the operations performed by \texttt{libGP2}
 are generic and aren't program-specific.
 
 To implement the tracing functionality, a new module was added to \texttt{libGP2}
@@ -2004,7 +2004,7 @@ being run, and the filename of the input graph.
 There is a matching call to \texttt{finishTraceFile()} in the generated \texttt{garbageCollect()}
 function. This function is called whenever the program is about to exit, meaning
 either the end of \texttt{main()} is reached, a rule fails to match, or the GP2
-\textsc{Fail} statement is used. This call could not simply be put at the end
+\texttt{fail} statement is used. This call could not simply be put at the end
 of \texttt{main()}, since the compiled program exits early if a failure occurs.
 \texttt{finishTraceFile()} must always be called, no matter how the program exits,
 because the tracefile must contain a closing \texttt{</trace>} tag for the XML
@@ -2012,9 +2012,9 @@ to be valid. If it is invalid, the IDE will fail to parse the file, and it will
 not be able to step through the trace.
 
 In the compiled program, the \texttt{main()} function contains the high level
-structure of the program; rule matching and application are functions called
-from \texttt{main()}. In the code to generate \texttt{main()}, additional code
-was added at each point where a control structure starts or ends. For example,
+structure of the program; rule matching and application are handled by functions
+called from \texttt{main()}. In the code to generate \texttt{main()}, additional
+code was added at each point where a control structure starts or ends. For example,
 \autoref{lst:ProcedureGeneration} shows pseudocode for generating C code to
 run a GP2 \textsc{Procedure}. 
 
@@ -2034,7 +2034,7 @@ if (GP2 structure is of type Procedure) {
 }
 \end{lstlisting}
  
-The only change to the original code is the new conditional statements which
+The only changes to the original code are the new conditional statements which
 check whether tracing is enabled, and if it is, make the calls to begin and end
 the \texttt{<procedure>} context. The changes to all other GP2 structures are
 similar, simply adding two extra function calls if tracing is enabled. Because
@@ -2052,10 +2052,10 @@ since an empty \texttt{Morphism} can either mean the match failed, or there are
 simply no nodes or edges in the match (the LHS of the rule is empty).
 
 During a rule application, a tracing function call is generated each time a
-change is made to the graph. For instance, when an edge or node is deleted from
-the graph, or when a node is relabelled. There is a function for each type of
-graph operation in the tracing module, and the generated code calls the correct
-one in each case.
+change is made to the graph. For instance, this occurs when an edge or node is
+deleted from the graph, or when a node is relabelled. There is a function for each
+type of graph operation in the tracing module, and the generated code calls the
+correct one in each case.
 
 In each case, it is simply one or two lines of code inside a conditional
 statement checking whether tracing is enabled. The addition of tracing to the
@@ -2143,7 +2143,7 @@ UI as it changes during an entire trace of the 2-colouring program.
 \label{sec:TracingBackend}
 
 To support reading tracefiles and displaying the trace in the UI, five new
-components were added to the IDE. These components were designed using the
+components were added to the IDE's code. These components were designed using the
 Model-View-Controller (MVC) pattern \citep{mvc}. The \emph{model} reads the
 tracefile and tracks the state of the trace, and is formed of three of the
 five new components. The other two components are the \emph{view}, which
@@ -2158,8 +2158,8 @@ based on the data it receives from the controller.
 \subsubsection{Model}
 \label{sec:MVCModel}
 
-The model is made up of three C++ classes, each with a specific task. This
-modularity means that functionality is encapsulated within an object designed
+The model is made up of three C++ classes, each designed to handle a specific task.
+This modularity means that functionality is encapsulated within an object designed
 to perform that specific function, increasing the readability and maintainability
 of the system.
 
@@ -2213,8 +2213,8 @@ of the system.
           a significant amount of time if the program had a large number of steps, and
           each of these steps would need to be stored in the list. By parsing
           incrementally, trace steps are only parsed and stored when the user reaches
-          them in the trace, so if they exit the trace before the end, the parser did
-          not waste time parsing the end of the XML.
+          them in the trace, so if they exit the trace before the end, the parser does
+          not waste time parsing the rest of the XML.
 
           After loading the next \texttt{TraceStep}, any graph changes from that step
           are applied to the graph. If the user is stepping backwards through the trace,
@@ -2285,7 +2285,7 @@ that requirement has been met by the system.
         2.1  &  Implemented     & Rule calls are highlighted in the program text when they
                                   are executed in the trace. \\ \hline
         2.2  &  Implemented     & The ''Find Match'' button highlights the match for the
-                                  current rule. However, this is a manual operation; the
+                                  current rule. This is a manual operation; the
                                   match is not highlighted for every step unless requested
                                   by the user. \\ \hline
         2.3  &  Implemented     & The program text is highlighted in the Tracing tab to
@@ -2310,7 +2310,7 @@ that requirement has been met by the system.
                                   \\ \hline
                 
         4    &  Implemented     & GP2 programs behave identically when tracing is enabled
-                                  and disabled, since all code changes are additive and did
+                                  and disabled, since all code changes were additive and did
                                   not modify existing behaviour. \\ \hline
         4.1  &  Implemented     & Enabling tracing simply outputs a tracefile during execution,
                                   and does not change the behaviour of the program. The results
@@ -2367,7 +2367,7 @@ the rest of the system.
     \end{nscenter}
 \end{table}
 
-It is important that the changes made to GP2 did not negatively impact the speed
+It was important that the changes made to GP2 did not negatively impact the speed
 of compiling and running a program, since it would make debugging a program
 cumbersome to have to wait longer for the program to execute.
 
@@ -2558,7 +2558,7 @@ add the ability to select a program token.
         \includegraphics[width=\textwidth]{SeqCollage1}
     \end{nscenter}
     \caption{Full program tracing sequence}
-    \label{fig:HighlightedMatch}
+    \label{fig:TracingSequence}
 \end{figure}
 
 \begin{figure}[!htb]
@@ -2567,7 +2567,7 @@ add the ability to select a program token.
         \includegraphics[width=\textwidth]{SeqCollage2}
     \end{nscenter}
     \caption{Full program tracing sequence (cont.)}
-    \label{fig:HighlightedMatch}
+    \label{fig:TracingSequence}
 \end{figure}
 
 \begin{figure}[!htb]
@@ -2576,7 +2576,7 @@ add the ability to select a program token.
         \includegraphics[width=\textwidth]{SeqCollage3}
     \end{nscenter}
     \caption{Full program tracing sequence (cont.)}
-    \label{fig:HighlightedMatch}
+    \label{fig:TracingSequence}
 \end{figure}
 
 \begin{figure}[!htb]
@@ -2585,7 +2585,7 @@ add the ability to select a program token.
         \includegraphics[width=\textwidth]{SeqCollage4}
     \end{nscenter}
     \caption{Full program tracing sequence (cont.)}
-    \label{fig:HighlightedMatch}
+    \label{fig:TracingSequence}
 \end{figure}
 
 
