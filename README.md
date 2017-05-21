@@ -4,6 +4,7 @@ I did an MEng degree at the University of York from 2012–2017. For my final ye
 
 ## Useful Links
 
+- Compiled [PDF version of the report](https://github.com/jobbogamer/Tracing-GP2-Report/blob/master/project.pdf)
 - The [original GP 2 compiler](https://github.com/UoYCS-plasma/GP2)
 - The [original GP 2 IDE](https://github.com/UoYCS-plasma/GP2-editor)
 - My [modified GP 2 compiler](https://github.com/jobbogamer/GP2), adding the ability to create tracefiles from compiled GP 2 programs
